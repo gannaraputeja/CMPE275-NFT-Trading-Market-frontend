@@ -25,6 +25,7 @@ import {
 } from '@mui/material';
 import { Outlet, useNavigate } from 'react-router-dom';
 import {
+  CollectionsBookmark,
   Dashboard, Insights, Sell, ShoppingCart, Store,
 } from '@mui/icons-material';
 import PropTypes from 'prop-types';
@@ -150,7 +151,11 @@ export default function MiniDrawer({ setToken, userObj }) {
   };
 
   const openNftSale = () => {
-    navigate('/nftsale');
+    navigate('/nftSale');
+  };
+
+  const openNftCollection = () => {
+    navigate('/collection');
   };
 
   const openPersonalStats = () => {
@@ -268,6 +273,28 @@ export default function MiniDrawer({ setToken, userObj }) {
             </ListItemButton>
           </ListItem>
 
+          <ListItem key="nft-collection" disablePadding sx={{ display: 'block' }}>
+            <ListItemButton
+              sx={{
+                minHeight: 48,
+                justifyContent: open ? 'initial' : 'center',
+                px: 2.5,
+              }}
+              onClick={openNftCollection}
+            >
+              <ListItemIcon
+                sx={{
+                  minWidth: 0,
+                  mr: open ? 3 : 'auto',
+                  justifyContent: 'center',
+                }}
+              >
+                <CollectionsBookmark />
+              </ListItemIcon>
+              <ListItemText primary="NFT Collection" sx={{ opacity: open ? 1 : 0 }} />
+            </ListItemButton>
+          </ListItem>
+
           <ListItem key="nft-sale" disablePadding sx={{ display: 'block' }}>
             <ListItemButton
               sx={{
@@ -286,7 +313,7 @@ export default function MiniDrawer({ setToken, userObj }) {
               >
                 <Sell />
               </ListItemIcon>
-              <ListItemText primary="Sell NFTs" sx={{ opacity: open ? 1 : 0 }} />
+              <ListItemText primary="Sale" sx={{ opacity: open ? 1 : 0 }} />
             </ListItemButton>
           </ListItem>
 

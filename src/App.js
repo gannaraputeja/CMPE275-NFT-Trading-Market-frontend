@@ -13,12 +13,12 @@ import { gapi } from 'gapi-script';
 import Home from './pages/Home/Home';
 import Navbar from './components/Navbar/Navbar';
 import SystemDashboard from './pages/Dashboard/SystemDashboard';
-import Listings from './pages/Listings/Listings';
+import NftCollection from './pages/NftCollection/NftCollection';
 import Cart from './pages/Cart/Cart';
-import NftSale from './pages/NftSale/NftSale';
 import PersonalStats from './pages/PersonalStats/PersonalStats';
 import Register from './pages/Register/Register';
 import Login from './pages/Login/Login';
+import NftSale from './pages/NftSale/NftSale';
 import CLIENT_ID from './config';
 
 const Context = createContext(null);
@@ -74,10 +74,10 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/" element={<Navbar setToken={setToken} userObj={userObj} logoutUser={logoutUser} />}>
             <Route index element={<Home />} />
+            <Route path="/collection" element={<NftCollection />} />
             <Route path="/nftsale" element={<NftSale />} />
             <Route path="/personalstats" element={<PersonalStats />} />
             <Route path="/dashboard" element={<SystemDashboard />} />
-            <Route path="/listings" element={<Listings />} />
             <Route path="/cart" element={<Cart />} />
           </Route>
         </Routes>

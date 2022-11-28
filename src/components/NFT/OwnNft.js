@@ -8,11 +8,10 @@ import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import {
-  Chip, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, ImageListItem,
+  Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, ImageListItem,
 } from '@mui/material';
-import PropTypes from 'prop-types';
 
-export default function NftCard({ type = 'priced' }) {
+export default function OwnNft() {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -25,10 +24,19 @@ export default function NftCard({ type = 'priced' }) {
 
   return (
     <>
+
       <Card sx={{
         maxWidth: 250, marginInline: '10px', marginY: '10px',
       }}
       >
+        {/* <CardHeader
+          title="NFT Name"
+          action={(
+            <IconButton aria-label="settings" onClick={() => console.log('Sell NFT')}>
+              <MoreVertIcon />
+            </IconButton>
+          )}
+        /> */}
         <CardMedia
           component="img"
           height="140"
@@ -40,7 +48,6 @@ export default function NftCard({ type = 'priced' }) {
           <Typography gutterBottom variant="h6" component="div">
             NFT Icon
             {' '}
-            <Chip style={{ marginLeft: '5px' }} label={type.toUpperCase()} color={type === 'priced' ? 'info' : 'warning'} />
           </Typography>
 
           <Typography variant="body2" color="text.secondary" style={{ fontSize: '12px' }} gutterBottom>
@@ -49,7 +56,7 @@ export default function NftCard({ type = 'priced' }) {
             and that is used to certify authenticity and ownership
           </Typography>
 
-          <Typography>
+          {/* <Typography>
             Price:
             {' '}
             <strong>
@@ -57,10 +64,10 @@ export default function NftCard({ type = 'priced' }) {
               {' '}
               BTC
             </strong>
-          </Typography>
+          </Typography> */}
         </CardContent>
         <CardActions>
-          {type === 'priced' ? <Button size="small" color="success" variant="contained">BUY</Button> : <Button size="small" color="secondary" variant="contained">Make an Offer</Button> }
+          <Button size="small" color="error" variant="contained" onClick={() => console.log('Sell the nft')}>SELL</Button>
           <Button size="small" color="inherit" variant="text" onClick={handleClickOpen}>Details</Button>
         </CardActions>
       </Card>
@@ -101,7 +108,3 @@ export default function NftCard({ type = 'priced' }) {
     </>
   );
 }
-
-NftCard.propTypes = {
-  type: PropTypes.string.isRequired,
-};
