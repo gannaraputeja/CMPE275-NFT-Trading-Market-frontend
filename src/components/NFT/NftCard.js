@@ -9,6 +9,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { Chip } from '@mui/material';
 import PropTypes from 'prop-types';
+import NftCardInfo from './NftCardInfo';
 
 export default function NftCard({ type = 'priced' }) {
   const openDetailsModal = () => {
@@ -30,10 +31,10 @@ export default function NftCard({ type = 'priced' }) {
         <Typography gutterBottom variant="h6" component="div">
           NFT Icon
           {' '}
-          <Chip style={{ marginLeft: '5px' }} label={type} color={type === 'priced' ? 'info' : 'warning'} />
+          <Chip style={{ marginLeft: '5px' }} label={type.toUpperCase()} color={type === 'priced' ? 'info' : 'warning'} />
         </Typography>
 
-        <Typography variant="body2" color="text.secondary">
+        <Typography variant="body2" color="text.secondary" style={{ fontSize: '12px' }}>
           A non-fungible token is a unique digital identifier that cannot be copied, substituted, or subdivided,
           that is recorded in a blockchain,
           and that is used to certify authenticity and ownership
@@ -47,7 +48,7 @@ export default function NftCard({ type = 'priced' }) {
       </CardContent>
       <CardActions>
         <Button size="small" color="success" variant="contained" onClick={openDetailsModal}>BUY</Button>
-        <Button size="small" color="inherit" variant="text" onClick={openDetailsModal}>Details</Button>
+        <Button size="small" color="inherit" variant="text" onClick={<NftCardInfo />}>Details</Button>
       </CardActions>
     </Card>
   );

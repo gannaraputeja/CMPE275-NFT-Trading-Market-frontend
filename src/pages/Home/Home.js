@@ -11,8 +11,17 @@ function Home() {
   const [nftType, setNftType] = React.useState('');
 
   const handleChange = (event) => {
+    console.log(event.target.value);
     setNftType(event.target.value);
   };
+
+  React.useEffect(() => {
+    console.log('Fetching data from backend');
+
+    return () => {
+      console.log('Cleanup code');
+    };
+  }, []);
 
   return (
     <>
@@ -25,17 +34,17 @@ function Home() {
           label="NFT Type"
           onChange={handleChange}
         >
-          <MenuItem value="">
-            <em>None</em>
+          <MenuItem value="both">
+            <em>Both</em>
           </MenuItem>
-          <MenuItem value={10}>Priced</MenuItem>
-          <MenuItem value={20}>Auctioned</MenuItem>
+          <MenuItem value="priced">Priced</MenuItem>
+          <MenuItem value="auctioned">Auctioned</MenuItem>
         </Select>
       </FormControl>
 
       <Grid container spacing={2} style={{ display: 'flex', padding: '10px' }}>
         {
-          nfts.map((nft) => <NftCard type={nft} />)
+          nfts.map((nft) => ((nftType === 'both' || nftType === '') ? <NftCard type={nft} /> : ((nftType === nft) && <NftCard type={nft} />)))
         }
       </Grid>
     </>
