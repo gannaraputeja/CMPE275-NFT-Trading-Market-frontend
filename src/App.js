@@ -1,7 +1,15 @@
+/* eslint-disable comma-dangle */
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/jsx-filename-extension */
 /* eslint-disable react/react-in-jsx-scope */
-import { Route, Routes } from 'react-router-dom';
+import {
+  Navigate, Route, Routes, useNavigate,
+} from 'react-router-dom';
 import './App.css';
+import {
+  useState, useEffect, createContext,
+} from 'react';
+import { gapi } from 'gapi-script';
 import Home from './pages/Home/Home';
 import Navbar from './components/Navbar/Navbar';
 import SystemDashboard from './pages/Dashboard/SystemDashboard';
@@ -9,21 +17,72 @@ import Listings from './pages/Listings/Listings';
 import Cart from './pages/Cart/Cart';
 import NftSale from './pages/NftSale/NftSale';
 import PersonalStats from './pages/PersonalStats/PersonalStats';
+import Register from './pages/Register/Register';
+import Login from './pages/Login/Login';
+import CLIENT_ID from './config';
+
+const Context = createContext(null);
 
 function App() {
+  const [token, setToken] = useState(
+    localStorage.getItem('access-token') ? localStorage.getItem('access-token') : null
+  );
+  const [userObj, setUserObj] = useState(null);
+
+  useEffect(() => {
+    const initClient = () => {
+      gapi.client.init({
+        CLIENT_ID,
+        scope: '',
+      });
+    };
+    gapi.load('client:auth2', initClient);
+  });
+
+  const onSuccess = (res) => {
+    console.log('success:', res);
+    setUserObj(res);
+    localStorage.setItem('access-token', res.tokenObj.access_token);
+    setToken(res.tokenObj.access_token);
+    useNavigate('/');
+  };
+  const onFailure = (err) => {
+    console.log('failed:', err);
+    setUserObj(null);
+    setToken(null);
+    useNavigate('/');
+  };
+
+  const logoutUser = () => {
+    console.log(`Before logout -->${token}`);
+    setToken(null);
+    localStorage.removeItem('access-token');
+    // useNavigate('/');
+    console.log(`After logout -->${token}`);
+  };
+
+  if (token === null) {
+    return (
+      <Login clientId={CLIENT_ID} onSuccess={onSuccess} onFailure={onFailure} />
+    );
+  }
+
   return (
-    <div>
-      <Routes>
-        <Route path="/" element={<Navbar />}>
-          <Route index element={<Home />} />
-          <Route path="/nftsale" element={<NftSale />} />
-          <Route path="/personalstats" element={<PersonalStats />} />
-          <Route path="/dashboard" element={<SystemDashboard />} />
-          <Route path="/listings" element={<Listings />} />
-          <Route path="/cart" element={<Cart />} />
-        </Route>
-      </Routes>
-    </div>
+    <Context.Provider value={setToken}>
+      <div>
+        <Routes>
+          <Route path="/register" element={<Register />} />
+          <Route path="/" element={<Navbar setToken={setToken} userObj={userObj} logoutUser={logoutUser} />}>
+            <Route index element={<Home />} />
+            <Route path="/nftsale" element={<NftSale />} />
+            <Route path="/personalstats" element={<PersonalStats />} />
+            <Route path="/dashboard" element={<SystemDashboard />} />
+            <Route path="/listings" element={<Listings />} />
+            <Route path="/cart" element={<Cart />} />
+          </Route>
+        </Routes>
+      </div>
+    </Context.Provider>
   );
 }
 

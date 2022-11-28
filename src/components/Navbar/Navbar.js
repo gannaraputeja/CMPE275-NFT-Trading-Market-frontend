@@ -1,3 +1,6 @@
+/* eslint-disable no-alert */
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/require-default-props */
 /* eslint-disable react/jsx-filename-extension */
 import * as React from 'react';
 import { styled, useTheme } from '@mui/material/styles';
@@ -22,8 +25,12 @@ import {
 } from '@mui/material';
 import { Outlet, useNavigate } from 'react-router-dom';
 import {
-  Dashboard, Insights, Logout, Sell, ShoppingCart, Store,
+  Dashboard, Insights, Sell, ShoppingCart, Store,
 } from '@mui/icons-material';
+import PropTypes from 'prop-types';
+import { useGoogleLogout } from 'react-google-login';
+import LogoutIcon from '@mui/icons-material/Logout';
+import CLIENT_ID from '../../config';
 
 const drawerWidth = 240;
 
@@ -92,15 +99,31 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
   }),
 );
 
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const settings = ['Profile', 'Logout'];
 
-export default function MiniDrawer() {
+export default function MiniDrawer({ setToken, userObj }) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+  const [userProfilePicture, setUserProfilePicture] = React.useState('');
+  const [userName, setUserName] = React.useState('Admin');
   const navigate = useNavigate();
 
+  React.useEffect(() => {
+    if (userObj !== null) {
+      setUserProfilePicture(userObj);
+      setUserName(userObj.profileObj.name);
+    } else {
+      setUserProfilePicture('');
+      setUserName('Admin');
+    }
+  }, []);
   // const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+
+  const onSuccess = () => {
+    // eslint-disable-next-line no-alert
+    alert('Logout sucessful');
+  };
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -138,10 +161,24 @@ export default function MiniDrawer() {
     navigate('/dashboard');
   };
 
+  const onLogoutSuccess = () => {
+    localStorage.removeItem('access-token');
+    window.location.reload();
+  };
+
+  const onFailure = () => {
+    console.log('Handle failure cases');
+  };
+
+  const signOut = () => {
+    localStorage.removeItem('access-token');
+    window.location.reload();
+  };
+
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppBar position="fixed" open={open}>
+      <AppBar position="fixed" style={{ background: '#2E3B55' }} open={open}>
         <Toolbar>
           <IconButton
             color="inherit"
@@ -165,14 +202,13 @@ export default function MiniDrawer() {
             <Typography variant="h6" noWrap component="div">
               NFT Trading Market
             </Typography>
-
             <div>
-              <IconButton color="inherit" onClick={openCart}>
+              <IconButton color="inherit" onClick={openCart} style={{ marginRight: '30px' }}>
                 <ShoppingCart fontSize="medium" />
               </IconButton>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                  <Avatar alt={userName} sx={{ width: 30, height: 30 }} src={userProfilePicture} />
                 </IconButton>
               </Tooltip>
               <Menu
@@ -308,6 +344,7 @@ export default function MiniDrawer() {
                 justifyContent: open ? 'initial' : 'center',
                 px: 2.5,
               }}
+              onClick={signOut}
             >
               <ListItemIcon
                 sx={{
@@ -316,7 +353,7 @@ export default function MiniDrawer() {
                   justifyContent: 'center',
                 }}
               >
-                <Logout />
+                <LogoutIcon />
               </ListItemIcon>
               <ListItemText primary="Logout" sx={{ opacity: open ? 1 : 0 }} />
             </ListItemButton>
@@ -330,3 +367,9 @@ export default function MiniDrawer() {
     </Box>
   );
 }
+
+MiniDrawer.propTypes = {
+  setToken: PropTypes.func,
+  userObj: PropTypes.objectOf,
+  // logoutUser: PropTypes.func,
+};
