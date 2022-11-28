@@ -10,9 +10,11 @@ import Typography from '@mui/material/Typography';
 import {
   Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, ImageListItem,
 } from '@mui/material';
+import NftSellForm from './NFTSellForm';
 
 export default function OwnNft() {
   const [open, setOpen] = React.useState(false);
+  const [saleForm, setSaleForm] = React.useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -20,6 +22,14 @@ export default function OwnNft() {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleCloseSaleForm = () => {
+    setSaleForm(false);
+  };
+
+  const handleOpenSaleForm = () => {
+    setSaleForm(true);
   };
 
   return (
@@ -67,7 +77,7 @@ export default function OwnNft() {
           </Typography> */}
         </CardContent>
         <CardActions>
-          <Button size="small" color="error" variant="contained" onClick={() => console.log('Sell the nft')}>SELL</Button>
+          <Button size="small" color="error" variant="contained" onClick={handleOpenSaleForm}>SELL</Button>
           <Button size="small" color="inherit" variant="text" onClick={handleClickOpen}>Details</Button>
         </CardActions>
       </Card>
@@ -105,6 +115,42 @@ export default function OwnNft() {
           </Button>
         </DialogActions>
       </Dialog>
+
+      <NftSellForm open={saleForm} handleClose={handleCloseSaleForm} />
+
+      {/* <Dialog
+        open={saleForm}
+        onClose={handleCloseSaleForm}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          NFT Details
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            <ImageListItem>
+              <img
+                alt="nftimage"
+                src="https://nft-trading-market-object-storage.sfo3.digitaloceanspaces.com/Images/NFT_marketplace.ico"
+                loading="lazy"
+                height={50}
+                width={50}
+              />
+            </ImageListItem>
+          </DialogContentText>
+          <DialogContentText id="alert-dialog-description">
+            A non-fungible token is a unique digital identifier that cannot be copied, substituted, or subdivided,
+            that is recorded in a blockchain,
+            and that is used to certify authenticity and ownership
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseSaleForm} autoFocus>
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog> */}
     </>
   );
 }

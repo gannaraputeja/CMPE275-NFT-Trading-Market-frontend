@@ -17,7 +17,7 @@ export default function NFTForm({ open, handleClose }) {
         style={{ minWidth: '500px' }}
       >
         <DialogTitle id="alert-dialog-title">
-          Create a New NFT
+          Sell NFT
         </DialogTitle>
         <DialogContent>
           <Input placeholder="NFT name">

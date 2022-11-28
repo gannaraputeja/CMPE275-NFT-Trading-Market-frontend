@@ -3,7 +3,7 @@ import { AddCircle } from '@mui/icons-material';
 import {
   Box,
   Button,
-  FormControl, Grid, InputLabel, MenuItem, Select,
+  FormControl, Grid, InputLabel, MenuItem, Select, Typography,
 } from '@mui/material';
 import React from 'react';
 import NftCard from '../../components/NFT/NftCard';
@@ -34,6 +34,9 @@ function Home() {
 
   return (
     <>
+      <Typography variant="h5">
+        <strong>NFT Store</strong>
+      </Typography>
       <Box display="flex" justifyContent="space-between">
         <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
           <InputLabel id="demo-select-small">NFT Type</InputLabel>
