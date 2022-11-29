@@ -25,6 +25,8 @@ import {
 } from '@mui/material';
 import { Outlet, useNavigate } from 'react-router-dom';
 import {
+  AccountBalance,
+  AccountBalanceWallet,
   CollectionsBookmark,
   Dashboard, Insights, Sell, ShoppingCart, Store,
 } from '@mui/icons-material';
@@ -146,6 +148,10 @@ export default function MiniDrawer({ setToken, userObj }) {
     navigate('/cart');
   };
 
+  const openWallet = () => {
+    navigate('/wallet');
+  };
+
   const openNftStore = () => {
     navigate('/');
   };
@@ -208,6 +214,10 @@ export default function MiniDrawer({ setToken, userObj }) {
               NFT Trading Market
             </Typography>
             <div>
+              <IconButton color="inherit" onClick={openWallet} style={{ marginRight: '30px' }}>
+                <AccountBalanceWallet fontSize="medium" />
+              </IconButton>
+
               <IconButton color="inherit" onClick={openCart} style={{ marginRight: '30px' }}>
                 <ShoppingCart fontSize="medium" />
               </IconButton>

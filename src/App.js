@@ -20,6 +20,8 @@ import Register from './pages/Register/Register';
 import Login from './pages/Login/Login';
 import NftSale from './pages/NftSale/NftSale';
 import CLIENT_ID from './config';
+import EmailVerification from './pages/EmailVerification/EmailVerification';
+import UserWallet from './pages/UserWallet/UserWallet';
 
 const Context = createContext(null);
 
@@ -72,6 +74,7 @@ function App() {
       <div>
         <Routes>
           <Route path="/register" element={<Register />} />
+          <Route path="/emailVerification" element={<EmailVerification />} />
           <Route path="/" element={<Navbar setToken={setToken} userObj={userObj} logoutUser={logoutUser} />}>
             <Route index element={<Home />} />
             <Route path="/collection" element={<NftCollection />} />
@@ -79,6 +82,7 @@ function App() {
             <Route path="/personalstats" element={<PersonalStats />} />
             <Route path="/dashboard" element={<SystemDashboard />} />
             <Route path="/cart" element={<Cart />} />
+            <Route path="/wallet" element={<UserWallet />} />
           </Route>
         </Routes>
       </div>
