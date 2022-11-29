@@ -144,6 +144,10 @@ export default function MiniDrawer({ setToken, userObj }) {
     setAnchorElUser(event.currentTarget);
   };
 
+  const openHome = () => {
+    navigate('/');
+  };
+
   const openCart = () => {
     navigate('/cart');
   };
@@ -210,9 +214,11 @@ export default function MiniDrawer({ setToken, userObj }) {
               justifyContent: 'space-between',
             }}
           >
-            <Typography variant="h6" noWrap component="div">
-              NFT Trading Market
-            </Typography>
+            <IconButton onClick={openHome} style={{ cursor: 'pointer' }} color="inherit">
+              <Typography variant="h6" noWrap component="div">
+                NFT Trading Market
+              </Typography>
+            </IconButton>
             <div>
               <IconButton color="inherit" onClick={openWallet} style={{ marginRight: '30px' }}>
                 <AccountBalanceWallet fontSize="medium" />
