@@ -6,7 +6,7 @@ import { LockOutlined } from '@mui/icons-material';
 import {
   Box, Button, Divider, Grid, IconButton, Link, TextField, Typography,
 } from '@mui/material';
-import React from 'react';
+import React, { useRef } from 'react';
 import GoogleLogin from 'react-google-login';
 import { useForm } from 'react-hook-form';
 import CLIENT_ID from '../../config';
@@ -15,15 +15,18 @@ function Register({
   onSuccess, onFailure, login, setLogin,
 }) {
   const {
-    register, handleSubmit, formState: { errors },
+    register, handleSubmit, formState: { errors }, watch,
   } = useForm({
     defaultValues: {
       registerEmail: '',
       nickName: '',
-      registerPassword1: '',
-      registerPassword2: '',
+      password: '',
+      password_repeat: '',
     },
   });
+
+  const password = useRef({});
+  password.current = watch('password', '');
 
   const handleLoginType = (e) => {
     e.preventDefault();
@@ -34,7 +37,7 @@ function Register({
     const userData = {
       username: data.registerEmail,
       nickname: data.nickName,
-      password: data.registerPassword1,
+      password: data.password,
     };
     console.log(userData);
     // TODO - Write axios calls to handle api calls to backend server.
@@ -90,6 +93,18 @@ function Register({
               {...register('registerEmail', { required: 'true' })}
               error={errors?.registerEmail?.type === 'required'}
             />
+            {errors?.registerEmail?.type === 'required' && (
+            <div style={{
+              display: 'flex', alignContent: 'center', color: 'red', margin: '5px',
+            }}
+            >
+              {' '}
+              <Typography variant="p" component="p" display="inline" alignContent="center" marginLeft="2px">
+                User Name is required
+                {' '}
+              </Typography>
+            </div>
+            )}
           </Grid>
 
           <Grid item>
@@ -105,6 +120,18 @@ function Register({
               {...register('nickName', { required: 'true' })}
               error={errors?.nickName?.type === 'required'}
             />
+            {errors?.nickName?.type === 'required' && (
+            <div style={{
+              display: 'flex', alignContent: 'center', color: 'red', margin: '5px',
+            }}
+            >
+              {' '}
+              <Typography variant="p" component="p" display="inline" alignContent="center" marginLeft="2px">
+                Nick name is required
+                {' '}
+              </Typography>
+            </div>
+            )}
           </Grid>
 
           <Grid item>
@@ -113,14 +140,27 @@ function Register({
               margin="normal"
               required
               fullWidth
-              name="registerPassword1"
+              name="password"
               label="Password"
               type="password"
-              id="registerPassword1"
-              {...register('registerPassword1', { required: 'true' })}
-              error={errors?.registerPassword1?.type === 'required'}
+              id="password"
+              {...register('password', {
+                required: 'true',
+              })}
+              error={errors?.password?.type === 'required'}
             />
-
+            {errors?.password?.type === 'required' && (
+            <div style={{
+              display: 'flex', alignContent: 'center', color: 'red', margin: '5px',
+            }}
+            >
+              {' '}
+              <Typography variant="p" component="p" display="inline" alignContent="center" marginLeft="2px">
+                Password is required
+                {' '}
+              </Typography>
+            </div>
+            )}
           </Grid>
 
           <Grid item>
@@ -129,13 +169,41 @@ function Register({
               margin="normal"
               required
               fullWidth
-              name="registerPassword2"
+              name="password_repeat"
               label="Retype Password"
               type="password"
-              id="registerPassword2"
-              {...register('registerPassword2', { required: 'true' })}
-              error={errors?.registerPassword2?.type === 'required'}
+              id="password_repeat"
+              {...register('password_repeat', {
+                required: 'true',
+                validate: (value) => value === password.current || 'Passwords do not match',
+              })}
+              error={errors?.password_repeat?.type === 'required'}
             />
+            {errors?.password_repeat?.type === 'required' && (
+            <div style={{
+              display: 'flex', alignContent: 'center', color: 'red', margin: '5px',
+            }}
+            >
+              {' '}
+              <Typography variant="p" component="p" display="inline" alignContent="center" marginLeft="2px">
+                Password is required
+                {' '}
+              </Typography>
+            </div>
+            )}
+
+            {errors.password_repeat && (
+            <div style={{
+              display: 'flex', alignContent: 'center', color: 'red', margin: '5px',
+            }}
+            >
+              {' '}
+              <Typography variant="p" component="p" display="inline" alignContent="center" marginLeft="2px">
+                {errors.password_repeat.message}
+                {' '}
+              </Typography>
+            </div>
+            )}
 
           </Grid>
 
