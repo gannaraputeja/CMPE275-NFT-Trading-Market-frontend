@@ -120,7 +120,7 @@ export default function MiniDrawer({ setToken, userObj }) {
       setUserName('Admin');
     }
   }, []);
-  // const [anchorElNav, setAnchorElNav] = React.useState(null);
+
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
   const onSuccess = () => {

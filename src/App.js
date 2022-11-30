@@ -73,6 +73,7 @@ function App() {
     <Context.Provider value={setToken}>
       <div>
         <Routes>
+          {/* <Route path="/login" element={<Login />} /> */}
           <Route path="/register" element={<Register />} />
           <Route path="/emailVerification" element={<EmailVerification />} />
           <Route path="/" element={<Navbar setToken={setToken} userObj={userObj} logoutUser={logoutUser} />}>
