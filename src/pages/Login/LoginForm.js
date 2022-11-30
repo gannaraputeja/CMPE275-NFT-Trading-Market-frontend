@@ -11,7 +11,7 @@ import GoogleLogin from 'react-google-login';
 import { useForm } from 'react-hook-form';
 import CLIENT_ID from '../../config';
 
-function Register({
+function LoginForm({
   onSuccess, onFailure, login, setLogin,
 }) {
   const {
@@ -30,11 +30,10 @@ function Register({
     setLogin(!login);
   };
 
-  const onSubmitRegister = (data) => {
+  const onSubmitLogin = (data) => {
     const userData = {
-      username: data.registerEmail,
-      nickname: data.nickName,
-      password: data.registerPassword1,
+      username: data.loginEmail,
+      password: data.loginPassword,
     };
     console.log(userData);
     // TODO - Write axios calls to handle api calls to backend server.
@@ -71,25 +70,51 @@ function Register({
         </Grid>
         <Grid item display="grid" justifyContent="center">
           <Typography component="h1" variant="h5">
-            Register
+            Sign In
           </Typography>
         </Grid>
+        <form onSubmit={handleSubmit(onSubmitLogin)}>
 
-        <form onSubmit={handleSubmit(onSubmitRegister)}>
           <Grid item>
             <TextField
               variant="outlined"
               margin="normal"
               required
               fullWidth
-              id="registerEmail"
-              label="User Name"
-              name="registerEmail"
-              type="email"
+              id="loginEmail"
+              label="Email Address"
+              name="loginEmail"
               autoFocus
-              {...register('registerEmail', { required: 'true' })}
-              error={errors?.registerEmail?.type === 'required'}
+              type="email"
+              {...register('loginEmail', { required: 'true' })}
+              error={errors?.loginEmail?.type === 'required'}
             />
+            {errors?.loginEmail?.type === 'required' && (
+            <div style={{
+              display: 'flex', alignContent: 'center', color: 'red', margin: '5px',
+            }}
+            >
+              {' '}
+              <Typography variant="p" component="p" display="inline" alignContent="center" marginLeft="2px">
+                Email is required
+                {' '}
+              </Typography>
+            </div>
+            )}
+
+            {/* {errors?.email?.type === 'pattern' && (
+                <div style={{
+                  display: 'flex', alignContent: 'center', color: 'red', margin: '5px',
+                }}
+                >
+                  {' '}
+                  <Typography variant="p"
+                  component="p" display="inline" alignContent="center" marginLeft="2px">
+                    Not a valid email
+                    {' '}
+                  </Typography>
+                </div>
+                )} */}
           </Grid>
 
           <Grid item>
@@ -98,45 +123,37 @@ function Register({
               margin="normal"
               required
               fullWidth
-              id="nickName"
-              label="Nick Name"
-              name="nickName"
-              type="text"
-              {...register('nickName', { required: 'true' })}
-              error={errors?.nickName?.type === 'required'}
-            />
-          </Grid>
-
-          <Grid item>
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              name="registerPassword1"
+              name="loginPassword"
               label="Password"
               type="password"
-              id="registerPassword1"
-              {...register('registerPassword1', { required: 'true' })}
-              error={errors?.registerPassword1?.type === 'required'}
+              id="loginPassword"
+              {...register('loginPassword', { required: 'true', minLength: 8 })}
+              error={errors?.loginPassword?.type === 'required' || errors?.loginPassword?.type === 'minLength'}
             />
-
-          </Grid>
-
-          <Grid item>
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              name="registerPassword2"
-              label="Retype Password"
-              type="password"
-              id="registerPassword2"
-              {...register('registerPassword2', { required: 'true' })}
-              error={errors?.registerPassword2?.type === 'required'}
-            />
-
+            {errors?.loginPassword?.type === 'required' && (
+            <div style={{
+              display: 'flex', alignContent: 'center', color: 'red', margin: '5px',
+            }}
+            >
+              {' '}
+              <Typography variant="p" component="p" display="inline" alignContent="center" marginLeft="2px">
+                Password is required
+                {' '}
+              </Typography>
+            </div>
+            )}
+            {errors?.loginPassword?.type === 'minLength' && (
+            <div style={{
+              display: 'flex', alignContent: 'center', color: 'red', margin: '5px',
+            }}
+            >
+              {' '}
+              <Typography variant="p" component="p" display="inline" alignContent="center" marginLeft="2px">
+                Password length should be min of 8 characters
+                {' '}
+              </Typography>
+            </div>
+            )}
           </Grid>
 
           <Grid item display="grid" justifyContent="center">
@@ -146,19 +163,21 @@ function Register({
               style={{ marginBottom: '10px', width: '400px', marginTop: '10px' }}
               type="submit"
             >
-              REGISTER
+              LOGIN
             </Button>
 
           </Grid>
+
         </form>
 
         <Divider>
           OR
         </Divider>
+
         <Grid item sx={{ marginTop: '10px' }} display="grid" justifyContent="center">
           <GoogleLogin
             clientId={CLIENT_ID}
-            buttonText="Sign up with Google"
+            buttonText="Sign in with Google"
             onSuccess={onSuccess}
             onFailure={onFailure}
             cookiePolicy="single_host_origin"
@@ -172,7 +191,7 @@ function Register({
 
           <Grid item style={{ marginTop: '30px' }}>
             <Link href="/" variant="body2" onClick={handleLoginType}>
-              Login
+              Dont have an account? Sign Up
             </Link>
           </Grid>
         </Grid>
@@ -183,4 +202,4 @@ function Register({
   );
 }
 
-export default Register;
+export default LoginForm;
