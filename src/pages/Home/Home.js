@@ -1,7 +1,6 @@
 /* eslint-disable react/jsx-filename-extension */
 import { AddCircle } from '@mui/icons-material';
 import {
-  Box,
   Button,
   FormControl, Grid, InputLabel, MenuItem, Select, Typography,
 } from '@mui/material';
@@ -34,35 +33,37 @@ function Home() {
 
   return (
     <>
-      <Typography variant="h5">
-        <strong>NFT Store</strong>
-      </Typography>
-      <Box display="flex" justifyContent="space-between">
-        <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-          <InputLabel id="demo-select-small">NFT Type</InputLabel>
-          <Select
-            labelId="demo-select-small"
-            id="demo-select-small"
-            value={nftType}
-            label="NFT Type"
-            onChange={handleChange}
-          >
-            <MenuItem value="both">
-              <em>Both</em>
-            </MenuItem>
-            <MenuItem value="priced">Priced</MenuItem>
-            <MenuItem value="auctioned">Auctioned</MenuItem>
-          </Select>
-        </FormControl>
+      <Typography variant="h5" />
+      <Grid container display="flex" justifyContent="space-between">
+        <Grid item>
+          <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+            <InputLabel id="demo-select-small">NFT Type</InputLabel>
+            <Select
+              labelId="demo-select-small"
+              id="demo-select-small"
+              value={nftType}
+              label="NFT Type"
+              onChange={handleChange}
+            >
+              <MenuItem value="both">
+                <em>Both</em>
+              </MenuItem>
+              <MenuItem value="priced">Priced</MenuItem>
+              <MenuItem value="auctioned">Auctioned</MenuItem>
+            </Select>
+          </FormControl>
+        </Grid>
 
-        <Button variant="contained" size="small" style={{ maxHeight: '35px', marginTop: '15px' }} onClick={() => setOpenNewNftForm(true)}>
-          <AddCircle style={{ marginRight: '5px' }} />
-          {' '}
-          Create new NFT
-        </Button>
-      </Box>
+        <Grid item>
+          <Button variant="contained" size="small" style={{ maxHeight: '35px', marginTop: '15px' }} onClick={() => setOpenNewNftForm(true)}>
+            <AddCircle style={{ marginRight: '5px' }} />
+            {' '}
+            Create new NFT
+          </Button>
+        </Grid>
+      </Grid>
 
-      <Grid container spacing={2} style={{ display: 'flex', padding: '10px' }}>
+      <Grid container style={{ display: 'flex' }}>
         {
           nfts.map((nft) => ((nftType === 'both' || nftType === '') ? <NftCard type={nft} /> : ((nftType === nft) && <NftCard type={nft} />)))
         }
