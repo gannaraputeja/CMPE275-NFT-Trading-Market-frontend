@@ -114,7 +114,9 @@ export default function MiniDrawer({ setToken, userObj }) {
   React.useEffect(() => {
     if (userObj !== null) {
       setUserProfilePicture(userObj);
-      setUserName(userObj.profileObj.name);
+      localStorage.setItem('profilePicture', userObj?.profileObj?.imageUrl);
+      localStorage.setItem('userObj', userObj);
+      localStorage.setItem('userName', userObj.profileObj.name);
     } else {
       setUserProfilePicture('');
       setUserName('Admin');
@@ -186,8 +188,10 @@ export default function MiniDrawer({ setToken, userObj }) {
   };
 
   const signOut = () => {
-    localStorage.removeItem('access-token');
-    window.location.reload();
+    // localStorage.removeItem('access-token');
+    // localStorage.removeItem('userObj');
+    localStorage.clear();
+    window.location.reload('userName');
   };
 
   return (
@@ -229,7 +233,11 @@ export default function MiniDrawer({ setToken, userObj }) {
               </IconButton>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt={userName} sx={{ width: 30, height: 30 }} src={userProfilePicture} />
+                  <Avatar
+                    alt={userName}
+                    sx={{ width: 30, height: 30 }}
+                    src={userObj?.profileObj?.imageUrl || localStorage.getItem('profilePicture')}
+                  />
                 </IconButton>
               </Tooltip>
               <Menu
@@ -248,11 +256,30 @@ export default function MiniDrawer({ setToken, userObj }) {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
-                {settings.map((setting) => (
-                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center">{setting}</Typography>
-                  </MenuItem>
-                ))}
+
+                <Typography textAlign="center" paddingX={3} paddingY={1}>
+                  Hello,
+                  {' '}
+                  {localStorage.getItem('userName')}
+                </Typography>
+
+                <Divider />
+
+                <MenuItem
+                  key="profile"
+                  style={{ display: 'block', justifyContent: 'center' }}
+                  onClick={handleCloseUserMenu}
+                >
+                  <Typography textAlign="center">Profile</Typography>
+                </MenuItem>
+
+                <MenuItem
+                  key="logout"
+                  style={{ display: 'block', justifyContent: 'center' }}
+                  onClick={signOut}
+                >
+                  <Typography textAlign="center">Logout</Typography>
+                </MenuItem>
               </Menu>
             </div>
           </Box>

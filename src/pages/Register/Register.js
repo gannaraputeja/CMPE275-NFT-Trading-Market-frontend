@@ -175,7 +175,7 @@ function Register({
               id="password_repeat"
               {...register('password_repeat', {
                 required: 'true',
-                validate: (value) => value === password.current || 'Passwords do not match',
+                validate: (value) => (value === password.current ? '' : 'Passwords do not match'),
               })}
               error={errors?.password_repeat?.type === 'required'}
             />
@@ -192,18 +192,18 @@ function Register({
             </div>
             )}
 
-            {errors.password_repeat && (
-            <div style={{
-              display: 'flex', alignContent: 'center', color: 'red', margin: '5px',
-            }}
-            >
-              {' '}
-              <Typography variant="p" component="p" display="inline" alignContent="center" marginLeft="2px">
-                {errors.password_repeat.message}
+            {errors.password_repeat ? (
+              <div style={{
+                display: 'flex', alignContent: 'center', color: 'red', margin: '5px',
+              }}
+              >
                 {' '}
-              </Typography>
-            </div>
-            )}
+                <Typography variant="p" component="p" display="inline" alignContent="center" marginLeft="2px">
+                  {errors.password_repeat.message}
+                  {' '}
+                </Typography>
+              </div>
+            ) : ''}
 
           </Grid>
 
