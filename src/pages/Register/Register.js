@@ -15,7 +15,9 @@ function Register({
   onSuccess, onFailure, login, setLogin,
 }) {
   const {
-    register, handleSubmit, formState: { errors }, watch,
+    register, handleSubmit, formState: {
+      errors, isSubmitted,
+    }, watch,
   } = useForm({
     defaultValues: {
       registerEmail: '',
@@ -39,9 +41,16 @@ function Register({
       nickname: data.nickName,
       password: data.password,
     };
+    console.log(errors);
     console.log(userData);
+    console.log(isSubmitted);
     // TODO - Write axios calls to handle api calls to backend server.
   };
+
+  React.useEffect(() => {
+    console.log('Validating');
+  }, []);
+
   return (
     <Grid
       container
@@ -79,6 +88,7 @@ function Register({
         </Grid>
 
         <form onSubmit={handleSubmit(onSubmitRegister)}>
+
           <Grid item>
             <TextField
               variant="outlined"
@@ -117,8 +127,8 @@ function Register({
               label="Nick Name"
               name="nickName"
               type="text"
-              {...register('nickName', { required: 'true' })}
-              error={errors?.nickName?.type === 'required'}
+              {...register('nickName', { required: 'true', pattern: { value: /^[0-9a-zA-Z]+$/, message: 'Pattern did not match' } })}
+              error={errors?.nickName?.type === 'required' || errors?.nickName?.type === 'pattern'}
             />
             {errors?.nickName?.type === 'required' && (
             <div style={{
@@ -128,6 +138,25 @@ function Register({
               {' '}
               <Typography variant="p" component="p" display="inline" alignContent="center" marginLeft="2px">
                 Nick name is required
+                {' '}
+              </Typography>
+            </div>
+            )}
+
+            {errors?.nickName?.type === 'pattern' && (
+            <div style={{
+              display: 'flex', alignContent: 'center', color: 'red', margin: '5px',
+            }}
+            >
+              {' '}
+              <Typography
+                variant="p"
+                component="p"
+                display="inline"
+                alignContent="center"
+                marginLeft="2px"
+              >
+                {errors?.nickName?.message}
                 {' '}
               </Typography>
             </div>
@@ -175,9 +204,9 @@ function Register({
               id="password_repeat"
               {...register('password_repeat', {
                 required: 'true',
-                validate: (value) => (value === password.current ? '' : 'Passwords do not match'),
+                validate: (value) => (value === password.current || 'Passwords do not match'),
               })}
-              error={errors?.password_repeat?.type === 'required'}
+              error={errors?.password_repeat?.type === 'required' || errors?.password_repeat?.type === 'validate'}
             />
             {errors?.password_repeat?.type === 'required' && (
             <div style={{
@@ -192,18 +221,16 @@ function Register({
             </div>
             )}
 
-            {errors.password_repeat ? (
+            {errors?.password_repeat?.type === 'validate' && (
               <div style={{
                 display: 'flex', alignContent: 'center', color: 'red', margin: '5px',
               }}
               >
-                {' '}
                 <Typography variant="p" component="p" display="inline" alignContent="center" marginLeft="2px">
                   {errors.password_repeat.message}
-                  {' '}
                 </Typography>
               </div>
-            ) : ''}
+            ) }
 
           </Grid>
 
@@ -240,7 +267,7 @@ function Register({
 
           <Grid item style={{ marginTop: '30px' }}>
             <Link href="/" variant="body2" onClick={handleLoginType}>
-              Login
+              Already have an account?Login
             </Link>
           </Grid>
         </Grid>
