@@ -65,7 +65,11 @@ function App() {
 
   if (token === null) {
     return (
-      <Login clientId={CLIENT_ID} onSuccess={onSuccess} onFailure={onFailure} />
+      <div>
+        <Routes>
+          <Route path="/" element={<Login clientId={CLIENT_ID} onSuccess={onSuccess} onFailure={onFailure} />} />
+        </Routes>
+      </div>
     );
   }
 
@@ -74,7 +78,6 @@ function App() {
       <div>
         <Routes>
           {/* <Route path="/login" element={<Login />} /> */}
-          <Route path="/register" element={<Register />} />
           <Route path="/emailVerification" element={<EmailVerification />} />
           <Route path="/" element={<Navbar setToken={setToken} userObj={userObj} logoutUser={logoutUser} />}>
             <Route index element={<Home />} />

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable react/jsx-filename-extension */
 /* eslint-disable react/prop-types */
@@ -10,13 +11,14 @@ import React, { useRef } from 'react';
 import GoogleLogin from 'react-google-login';
 import { useForm } from 'react-hook-form';
 import CLIENT_ID from '../../config';
+import { signUp } from '../../api/AuthRequest';
 
 function Register({
   onSuccess, onFailure, login, setLogin,
 }) {
   const {
     register, handleSubmit, formState: {
-      errors, isSubmitted,
+      errors,
     }, watch,
   } = useForm({
     defaultValues: {
@@ -35,16 +37,23 @@ function Register({
     setLogin(!login);
   };
 
-  const onSubmitRegister = (data) => {
+  const onSubmitRegister = async (data) => {
     const userData = {
       username: data.registerEmail,
+      firstname: data.firstname,
+      lastname: data.lastname,
       nickname: data.nickName,
       password: data.password,
     };
-    console.log(errors);
     console.log(userData);
-    console.log(isSubmitted);
     // TODO - Write axios calls to handle api calls to backend server.
+    // signUp(userData)
+    //   .then((res) => {
+    //     console.log(res);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
   };
 
   React.useEffect(() => {
@@ -68,10 +77,10 @@ function Register({
       <Box sx={{
         border: 1,
         borderColor: 'black solid',
-        padding: '50px',
+        padding: '10px',
         paddingTop: '10px',
         paddingBottom: '20px',
-        width: '400px',
+        width: '700px',
         marginTop: '50px',
         backgroundColor: 'white',
       }}
@@ -89,149 +98,328 @@ function Register({
 
         <form onSubmit={handleSubmit(onSubmitRegister)}>
 
-          <Grid item>
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              id="registerEmail"
-              label="User Name"
-              name="registerEmail"
-              type="email"
-              autoFocus
-              {...register('registerEmail', { required: 'true' })}
-              error={errors?.registerEmail?.type === 'required'}
-            />
-            {errors?.registerEmail?.type === 'required' && (
-            <div style={{
-              display: 'flex', alignContent: 'center', color: 'red', margin: '5px',
-            }}
-            >
-              {' '}
-              <Typography variant="p" component="p" display="inline" alignContent="center" marginLeft="2px">
-                User Name is required
-                {' '}
-              </Typography>
-            </div>
-            )}
-          </Grid>
-
-          <Grid item>
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              id="nickName"
-              label="Nick Name"
-              name="nickName"
-              type="text"
-              {...register('nickName', { required: 'true', pattern: { value: /^[0-9a-zA-Z]+$/, message: 'Pattern did not match' } })}
-              error={errors?.nickName?.type === 'required' || errors?.nickName?.type === 'pattern'}
-            />
-            {errors?.nickName?.type === 'required' && (
-            <div style={{
-              display: 'flex', alignContent: 'center', color: 'red', margin: '5px',
-            }}
-            >
-              {' '}
-              <Typography variant="p" component="p" display="inline" alignContent="center" marginLeft="2px">
-                Nick name is required
-                {' '}
-              </Typography>
-            </div>
-            )}
-
-            {errors?.nickName?.type === 'pattern' && (
-            <div style={{
-              display: 'flex', alignContent: 'center', color: 'red', margin: '5px',
-            }}
-            >
-              {' '}
-              <Typography
-                variant="p"
-                component="p"
-                display="inline"
-                alignContent="center"
-                marginLeft="2px"
-              >
-                {errors?.nickName?.message}
-                {' '}
-              </Typography>
-            </div>
-            )}
-          </Grid>
-
-          <Grid item>
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              {...register('password', {
-                required: 'true',
-              })}
-              error={errors?.password?.type === 'required'}
-            />
-            {errors?.password?.type === 'required' && (
-            <div style={{
-              display: 'flex', alignContent: 'center', color: 'red', margin: '5px',
-            }}
-            >
-              {' '}
-              <Typography variant="p" component="p" display="inline" alignContent="center" marginLeft="2px">
-                Password is required
-                {' '}
-              </Typography>
-            </div>
-            )}
-          </Grid>
-
-          <Grid item>
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              name="password_repeat"
-              label="Retype Password"
-              type="password"
-              id="password_repeat"
-              {...register('password_repeat', {
-                required: 'true',
-                validate: (value) => (value === password.current || 'Passwords do not match'),
-              })}
-              error={errors?.password_repeat?.type === 'required' || errors?.password_repeat?.type === 'validate'}
-            />
-            {errors?.password_repeat?.type === 'required' && (
-            <div style={{
-              display: 'flex', alignContent: 'center', color: 'red', margin: '5px',
-            }}
-            >
-              {' '}
-              <Typography variant="p" component="p" display="inline" alignContent="center" marginLeft="2px">
-                Password is required
-                {' '}
-              </Typography>
-            </div>
-            )}
-
-            {errors?.password_repeat?.type === 'validate' && (
+          <Grid container display="flex" justifyContent="space-evenly">
+            <Grid item>
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                id="registerEmail"
+                label="User Name"
+                name="registerEmail"
+                type="email"
+                autoFocus
+                sx={{ width: 300 }}
+                {...register('registerEmail', { required: 'true' })}
+                error={errors?.registerEmail?.type === 'required'}
+              />
+              {errors?.registerEmail?.type === 'required' && (
               <div style={{
                 display: 'flex', alignContent: 'center', color: 'red', margin: '5px',
               }}
               >
-                <Typography variant="p" component="p" display="inline" alignContent="center" marginLeft="2px">
-                  {errors.password_repeat.message}
+                {' '}
+                <Typography
+                  variant="p"
+                  component="p"
+                  display="inline"
+                  alignContent="center"
+                  marginLeft="2px"
+                  sx={{ fontSize: '12px' }}
+                >
+                  User Name is required
+                  {' '}
                 </Typography>
               </div>
-            ) }
+              )}
+            </Grid>
 
+            <Grid item>
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                id="nickName"
+                label="Nick Name"
+                name="nickName"
+                type="text"
+                sx={{ width: 300 }}
+                {...register('nickName', { required: 'true', pattern: { value: /^[0-9a-zA-Z]+$/, message: 'Only alpha numeric characters allowed' } })}
+                error={errors?.nickName?.type === 'required' || errors?.nickName?.type === 'pattern'}
+              />
+              {errors?.nickName?.type === 'required' && (
+              <div style={{
+                display: 'flex', alignContent: 'center', color: 'red', margin: '5px',
+              }}
+              >
+                {' '}
+                <Typography
+                  variant="p"
+                  component="p"
+                  display="inline"
+                  alignContent="center"
+                  marginLeft="2px"
+                  sx={{ fontSize: '12px' }}
+                >
+                  Nick name is required
+                  {' '}
+                </Typography>
+              </div>
+              )}
+
+              {errors?.nickName?.type === 'pattern' && (
+              <div style={{
+                display: 'flex', alignContent: 'center', color: 'red', margin: '5px',
+              }}
+              >
+                {' '}
+                <Typography
+                  variant="p"
+                  component="p"
+                  display="inline"
+                  alignContent="center"
+                  marginLeft="2px"
+                  sx={{ fontSize: '12px' }}
+                >
+                  {errors?.nickName?.message}
+                  {' '}
+                </Typography>
+              </div>
+              )}
+            </Grid>
+
+          </Grid>
+
+          <Grid container display="flex" flexDirection="row" justifyContent="space-evenly">
+
+            <Grid item>
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                id="firstname"
+                label="First Name"
+                name="firstname"
+                type="text"
+                sx={{ width: 300 }}
+                {...register('firstname', { required: 'true', maxLength: 40 })}
+                error={errors?.firstname?.type === 'required' || errors?.firstname?.type === 'pattern'}
+              />
+              {errors?.firstname?.type === 'required' && (
+              <div style={{
+                display: 'flex', alignContent: 'center', color: 'red', margin: '5px',
+              }}
+              >
+                {' '}
+                <Typography
+                  variant="p"
+                  component="p"
+                  display="inline"
+                  alignContent="center"
+                  marginLeft="2px"
+                  sx={{ fontSize: '12px' }}
+                >
+                  First name is required
+                  {' '}
+                </Typography>
+              </div>
+              )}
+
+              {errors?.firstname?.type === 'maxLength' && (
+              <div style={{
+                display: 'flex', alignContent: 'center', color: 'red', margin: '5px',
+              }}
+              >
+                {' '}
+                <Typography
+                  variant="p"
+                  component="p"
+                  display="inline"
+                  alignContent="center"
+                  marginLeft="2px"
+                  sx={{ fontSize: '12px' }}
+                >
+                  maxLength exceeded.
+                </Typography>
+              </div>
+              )}
+            </Grid>
+
+            <Grid item>
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                id="lastname"
+                label="Last Name"
+                name="lastname"
+                type="text"
+                sx={{ width: 300 }}
+                {...register('lastname', { required: 'true', maxLength: 40 })}
+                error={errors?.lastname?.type === 'required' || errors?.lastname?.type === 'maxLength'}
+              />
+              {errors?.lastname?.type === 'required' && (
+              <div style={{
+                display: 'flex', alignContent: 'center', color: 'red', margin: '5px',
+              }}
+              >
+                {' '}
+                <Typography
+                  variant="p"
+                  component="p"
+                  display="inline"
+                  alignContent="center"
+                  marginLeft="2px"
+                  sx={{ fontSize: '12px' }}
+                >
+                  Nick name is required
+                  {' '}
+                </Typography>
+              </div>
+              )}
+
+              {errors?.lastname?.type === 'maxLength' && (
+              <div style={{
+                display: 'flex', alignContent: 'center', color: 'red', margin: '5px',
+              }}
+              >
+                {' '}
+                <Typography
+                  variant="p"
+                  component="p"
+                  display="inline"
+                  alignContent="center"
+                  marginLeft="2px"
+                  sx={{ fontSize: '12px' }}
+                >
+                  maxLength exceeded.
+                </Typography>
+              </div>
+              )}
+            </Grid>
+          </Grid>
+
+          <Grid container display="flex" justifyContent="space-evenly">
+            <Grid item>
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                sx={{ width: 300 }}
+                {...register('password', {
+                  required: 'true',
+                  minLength: {
+                    value: 8, message: 'Password length should be min of 8 characters',
+                  },
+                })}
+                error={errors?.password?.type === 'required' || errors?.password?.type === 'minLength'}
+              />
+              {errors?.password?.type === 'required' && (
+              <div style={{
+                display: 'flex', alignContent: 'center', color: 'red', margin: '5px',
+              }}
+              >
+                {' '}
+                <Typography
+                  variant="p"
+                  component="p"
+                  display="inline"
+                  alignContent="center"
+                  marginLeft="2px"
+                  sx={{ fontSize: '12px' }}
+                >
+                  Password is required
+                  {' '}
+                </Typography>
+              </div>
+              )}
+
+              {errors?.password?.type === 'minLength' && (
+              <div style={{
+                display: 'flex', alignContent: 'center', color: 'red', margin: '5px',
+              }}
+              >
+                {' '}
+                <Typography
+                  variant="p"
+                  component="p"
+                  display="inline"
+                  alignContent="center"
+                  marginLeft="2px"
+                  sx={{ fontSize: '12px' }}
+                >
+                  {errors?.password?.message}
+                  {' '}
+                </Typography>
+              </div>
+              )}
+            </Grid>
+
+            <Grid item>
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                name="password_repeat"
+                label="Retype Password"
+                type="password"
+                id="password_repeat"
+                sx={{ width: 300 }}
+                {...register('password_repeat', {
+                  required: 'true',
+                  validate: (value) => (value === password.current || 'Passwords do not match'),
+                })}
+                error={errors?.password_repeat?.type === 'required' || errors?.password_repeat?.type === 'validate'}
+              />
+              {errors?.password_repeat?.type === 'required' && (
+              <div style={{
+                display: 'flex', alignContent: 'center', color: 'red', margin: '5px',
+              }}
+              >
+                {' '}
+                <Typography
+                  variant="p"
+                  component="p"
+                  display="inline"
+                  alignContent="center"
+                  marginLeft="2px"
+                  sx={{ fontSize: '12px' }}
+                >
+                  Password is required
+                  {' '}
+                </Typography>
+              </div>
+              )}
+
+              {errors?.password_repeat?.type === 'validate' && (
+              <div style={{
+                display: 'flex', alignContent: 'center', color: 'red', margin: '5px',
+              }}
+              >
+                <Typography
+                  variant="p"
+                  component="p"
+                  display="inline"
+                  alignContent="center"
+                  marginLeft="2px"
+                  sx={{ fontSize: '12px' }}
+                >
+                  {errors?.password_repeat?.message}
+                </Typography>
+              </div>
+              ) }
+
+            </Grid>
           </Grid>
 
           <Grid item display="grid" justifyContent="center">

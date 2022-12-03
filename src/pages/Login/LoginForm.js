@@ -10,6 +10,7 @@ import React from 'react';
 import GoogleLogin from 'react-google-login';
 import { useForm } from 'react-hook-form';
 import CLIENT_ID from '../../config';
+import { logIn } from '../../api/AuthRequest';
 
 function LoginForm({
   onSuccess, onFailure, login, setLogin,
@@ -30,13 +31,20 @@ function LoginForm({
     setLogin(!login);
   };
 
-  const onSubmitLogin = (data) => {
+  const onSubmitLogin = async (data) => {
     const userData = {
       username: data.loginEmail,
       password: data.loginPassword,
     };
     console.log(userData);
     // TODO - Write axios calls to handle api calls to backend server.
+    logIn(userData)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   return (
     <Grid

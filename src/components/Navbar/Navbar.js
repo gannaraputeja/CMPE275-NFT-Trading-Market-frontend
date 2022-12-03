@@ -191,7 +191,7 @@ export default function MiniDrawer({ setToken, userObj }) {
     // localStorage.removeItem('access-token');
     // localStorage.removeItem('userObj');
     localStorage.clear();
-    window.location.reload('userName');
+    window.location.reload();
   };
 
   return (
