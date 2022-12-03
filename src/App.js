@@ -35,7 +35,7 @@ function App() {
     const initClient = () => {
       gapi.client.init({
         CLIENT_ID,
-        scope: '',
+        scope: 'fetch_basic_profile',
       });
     };
     gapi.load('client:auth2', initClient);
