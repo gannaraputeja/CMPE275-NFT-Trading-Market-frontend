@@ -1,26 +1,95 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-shadow */
 /* eslint-disable react/jsx-filename-extension */
 import React from 'react';
 import {
   Button, Dialog, DialogActions, DialogContent,
-  DialogTitle, FormControl, Grid, InputLabel, MenuItem, Select, TextField,
+  DialogTitle, FormControl, Grid, Input, InputLabel, MenuItem, Select, TextField, Typography,
 } from '@mui/material';
 import PropTypes from 'prop-types';
 import { CloudUpload } from '@mui/icons-material';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { v4 } from 'uuid';
+import storage from '../../firebase';
 
 export default function NewNFTForm({ open, handleClose }) {
   const [nftObject, setNftObject] = React.useState({
     nftName: '',
     nftType: '',
     nftDescription: '',
-    nftImage: '',
-    nftAsset: '',
+    nftImageUrl: null,
+    nftAssetUrl: null,
   });
 
-  const handleChange = (e) => {
+  const [imageFile, setImageFile] = React.useState(null);
+  const [assetFile, setAssetFile] = React.useState(null);
+
+  const handleChangeNftType = (e) => {
     setNftObject((prevState) => ({
       ...prevState, nftType: e.target.value,
     }));
+  };
+
+  const handleChangeNftName = (e) => {
+    setNftObject((prevState) => ({
+      ...prevState, nftName: e.target.value,
+    }));
+  };
+
+  const handleChangeNftDescription = (e) => {
+    setNftObject((prevState) => ({
+      ...prevState, nftDescription: e.target.value,
+    }));
+  };
+
+  const handleImageFileUpload = (e) => {
+    console.log(e.target.files[0]);
+    setImageFile(e.target.files[0]);
+  };
+
+  const handleAssetFileUpload = (e) => {
+    console.log(e.target.files[0]);
+    setAssetFile(e.target.files[0]);
+  };
+
+  const fileUploadToFirebase = (fileName, folderName) => {
+    if (fileName == null) return;
+    const imageRef = ref(storage, `${folderName}/${fileName.name + v4()}`);
+
+    uploadBytes(imageRef, imageFile).then((res) => {
+      alert('Image uploaded sucessfully');
+      getDownloadURL(imageRef).then((url) => {
+        console.log(url);
+        if (fileName === imageFile) {
+          setNftObject((prevState) => ({
+            ...prevState, nftImageUrl: url,
+          }));
+        }
+
+        if (fileName === assetFile) {
+          setNftObject((prevState) => ({
+            ...prevState, nftAssetUrl: url,
+          }));
+        }
+      });
+    }).catch((err) => {
+      alert('Image upload failed');
+      console.log(err);
+    });
+  };
+
+  const handleCreateNewNft = () => {
+    console.log(nftObject);
+    setNftObject({
+      nftName: '',
+      nftType: '',
+      nftDescription: '',
+      nftImageUrl: null,
+      nftAssetUrl: null,
+    });
+    setImageFile(null);
+    setAssetFile(null);
+    handleClose();
   };
   return (
     <div>
@@ -53,19 +122,20 @@ export default function NewNFTForm({ open, handleClose }) {
                 name="nftName"
                 type="text"
                 autoFocus
+                onChange={handleChangeNftName}
                 sx={{ width: 300 }}
               />
             </Grid>
 
             <Grid item display="block">
-              <FormControl fullWidth>
+              <FormControl sx={{ width: '300px' }}>
                 <InputLabel id="demo-simple-select-label">NFT Type</InputLabel>
                 <Select
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
                   value={nftObject.nftType}
                   label="nftType"
-                  onChange={handleChange}
+                  onChange={handleChangeNftType}
                   required
                 >
                   <MenuItem value="PFPs and Avatars">PFPs and Avatars</MenuItem>
@@ -89,28 +159,55 @@ export default function NewNFTForm({ open, handleClose }) {
                 multiline
                 rows={5}
                 sx={{ width: 300 }}
+                onChange={handleChangeNftDescription}
               />
             </Grid>
-            <Grid container display="flex" justifyContent="space-evenly">
-              <Grid item>
-                <Button variant="contained" component="label" color="info" startIcon={<CloudUpload />} size="small">
-                  Upload Image
-                  <input hidden accept="image/*" multiple type="file" />
-                </Button>
-              </Grid>
-              <Grid item>
-                <Button variant="contained" component="label" color="info" startIcon={<CloudUpload />} size="small">
-                  Upload Asset
-                  <input hidden accept="image/*" multiple type="file" />
-                </Button>
 
+            <Grid container display="block" alignContent="space-evenly">
+              <Grid item sx={{ paddingBottom: 2 }}>
+                <Button
+                  variant="contained"
+                  component="label"
+                  color="info"
+                  startIcon={<CloudUpload />}
+                  size="small"
+                  onClick={() => fileUploadToFirebase(imageFile, 'images')}
+                  sx={{ marginRight: 2 }}
+                >
+                  Upload Image
+                </Button>
+                <input accept="image/*" type="file" onChange={handleImageFileUpload} placeholder="Choose file" />
+
+                {/* <Typography variant="caption" gutterBottom marginLeft={2}>
+                  {imageFile?.name}
+                </Typography> */}
+              </Grid>
+              <Grid item sx={{ paddingBottom: 2 }}>
+                <Button
+                  variant="contained"
+                  component="label"
+                  color="info"
+                  startIcon={<CloudUpload />}
+                  size="small"
+                  onClick={() => fileUploadToFirebase(assetFile, 'assets')}
+                  sx={{ marginRight: 2 }}
+                >
+                  Upload Asset
+                  {/* <input hidden accept="image/*" type="file" /> */}
+                </Button>
+                <input accept="image/*" type="file" onChange={handleAssetFileUpload} placeholder="Choose file" />
+
+                {/* <Typography variant="caption" gutterBottom marginLeft={2}>
+                  {assetFile?.name}
+                </Typography> */}
               </Grid>
             </Grid>
           </Grid>
         </DialogContent>
+
         <DialogActions>
           <Button onClick={handleClose} color="error" variant="contained">CANCEL</Button>
-          <Button onClick={handleClose} autoFocus color="success" variant="contained">
+          <Button onClick={handleCreateNewNft} autoFocus color="success" variant="contained">
             SUBMIT
           </Button>
         </DialogActions>
