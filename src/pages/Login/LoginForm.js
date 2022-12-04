@@ -1,9 +1,11 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable react/jsx-filename-extension */
 /* eslint-disable react/prop-types */
 
 import { LockOutlined } from '@mui/icons-material';
 import {
+  Alert,
   Box, Button, Divider, Grid, IconButton, Link, TextField, Typography,
 } from '@mui/material';
 import React from 'react';
@@ -25,6 +27,8 @@ function LoginForm({
       registerPassword2: '',
     },
   });
+  const [isError, setIsError] = React.useState(false);
+  const [errMessage, setErrMessage] = React.useState('');
 
   const handleLoginType = (e) => {
     e.preventDefault();
@@ -37,15 +41,19 @@ function LoginForm({
       password: data.loginPassword,
     };
     console.log(userData);
-    // TODO - Write axios calls to handle api calls to backend server.
     logIn(userData)
       .then((res) => {
         console.log(res);
+        localStorage.setItem('userObj', res.data);
+        localStorage.setItem('access-token', res.data.jwt);
       })
       .catch((err) => {
-        console.log(err);
+        console.log(err.response.data.message);
+        setIsError(true);
+        setErrMessage(err.response.data.message);
       });
   };
+
   return (
     <Grid
       container
@@ -59,6 +67,7 @@ function LoginForm({
         <Typography variant="h4">
           NFT Trading Market
         </Typography>
+        {isError && <Alert severity="error" onClose={() => setIsError(false)}>{errMessage}</Alert>}
       </Grid>
       <Box sx={{
         border: 1,
@@ -72,6 +81,7 @@ function LoginForm({
       }}
       >
         <Grid item display="grid" justifyContent="center">
+
           <IconButton>
             <LockOutlined color="primary" fontSize="large" />
           </IconButton>
@@ -81,6 +91,8 @@ function LoginForm({
             Sign In
           </Typography>
         </Grid>
+
+        {/** Form Login */}
         <form onSubmit={handleSubmit(onSubmitLogin)}>
 
           <Grid item>

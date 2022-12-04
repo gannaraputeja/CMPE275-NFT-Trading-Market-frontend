@@ -22,6 +22,9 @@ import NftSale from './pages/NftSale/NftSale';
 import CLIENT_ID from './config';
 import EmailVerification from './pages/EmailVerification/EmailVerification';
 import UserWallet from './pages/UserWallet/UserWallet';
+import VerificationLink from './pages/EmailVerification/VerificationLink';
+import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
+import NotFound from './components/NotFound/NotFound';
 
 const Context = createContext(null);
 
@@ -30,6 +33,7 @@ function App() {
     localStorage.getItem('access-token') ? localStorage.getItem('access-token') : null
   );
   const [userObj, setUserObj] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const initClient = () => {
@@ -46,13 +50,13 @@ function App() {
     setUserObj(res);
     localStorage.setItem('access-token', res.tokenObj.access_token);
     setToken(res.tokenObj.access_token);
-    useNavigate('/');
+    navigate('/user');
   };
   const onFailure = (err) => {
     console.log('failed:', err);
     setUserObj(null);
     setToken(null);
-    useNavigate('/');
+    navigate('/');
   };
 
   const logoutUser = () => {
@@ -63,31 +67,25 @@ function App() {
     console.log(`After logout -->${token}`);
   };
 
-  if (token === null) {
-    return (
-      <div>
-        <Routes>
-          <Route path="/" element={<Login clientId={CLIENT_ID} onSuccess={onSuccess} onFailure={onFailure} />} />
-        </Routes>
-      </div>
-    );
-  }
-
   return (
     <Context.Provider value={setToken}>
       <div>
         <Routes>
-          {/* <Route path="/login" element={<Login />} /> */}
-          <Route path="/emailVerification" element={<EmailVerification />} />
-          <Route path="/" element={<Navbar setToken={setToken} userObj={userObj} logoutUser={logoutUser} />}>
-            <Route index element={<Home />} />
-            <Route path="/collection" element={<NftCollection />} />
-            <Route path="/nftsale" element={<NftSale />} />
-            <Route path="/personalstats" element={<PersonalStats />} />
-            <Route path="/dashboard" element={<SystemDashboard />} />
-            <Route path="/cart" element={<Cart />} />
-            <Route path="/wallet" element={<UserWallet />} />
+          <Route path="/account/activation" element={<EmailVerification />} />
+          <Route path="/account/verify" element={<VerificationLink />} />
+          <Route path="/" element={<Login clientId={CLIENT_ID} onSuccess={onSuccess} onFailure={onFailure} />} />
+          <Route path="/user" element={<Navbar setToken={setToken} userObj={userObj} logoutUser={logoutUser} />}>
+            <Route element={<ProtectedRoute />}>
+              <Route index element={<Home />} />
+              <Route path="collection" element={<NftCollection />} />
+              <Route path="nftsale" element={<NftSale />} />
+              <Route path="personalstats" element={<PersonalStats />} />
+              <Route path="dashboard" element={<SystemDashboard />} />
+              <Route path="cart" element={<Cart />} />
+              <Route path="wallet" element={<UserWallet />} />
+            </Route>
           </Route>
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
     </Context.Provider>

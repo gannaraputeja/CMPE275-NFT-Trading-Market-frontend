@@ -105,7 +105,7 @@ function UserWallet() {
           </Box>
 
           <Box>
-            <Link to="/collection" style={{ textDecoration: 'none' }}>Open NFT Collection</Link>
+            <Link to="/user/collection" style={{ textDecoration: 'none' }}>Open NFT Collection</Link>
           </Box>
         </Grid>
       </Grid>

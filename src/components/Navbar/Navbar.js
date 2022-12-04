@@ -147,35 +147,35 @@ export default function MiniDrawer({ setToken, userObj }) {
   };
 
   const openHome = () => {
-    navigate('/');
+    navigate('/user');
   };
 
   const openCart = () => {
-    navigate('/cart');
+    navigate('/user/cart');
   };
 
   const openWallet = () => {
-    navigate('/wallet');
+    navigate('/user/wallet');
   };
 
   const openNftStore = () => {
-    navigate('/');
+    navigate('/user');
   };
 
   const openNftSale = () => {
-    navigate('/nftSale');
+    navigate('/user/nftSale');
   };
 
   const openNftCollection = () => {
-    navigate('/collection');
+    navigate('/user/collection');
   };
 
   const openPersonalStats = () => {
-    navigate('/personalstats');
+    navigate('/user/personalstats');
   };
 
   const openSystemDashboard = () => {
-    navigate('/dashboard');
+    navigate('/user/dashboard');
   };
 
   const onLogoutSuccess = () => {
@@ -188,10 +188,8 @@ export default function MiniDrawer({ setToken, userObj }) {
   };
 
   const signOut = () => {
-    // localStorage.removeItem('access-token');
-    // localStorage.removeItem('userObj');
     localStorage.clear();
-    window.location.reload();
+    navigate('/');
   };
 
   return (
