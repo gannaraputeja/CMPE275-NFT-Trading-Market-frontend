@@ -2,7 +2,7 @@
 import { Grid, Typography } from '@mui/material';
 import React from 'react';
 import OwnNft from '../../components/NFT/OwnNft';
-import NFTForm from '../../components/NFT/NFTForm';
+import NFTForm from '../../components/NFT/NewNFTForm';
 
 const nfts = ['priced', 'auctioned', 'priced', 'priced', 'priced', 'auctioned', 'priced', 'priced', 'priced', 'auctioned', 'priced', 'priced'];
 

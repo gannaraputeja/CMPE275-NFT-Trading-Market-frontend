@@ -11,6 +11,9 @@ import {
 import React from 'react';
 import GoogleLogin from 'react-google-login';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
+import { isEditableInput } from '@testing-library/user-event/dist/utils';
+import jwtDecode from 'jwt-decode';
 import CLIENT_ID from '../../config';
 import { logIn } from '../../api/AuthRequest';
 
@@ -29,6 +32,7 @@ function LoginForm({
   });
   const [isError, setIsError] = React.useState(false);
   const [errMessage, setErrMessage] = React.useState('');
+  const navigate = useNavigate();
 
   const handleLoginType = (e) => {
     e.preventDefault();
@@ -44,8 +48,17 @@ function LoginForm({
     logIn(userData)
       .then((res) => {
         console.log(res);
-        localStorage.setItem('userObj', res.data);
-        localStorage.setItem('access-token', res.data.jwt);
+
+        const isVerified = false;
+        if (!isVerified) {
+          navigate('/account/activation');
+        }
+        if (isVerified) {
+          localStorage.setItem('userObj', res.data);
+          localStorage.setItem('access-token', res.data.jwt);
+          navigate('/user');
+        }
+        console.log(jwtDecode(res.data.jwt));
       })
       .catch((err) => {
         console.log(err.response.data.message);

@@ -6,9 +6,10 @@ import {
 } from '@mui/material';
 import React from 'react';
 import NftCard from '../../components/NFT/NftCard';
-import NFTForm from '../../components/NFT/NFTForm';
+import NFTForm from '../../components/NFT/NewNFTForm';
 
-const nfts = ['priced', 'auctioned', 'priced', 'priced', 'priced', 'auctioned', 'priced', 'priced', 'priced', 'auctioned', 'priced', 'priced'];
+const nfts = ['priced', 'auctioned', 'priced', 'priced', 'priced', 'auctioned',
+  'priced', 'priced', 'priced', 'auctioned', 'priced', 'priced'];
 
 function Home() {
   const [nftType, setNftType] = React.useState('');

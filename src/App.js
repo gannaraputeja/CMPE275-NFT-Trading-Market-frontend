@@ -47,10 +47,17 @@ function App() {
 
   const onSuccess = (res) => {
     console.log('success:', res);
-    setUserObj(res);
-    localStorage.setItem('access-token', res.tokenObj.access_token);
-    setToken(res.tokenObj.access_token);
-    navigate('/user');
+    const isVerified = true;
+    if (isVerified) {
+      setUserObj(res);
+      localStorage.setItem('access-token', res.tokenObj.access_token);
+      setToken(res.tokenObj.access_token);
+      navigate('/user');
+    }
+
+    if (!isVerified) {
+      navigate('/account/activation');
+    }
   };
   const onFailure = (err) => {
     console.log('failed:', err);
