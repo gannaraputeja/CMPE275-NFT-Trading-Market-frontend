@@ -7,4 +7,4 @@ CMPE275-NFT-Trading-Market
 3. Saicharan Peda
 4. Ramya Kotha
 
-URL - http://wwww.nfttrading.software
+URL - http://www.nfttrading.software
