@@ -3,10 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
     "@fontsource/roboto": "^4.5.8",
     "@mui/base": "^5.0.0-alpha.108",
     "@mui/icons-material": "^5.10.14",
+    "@mui/joy": "^5.0.0-alpha.56",
+    "@mui/lab": "^5.0.0-alpha.110",
     "@mui/material": "^5.10.14",
     "@mui/styles": "^5.10.16",
     "@mui/x-date-pickers": "^5.0.9",
