@@ -24,14 +24,9 @@ function PeriodFilter() {
           onChange={(e) => setPeriod(e.target.value)}
         >
           <option aria-label="None" value="" />
-          <optgroup label="Category 1">
-            <option value={1}>Option 1</option>
-            <option value={2}>Option 2</option>
-          </optgroup>
-          <optgroup label="Category 2">
-            <option value={3}>Option 3</option>
-            <option value={4}>Option 4</option>
-          </optgroup>
+          <option value={1}>Last 24 hours</option>
+          <option value={2}>Last week</option>
+          <option value={3}>Last Month</option>
         </Select>
       </FormControl>
       <Typography variant="h6">

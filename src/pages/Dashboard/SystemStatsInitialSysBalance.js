@@ -8,25 +8,24 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
-function createData(name, calories) {
+function createData(name, count) {
   return {
-    name, calories,
+    name, count,
   };
 }
 
 const rows = [
-  createData('All Active NFT listings', 100),
-  createData('With offers', 50),
-  createData('Without offers', 50),
+  createData('Initial System Balance', 100),
+  createData('Current System Balance', 50),
 ];
 
-export default function NftListingsTable() {
+export default function SystemStatsWithdrawls() {
   return (
     <TableContainer component={Paper} sx={{ margin: 5 }}>
       <Table sx={{ minWidth: 200 }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>Stat</TableCell>
+            <TableCell>Name</TableCell>
             <TableCell align="center">Total Count</TableCell>
           </TableRow>
         </TableHead>
@@ -39,9 +38,7 @@ export default function NftListingsTable() {
               <TableCell component="th" scope="row">
                 {row.name}
               </TableCell>
-              <TableCell align="center">
-                {row.calories}
-              </TableCell>
+              <TableCell align="center">{row.count}</TableCell>
             </TableRow>
           ))}
         </TableBody>

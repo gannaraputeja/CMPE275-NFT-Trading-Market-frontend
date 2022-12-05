@@ -20,7 +20,7 @@ const rows = [
   createData('Auctioned', 50),
 ];
 
-export default function BasicTable() {
+export default function NftSalesTable() {
   return (
     <TableContainer component={Paper} sx={{ margin: 5 }}>
       <Table sx={{ minWidth: 200 }} aria-label="simple table">
