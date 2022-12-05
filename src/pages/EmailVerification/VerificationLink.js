@@ -1,5 +1,5 @@
-/* eslint-disable no-nested-ternary */
 /* eslint-disable no-unused-vars */
+/* eslint-disable no-nested-ternary */
 /* eslint-disable react/jsx-filename-extension */
 import { CheckCircleOutline, ErrorOutline } from '@mui/icons-material';
 import {
@@ -15,11 +15,11 @@ function VerificationLink() {
 
   React.useEffect(() => {
     setTimeout(() => {
-      setIsVerified('sucess');
+      setIsVerified('success');
     }, 5000);
   }, [isVerified]);
 
-  if (isVerified === 'sucess') {
+  if (isVerified === 'success') {
     setTimeout(() => {
       navigate('/');
     }, 2000);
@@ -29,14 +29,14 @@ function VerificationLink() {
     <Grid container display="grid" justifyContent="center" alignContent="center" height="500px" borderColor="Background">
       <Alert
         icon={isVerified === 'loading' ? <CircularProgress color="info" fontSize="large" />
-          : (isVerified === 'sucess' ? <CheckCircleOutline color="success" fontSize="large" /> : <ErrorOutline color="error" fontSize="large" />)}
-        severity={isVerified === 'loading' ? 'info' : (isVerified === 'sucess' ? 'success' : 'error')}
+          : (isVerified === 'success' ? <CheckCircleOutline color="success" fontSize="large" /> : <ErrorOutline color="error" fontSize="large" />)}
+        severity={isVerified === 'loading' ? 'info' : (isVerified === 'success' ? 'success' : 'error')}
         sx={{
           width: 700, height: 60, fontSize: 30, alignItems: 'center', justifyContent: 'center', marginBottom: '20px',
         }}
       >
         {isVerified === 'loading' ? 'Please wait accout is being verified !!!'
-          : (isVerified === 'sucess' ? 'Account Verified, Redirecting to Homepage' : 'Account could not be verified')}
+          : (isVerified === 'success' ? 'Account Verified, Redirecting to Homepage' : 'Account could not be verified')}
       </Alert>
       <Grid display="flex" justifyContent="space-evenly">
         {
@@ -49,7 +49,7 @@ function VerificationLink() {
                   size="medium"
                   disableElevation
                   onClick={() => {
-                    alert('Verificaton email sent sucessfully');
+                    alert('Verificaton email sent successfully');
                     navigate('/');
                   }}
                 >

@@ -32,7 +32,7 @@ import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 // import SelectUnstyled from '@mui/base/SelectUnstyled';
 // import OptionUnstyled from '@mui/base/OptionUnstyled';
 
-export default function NftCard({ type = 'priced' }) {
+export default function NftCard({ type = 'priced', id }) {
   const [price, setPrice] = React.useState();
   const [expirationTime, setExpirationTime] = React.useState(dayjs('2022-04-07'));
 
@@ -50,7 +50,7 @@ export default function NftCard({ type = 'priced' }) {
   };
 
   const handleOpenMakeNewOffer = (e) => {
-    console.log(e);
+    console.log(id);
     setOpenMakeNewOffer(true);
   };
 
@@ -73,9 +73,11 @@ export default function NftCard({ type = 'priced' }) {
 
   return (
     <>
-      <Card sx={{
-        maxWidth: 250, marginInline: '10px', marginY: '10px',
-      }}
+      <Card
+        id={id}
+        sx={{
+          maxWidth: 250, marginInline: '10px', marginY: '10px',
+        }}
       >
         <CardMedia
           component="img"
@@ -241,5 +243,6 @@ export default function NftCard({ type = 'priced' }) {
 }
 
 NftCard.propTypes = {
+  id: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
 };

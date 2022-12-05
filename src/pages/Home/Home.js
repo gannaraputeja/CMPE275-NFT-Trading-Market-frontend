@@ -1,3 +1,4 @@
+/* eslint-disable no-sparse-arrays */
 /* eslint-disable react/jsx-filename-extension */
 import { AddCircle } from '@mui/icons-material';
 import {
@@ -8,8 +9,9 @@ import React from 'react';
 import NftCard from '../../components/NFT/NftCard';
 import NFTForm from '../../components/NFT/NewNFTForm';
 
-const nfts = ['priced', 'auctioned', 'priced', 'priced', 'priced', 'auctioned',
-  'priced', 'priced', 'priced', 'auctioned', 'priced', 'priced'];
+const nfts = [{ id: '1', type: 'priced' }, { id: '2', type: 'priced' },
+  { id: '3', type: 'auctioned' }, { id: '4', type: 'auctioned' }, { id: '5', type: 'priced' }, { id: '6', type: 'priced' },
+  { id: '7', type: 'auctioned' }, , { id: '8', type: 'priced' }, { id: '9', type: 'auctioned' }, { id: '10', type: 'priced' }, { id: '11', type: 'priced' }];
 
 function Home() {
   const [nftType, setNftType] = React.useState('');
@@ -66,7 +68,7 @@ function Home() {
 
       <Grid container style={{ display: 'flex' }}>
         {
-          nfts.map((nft) => ((nftType === 'both' || nftType === '') ? <NftCard type={nft} /> : ((nftType === nft) && <NftCard type={nft} />)))
+          nfts.map((nft) => ((nftType === 'both' || nftType === '') ? <NftCard id={nft.id} type={nft.type} /> : ((nftType === nft) && <NftCard type={nft} />)))
         }
       </Grid>
       <NFTForm open={openNewNftForm} handleClose={handleCloseNFTForm} />

@@ -1,6 +1,7 @@
 import axios from 'axios';
+import BACKEND_URL from './config';
 
-const API = axios.create({ baseURL: 'http://137.184.112.89:8080' });
+const API = axios.create({ baseURL: BACKEND_URL });
 
 export const logIn = (formData) => API.post('/api/v1/auth/login', formData);
 
