@@ -6,9 +6,7 @@ import {
   FormControl, InputLabel, MenuItem, Select, Typography,
 } from '@mui/material';
 
-function PeriodFilter() {
-  const [period, setPeriod] = React.useState('');
-
+function PeriodFilter({ currency, handleCurrencyState }) {
   return (
     <FormControl sx={{ m: 1, minWidth: 120 }}>
       <InputLabel htmlFor="grouped-native-select">
@@ -19,8 +17,8 @@ function PeriodFilter() {
         defaultValue=""
         id="grouped-native-select"
         label="Grouping"
-        value={period}
-        onChange={(e) => setPeriod(e.target.value)}
+        value={currency}
+        onChange={(e) => handleCurrencyState(e.target.value)}
       >
         <option aria-label="None" value="" />
         <optgroup label="Supported Currencies">
