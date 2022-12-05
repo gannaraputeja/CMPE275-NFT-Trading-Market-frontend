@@ -68,7 +68,7 @@ function Home() {
 
       <Grid container style={{ display: 'flex' }}>
         {
-          nfts.map((nft) => ((nftType === 'both' || nftType === '') ? <NftCard id={nft.id} type={nft.type} /> : ((nftType === nft) && <NftCard type={nft} />)))
+          nfts.map((nft) => ((nftType === 'both' || nftType === '') ? <NftCard id={nft.id} type={nft.type} /> : ((nftType === nft.type) && <NftCard type={nft.type} />)))
         }
       </Grid>
       <NFTForm open={openNewNftForm} handleClose={handleCloseNFTForm} />
