@@ -22,7 +22,7 @@ const rows = [
 export default function SystemStats() {
   return (
     <TableContainer component={Paper} sx={{ margin: 5 }}>
-      <Table sx={{ minWidth: 200 }} aria-label="simple table">
+      <Table sx={{ minWidth: 'auto' }} aria-label="simple table">
         <TableHead>
           <TableRow>
             <TableCell>Name</TableCell>

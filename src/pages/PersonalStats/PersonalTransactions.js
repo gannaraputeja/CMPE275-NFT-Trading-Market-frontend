@@ -1,12 +1,9 @@
 /* eslint-disable react/jsx-filename-extension */
 import { Box, Button, Container } from '@mui/material';
 import React from 'react';
-import PeriodFilter from './PeriodFilter';
-import CurrencyFilter from './CurrencyFilter';
-import SystemStatsDeposit from './SystemStatsDeposit';
-import SystemStatsWithdrawls from './SystemStatsWithdrawls';
-import SystemStatsInitialSysBalance from './SystemStatsInitialSysBalance';
-import SystemStatsNFTSales from './SystemStatsNFTSales';
+import PeriodFilter from '../Dashboard/PeriodFilter';
+import CurrencyFilter from '../Dashboard/CurrencyFilter';
+import Transactions from './Transactions';
 
 function SystemTransactionStats() {
   React.useEffect(() => {
@@ -28,11 +25,8 @@ function SystemTransactionStats() {
         </div>
       </Box>
       <Container>
-        <Box sx={{ display: 'flex', gridTemplateRows: 'auto', justifyContent: 'center' }}>
-          <SystemStatsDeposit />
-          <SystemStatsWithdrawls />
-          <SystemStatsInitialSysBalance />
-          <SystemStatsNFTSales />
+        <Box sx={{ display: 'flex', gridTemplateRows: 'repeat(4, 1fr)', justifyContent: 'center' }}>
+          <Transactions />
         </Box>
       </Container>
     </Container>
