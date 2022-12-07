@@ -9,7 +9,7 @@ import Transactions from './Transactions';
 const transactions = [
   {
     id: 1,
-    avatar: 'https://firebasestorage.googleapis.com/v0/b/nft-trading-market-7e98b.appspot.com/o/images%2FNFT_marketplace.ico0531b430-0640-49a8-87a6-a9edd4c9aab5?alt=media&token=b53d127c-b7a3-4a34-b6fa-2b543451ab79',
+    avatar: 'https://firebasestorage.googleapis.com/v0/b/nft-trading-market-7e98b.appspot.com/o/images%2FNFT_marketplace.ico?alt=media&token=efcfd069-673b-4258-ba2f-e37a13819d8e',
     nftName: 'Photos',
     nftType: 'Art',
     buyer: 'nkf_90',
@@ -21,7 +21,7 @@ const transactions = [
   },
   {
     id: 2,
-    avatar: 'https://firebasestorage.googleapis.com/v0/b/nft-trading-market-7e98b.appspot.com/o/images%2FNFT_marketplace.ico0531b430-0640-49a8-87a6-a9edd4c9aab5?alt=media&token=b53d127c-b7a3-4a34-b6fa-2b543451ab79',
+    avatar: 'https://firebasestorage.googleapis.com/v0/b/nft-trading-market-7e98b.appspot.com/o/images%2FNFT_marketplace.ico?alt=media&token=efcfd069-673b-4258-ba2f-e37a13819d8e',
     nftName: 'Photos',
     nftType: 'Art',
     buyer: 'nkf_90',
@@ -33,7 +33,7 @@ const transactions = [
   },
   {
     id: 3,
-    avatar: 'https://firebasestorage.googleapis.com/v0/b/nft-trading-market-7e98b.appspot.com/o/images%2FNFT_marketplace.ico0531b430-0640-49a8-87a6-a9edd4c9aab5?alt=media&token=b53d127c-b7a3-4a34-b6fa-2b543451ab79',
+    avatar: 'https://firebasestorage.googleapis.com/v0/b/nft-trading-market-7e98b.appspot.com/o/images%2FNFT_marketplace.ico?alt=media&token=efcfd069-673b-4258-ba2f-e37a13819d8e',
     nftName: 'Photos',
     nftType: 'Art',
     buyer: 'nkf_90',
@@ -45,7 +45,7 @@ const transactions = [
   },
   {
     id: 4,
-    avatar: 'https://firebasestorage.googleapis.com/v0/b/nft-trading-market-7e98b.appspot.com/o/images%2FNFT_marketplace.ico0531b430-0640-49a8-87a6-a9edd4c9aab5?alt=media&token=b53d127c-b7a3-4a34-b6fa-2b543451ab79',
+    avatar: 'https://firebasestorage.googleapis.com/v0/b/nft-trading-market-7e98b.appspot.com/o/images%2FNFT_marketplace.ico?alt=media&token=efcfd069-673b-4258-ba2f-e37a13819d8e',
     nftName: 'Photos',
     nftType: 'Art',
     buyer: 'nkf_90',
@@ -57,7 +57,7 @@ const transactions = [
   },
   {
     id: 5,
-    avatar: 'https://firebasestorage.googleapis.com/v0/b/nft-trading-market-7e98b.appspot.com/o/images%2FNFT_marketplace.ico0531b430-0640-49a8-87a6-a9edd4c9aab5?alt=media&token=b53d127c-b7a3-4a34-b6fa-2b543451ab79',
+    avatar: 'https://firebasestorage.googleapis.com/v0/b/nft-trading-market-7e98b.appspot.com/o/images%2FNFT_marketplace.ico?alt=media&token=efcfd069-673b-4258-ba2f-e37a13819d8e',
     nftName: 'Photos',
     nftType: 'Art',
     buyer: 'nkf_90',
@@ -69,7 +69,7 @@ const transactions = [
   },
   {
     id: 6,
-    avatar: 'https://firebasestorage.googleapis.com/v0/b/nft-trading-market-7e98b.appspot.com/o/images%2FNFT_marketplace.ico0531b430-0640-49a8-87a6-a9edd4c9aab5?alt=media&token=b53d127c-b7a3-4a34-b6fa-2b543451ab79',
+    avatar: 'https://firebasestorage.googleapis.com/v0/b/nft-trading-market-7e98b.appspot.com/o/images%2FNFT_marketplace.ico?alt=media&token=efcfd069-673b-4258-ba2f-e37a13819d8e',
     nftName: 'Photos',
     nftType: 'Art',
     buyer: 'nkf_90',
@@ -81,7 +81,7 @@ const transactions = [
   },
   {
     id: 7,
-    avatar: 'https://firebasestorage.googleapis.com/v0/b/nft-trading-market-7e98b.appspot.com/o/images%2FNFT_marketplace.ico0531b430-0640-49a8-87a6-a9edd4c9aab5?alt=media&token=b53d127c-b7a3-4a34-b6fa-2b543451ab79',
+    avatar: 'https://firebasestorage.googleapis.com/v0/b/nft-trading-market-7e98b.appspot.com/o/images%2FNFT_marketplace.ico?alt=media&token=efcfd069-673b-4258-ba2f-e37a13819d8e',
     nftName: 'Photos',
     nftType: 'Art',
     buyer: 'nkf_90',
@@ -93,7 +93,7 @@ const transactions = [
   },
   {
     id: 8,
-    avatar: 'https://firebasestorage.googleapis.com/v0/b/nft-trading-market-7e98b.appspot.com/o/images%2FNFT_marketplace.ico0531b430-0640-49a8-87a6-a9edd4c9aab5?alt=media&token=b53d127c-b7a3-4a34-b6fa-2b543451ab79',
+    avatar: 'https://firebasestorage.googleapis.com/v0/b/nft-trading-market-7e98b.appspot.com/o/images%2FNFT_marketplace.ico?alt=media&token=efcfd069-673b-4258-ba2f-e37a13819d8e',
     nftName: 'Photos',
     nftType: 'Art',
     buyer: 'nkf_90',
