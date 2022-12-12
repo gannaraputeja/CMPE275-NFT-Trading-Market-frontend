@@ -5,25 +5,32 @@ import { CheckCircleOutline, ErrorOutline } from '@mui/icons-material';
 import {
   Alert, Button, CircularProgress, Grid,
 } from '@mui/material';
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { verifyEmail } from '../../api/AuthRequest';
 
 function VerificationLink() {
   const navigate = useNavigate();
+  const { token } = useParams();
   const [isVerified, setIsVerified] = React.useState('loading');
   const [showLoginButton, setShowLoginButton] = React.useState(true);
+  const [errorMessage, setErrorMessage] = useState('Account could not be verified');
 
   React.useEffect(() => {
     setTimeout(() => {
-      setIsVerified('success');
-    }, 5000);
-  }, [isVerified]);
-
-  if (isVerified === 'success') {
-    setTimeout(() => {
-      navigate('/');
-    }, 2000);
-  }
+      verifyEmail(token).then((res) => {
+        setIsVerified('success');
+      }).catch((err) => {
+        console.log(err);
+        setErrorMessage(err.response.data.message);
+        setIsVerified('error');
+      }).finally(() => {
+        setTimeout(() => {
+          navigate('/');
+        }, 2000);
+      });
+    }, 1000);
+  }, []);
 
   return (
     <Grid container display="grid" justifyContent="center" alignContent="center" height="500px" borderColor="Background">
@@ -35,8 +42,8 @@ function VerificationLink() {
           width: 700, height: 60, fontSize: 30, alignItems: 'center', justifyContent: 'center', marginBottom: '20px',
         }}
       >
-        {isVerified === 'loading' ? 'Please wait accout is being verified !!!'
-          : (isVerified === 'success' ? 'Account Verified, Redirecting to Homepage' : 'Account could not be verified')}
+        {isVerified === 'loading' ? 'Please wait account is being verified !!!'
+          : (isVerified === 'success' ? 'Account Verified, Redirecting to Homepage' : errorMessage)}
       </Alert>
       <Grid display="flex" justifyContent="space-evenly">
         {

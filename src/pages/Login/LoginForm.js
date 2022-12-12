@@ -49,11 +49,9 @@ function LoginForm({
       .then((res) => {
         console.log(res);
 
-        const isVerified = false;
-        if (!isVerified) {
+        if (!res.data.enabled) {
           navigate('/account/activation');
-        }
-        if (isVerified) {
+        } else {
           localStorage.setItem('userObj', res.data);
           localStorage.setItem('access-token', res.data.jwt);
           navigate('/user');

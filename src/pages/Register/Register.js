@@ -10,12 +10,14 @@ import {
 import React, { useRef } from 'react';
 import GoogleLogin from 'react-google-login';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import CLIENT_ID from '../../config';
 import { signUp } from '../../api/AuthRequest';
 
 function Register({
   onSuccess, onFailure, login, setLogin,
 }) {
+  const navigate = useNavigate();
   const {
     register, handleSubmit, formState: {
       errors,
@@ -46,14 +48,14 @@ function Register({
       password: data.password,
     };
     console.log(userData);
-    // TODO - Write axios calls to handle api calls to backend server.
-    // signUp(userData)
-    //   .then((res) => {
-    //     console.log(res);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
+    signUp(userData)
+      .then((res) => {
+        console.log(res);
+        navigate('/account/activation');
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   React.useEffect(() => {
