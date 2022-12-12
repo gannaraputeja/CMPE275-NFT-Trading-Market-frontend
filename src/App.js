@@ -25,6 +25,7 @@ import UserWallet from './pages/UserWallet/UserWallet';
 import VerificationLink from './pages/EmailVerification/VerificationLink';
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 import NotFound from './components/NotFound/NotFound';
+import { googleLogIn } from './api/AuthRequest';
 
 const Context = createContext(null);
 
@@ -47,17 +48,22 @@ function App() {
 
   const onSuccess = (res) => {
     console.log('success:', res);
-    const isVerified = true;
-    if (isVerified) {
-      setUserObj(res);
-      localStorage.setItem('access-token', res.tokenObj.access_token);
-      setToken(res.tokenObj.access_token);
-      navigate('/user');
-    }
+    googleLogIn(res.tokenObj.id_token).then((response) => {
+      console.log(response);
+      const isVerified = response.data.enabled;
+      if (isVerified) {
+        setUserObj(res);
+        localStorage.setItem('access-token', res.tokenObj.access_token);
+        setToken(res.tokenObj.access_token);
+        navigate('/user');
+      }
 
-    if (!isVerified) {
-      navigate('/account/activation');
-    }
+      if (!isVerified) {
+        navigate('/account/activation');
+      }
+    }).catch((err) => {
+
+    });
   };
   const onFailure = (err) => {
     console.log('failed:', err);

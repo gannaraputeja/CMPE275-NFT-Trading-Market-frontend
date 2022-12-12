@@ -16,3 +16,7 @@ export const signUp = (formData) => API.post('/api/v1/auth/local/signup', formDa
 export const verifyEmail = (token) => API.post('api/v1/auth/validate/email', null, {
   params: { token }
 });
+
+export const googleLogIn = (googleIdToken) => API.post('/api/v1/auth/oauth/login', null, {
+  params: { googleIdToken }
+});
