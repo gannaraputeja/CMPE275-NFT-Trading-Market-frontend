@@ -64,7 +64,7 @@ export default function NewNFTForm({ open, handleClose, setCreated }) {
     const imageRef = ref(storage, `${folderName}/${fileName.name + v4()}`);
 
     uploadBytes(imageRef, imageFile).then((res) => {
-      alert('Image uploaded sucessfully');
+      alert('Image uploaded successfully');
       getDownloadURL(imageRef).then((url) => {
         console.log(url);
         if (fileName === imageFile) {
@@ -81,7 +81,7 @@ export default function NewNFTForm({ open, handleClose, setCreated }) {
       });
     }).catch((err) => {
       alert('Image upload failed');
-      console.log(err);
+      console.log('Image upload failed.', err);
     });
   };
 
@@ -101,7 +101,8 @@ export default function NewNFTForm({ open, handleClose, setCreated }) {
       await createNFT(nftObject);
       setCreated(true);
     } catch (err) {
-      console.log(err);
+      console.log('Failed to create NFT.', err);
+      alert('Failed to create NFT');
     }
     resetForm();
     handleClose();

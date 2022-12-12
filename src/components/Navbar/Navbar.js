@@ -33,6 +33,7 @@ import {
 import PropTypes from 'prop-types';
 import { useGoogleLogout } from 'react-google-login';
 import LogoutIcon from '@mui/icons-material/Logout';
+import { useState } from 'react';
 import CLIENT_ID from '../../config';
 
 const drawerWidth = 240;
@@ -104,8 +105,11 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 const settings = ['Profile', 'Logout'];
 
-export default function MiniDrawer({ setToken, userObj }) {
+export default function MiniDrawer() {
   const theme = useTheme();
+  const [auth] = useState(localStorage.getItem('auth'));
+  const [userObj] = useState(JSON.parse(localStorage.getItem('userObj')));
+  const [googleUserObj] = useState(JSON.parse(localStorage.getItem('googleUserObj')));
   const [open, setOpen] = React.useState(false);
   const [userProfilePicture, setUserProfilePicture] = React.useState('');
   const [userName, setUserName] = React.useState('Admin');
@@ -113,9 +117,15 @@ export default function MiniDrawer({ setToken, userObj }) {
 
   React.useEffect(() => {
     if (userObj !== null) {
-      setUserProfilePicture(userObj);
-      localStorage.setItem('profilePicture', userObj?.profileObj?.imageUrl);
-      localStorage.setItem('userName', userObj.profileObj.name);
+      if (auth === 'google') {
+        localStorage.setItem('profilePicture', googleUserObj?.profileObj?.imageUrl);
+        localStorage.setItem('userName', googleUserObj?.profileObj?.name);
+        setUserName(googleUserObj?.profileObj?.name);
+        setUserProfilePicture(googleUserObj?.profileObj?.imageUrl);
+      } else {
+        localStorage.setItem('userName', userObj.name);
+        setUserName(userObj.name);
+      }
     } else {
       setUserProfilePicture('');
       setUserName('Admin');
@@ -179,6 +189,7 @@ export default function MiniDrawer({ setToken, userObj }) {
 
   const onLogoutSuccess = () => {
     localStorage.removeItem('access-token');
+    localStorage.removeItem('userObj');
     window.location.reload();
   };
 
@@ -186,7 +197,14 @@ export default function MiniDrawer({ setToken, userObj }) {
     console.log('Handle failure cases');
   };
 
-  const signOut = () => {
+  const { signOut } = useGoogleLogout({
+    clientId: CLIENT_ID,
+    onLogoutSuccess,
+    onFailure,
+  });
+
+  const logOut = () => {
+    if (auth === 'google') { signOut(); }
     localStorage.clear();
     navigate('/');
   };
@@ -233,7 +251,7 @@ export default function MiniDrawer({ setToken, userObj }) {
                   <Avatar
                     alt={userName}
                     sx={{ width: 30, height: 30 }}
-                    src={userObj?.profileObj?.imageUrl || localStorage.getItem('profilePicture')}
+                    src={userProfilePicture}
                   />
                 </IconButton>
               </Tooltip>
@@ -257,7 +275,7 @@ export default function MiniDrawer({ setToken, userObj }) {
                 <Typography textAlign="center" paddingX={3} paddingY={1}>
                   Hello,
                   {' '}
-                  {localStorage.getItem('userName')}
+                  {userName}
                 </Typography>
 
                 <Divider />
@@ -273,7 +291,7 @@ export default function MiniDrawer({ setToken, userObj }) {
                 <MenuItem
                   key="logout"
                   style={{ display: 'block', justifyContent: 'center' }}
-                  onClick={signOut}
+                  onClick={logOut}
                 >
                   <Typography textAlign="center">Logout</Typography>
                 </MenuItem>
@@ -411,7 +429,7 @@ export default function MiniDrawer({ setToken, userObj }) {
                 justifyContent: open ? 'initial' : 'center',
                 px: 2.5,
               }}
-              onClick={signOut}
+              onClick={logOut}
             >
               <ListItemIcon
                 sx={{
@@ -434,9 +452,3 @@ export default function MiniDrawer({ setToken, userObj }) {
     </Box>
   );
 }
-
-MiniDrawer.propTypes = {
-  setToken: PropTypes.func,
-  userObj: PropTypes.objectOf,
-  // logoutUser: PropTypes.func,
-};

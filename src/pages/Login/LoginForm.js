@@ -44,11 +44,11 @@ function LoginForm({
       username: data.loginEmail,
       password: data.loginPassword,
     };
-    console.log(userData);
+    // console.log(userData);
     logIn(userData)
       .then((res) => {
         console.log(res);
-
+        localStorage.setItem('auth', 'local');
         if (!res.data.enabled) {
           navigate('/account/activation');
         } else {
@@ -56,7 +56,7 @@ function LoginForm({
           localStorage.setItem('access-token', res.data.jwt);
           navigate('/user');
         }
-        console.log(jwtDecode(res.data.jwt));
+        // console.log(jwtDecode(res.data.jwt));
       })
       .catch((err) => {
         console.log(err.response.data.message);
