@@ -10,11 +10,13 @@ import Typography from '@mui/material/Typography';
 import {
   Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, ImageListItem,
 } from '@mui/material';
+import PropTypes from 'prop-types';
 import NftSellForm from './NFTSellForm';
 
-export default function OwnNft() {
+export default function OwnNft({ data }) {
   const [open, setOpen] = React.useState(false);
   const [saleForm, setSaleForm] = React.useState(false);
+  const defaultImageURL = 'https://nft-trading-market-object-storage.sfo3.digitaloceanspaces.com/Images/NFT_marketplace.ico';
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -51,19 +53,16 @@ export default function OwnNft() {
           component="img"
           height="140"
           width="140"
-          image="https://nft-trading-market-object-storage.sfo3.digitaloceanspaces.com/Images/NFT_marketplace.ico"
+          image={data.imageURL ? data.imageURL : defaultImageURL}
           alt="NFT Icon"
         />
         <CardContent>
           <Typography gutterBottom variant="h6" component="div">
-            NFT Icon
-            {' '}
+            { data.name }
           </Typography>
 
           <Typography variant="body2" color="text.secondary" style={{ fontSize: '12px' }} gutterBottom>
-            A non-fungible token is a unique digital identifier that cannot be copied, substituted, or subdivided,
-            that is recorded in a blockchain,
-            and that is used to certify authenticity and ownership
+            { data.description }
           </Typography>
 
           {/* <Typography>
@@ -89,14 +88,14 @@ export default function OwnNft() {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          NFT Details
+          { data.name }
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
             <ImageListItem>
               <img
                 alt="nftimage"
-                src="https://nft-trading-market-object-storage.sfo3.digitaloceanspaces.com/Images/NFT_marketplace.ico"
+                src={data.imageURL ? data.imageURL : defaultImageURL}
                 loading="lazy"
                 height={50}
                 width={50}
@@ -104,9 +103,7 @@ export default function OwnNft() {
             </ImageListItem>
           </DialogContentText>
           <DialogContentText id="alert-dialog-description">
-            A non-fungible token is a unique digital identifier that cannot be copied, substituted, or subdivided,
-            that is recorded in a blockchain,
-            and that is used to certify authenticity and ownership
+            { data.description }
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -154,3 +151,7 @@ export default function OwnNft() {
     </>
   );
 }
+
+OwnNft.propTypes = {
+  data: PropTypes.node.isRequired,
+};

@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-shadow */
 /* eslint-disable react/jsx-filename-extension */
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Button, Dialog, DialogActions, DialogContent,
   DialogTitle, FormControl, Grid, Input, InputLabel, MenuItem, Select, TextField, Typography,
@@ -11,34 +11,41 @@ import { CloudUpload } from '@mui/icons-material';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { v4 } from 'uuid';
 import storage from '../../firebase';
+import { createNFT } from '../../api/NFTRequest';
 
-export default function NewNFTForm({ open, handleClose }) {
-  const [nftObject, setNftObject] = React.useState({
-    nftName: '',
-    nftType: '',
-    nftDescription: '',
-    nftImageUrl: null,
-    nftAssetUrl: null,
-  });
+export default function NewNFTForm({ open, handleClose, setCreated }) {
+  const [user, setUser] = useState(
+    localStorage.getItem('userObj') ? JSON.parse(localStorage.getItem('userObj')) : { },
+  );
+  const emptyNFT = {
+    name: '',
+    type: '',
+    description: '',
+    imageURL: null,
+    assetURL: null,
+    creatorId: user.id,
+    ownerId: user.id,
+  };
+  const [nftObject, setNftObject] = React.useState(emptyNFT);
 
   const [imageFile, setImageFile] = React.useState(null);
   const [assetFile, setAssetFile] = React.useState(null);
 
   const handleChangeNftType = (e) => {
     setNftObject((prevState) => ({
-      ...prevState, nftType: e.target.value,
+      ...prevState, type: e.target.value,
     }));
   };
 
   const handleChangeNftName = (e) => {
     setNftObject((prevState) => ({
-      ...prevState, nftName: e.target.value,
+      ...prevState, name: e.target.value,
     }));
   };
 
   const handleChangeNftDescription = (e) => {
     setNftObject((prevState) => ({
-      ...prevState, nftDescription: e.target.value,
+      ...prevState, description: e.target.value,
     }));
   };
 
@@ -62,13 +69,13 @@ export default function NewNFTForm({ open, handleClose }) {
         console.log(url);
         if (fileName === imageFile) {
           setNftObject((prevState) => ({
-            ...prevState, nftImageUrl: url,
+            ...prevState, imageURL: url,
           }));
         }
 
         if (fileName === assetFile) {
           setNftObject((prevState) => ({
-            ...prevState, nftAssetUrl: url,
+            ...prevState, assetURL: url,
           }));
         }
       });
@@ -78,19 +85,28 @@ export default function NewNFTForm({ open, handleClose }) {
     });
   };
 
-  const handleCreateNewNft = () => {
-    console.log(nftObject);
-    setNftObject({
-      nftName: '',
-      nftType: '',
-      nftDescription: '',
-      nftImageUrl: null,
-      nftAssetUrl: null,
-    });
+  const resetForm = () => {
+    setNftObject(emptyNFT);
     setImageFile(null);
     setAssetFile(null);
+  };
+
+  const handleCancel = () => {
     handleClose();
   };
+
+  const handleCreateNewNft = async () => {
+    // console.log(nftObject);
+    try {
+      await createNFT(nftObject);
+      setCreated(true);
+    } catch (err) {
+      console.log(err);
+    }
+    resetForm();
+    handleClose();
+  };
+
   return (
     <div>
       <Dialog
@@ -117,9 +133,9 @@ export default function NewNFTForm({ open, handleClose }) {
                 margin="normal"
                 required
                 fullWidth
-                id="nftName"
+                id="name"
                 label="NFT Name"
-                name="nftName"
+                name="name"
                 type="text"
                 autoFocus
                 onChange={handleChangeNftName}
@@ -133,8 +149,8 @@ export default function NewNFTForm({ open, handleClose }) {
                 <Select
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
-                  value={nftObject.nftType}
-                  label="nftType"
+                  value={nftObject.type}
+                  label="type"
                   onChange={handleChangeNftType}
                   required
                 >
@@ -152,9 +168,9 @@ export default function NewNFTForm({ open, handleClose }) {
                 margin="normal"
                 required
                 fullWidth
-                id="nftDescription"
+                id="description"
                 label="NFT Description"
-                name="nftDescription"
+                name="description"
                 type="text"
                 multiline
                 rows={5}
@@ -206,7 +222,7 @@ export default function NewNFTForm({ open, handleClose }) {
         </DialogContent>
 
         <DialogActions>
-          <Button onClick={handleClose} color="error" variant="contained">CANCEL</Button>
+          <Button onClick={handleCancel} color="error" variant="contained">CANCEL</Button>
           <Button onClick={handleCreateNewNft} autoFocus color="success" variant="contained">
             SUBMIT
           </Button>
@@ -219,4 +235,5 @@ export default function NewNFTForm({ open, handleClose }) {
 NewNFTForm.propTypes = {
   open: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
+  setCreated: PropTypes.func.isRequired,
 };

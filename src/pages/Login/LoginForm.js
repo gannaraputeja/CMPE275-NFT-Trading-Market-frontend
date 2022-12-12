@@ -52,7 +52,7 @@ function LoginForm({
         if (!res.data.enabled) {
           navigate('/account/activation');
         } else {
-          localStorage.setItem('userObj', res.data);
+          localStorage.setItem('userObj', JSON.stringify(res.data));
           localStorage.setItem('access-token', res.data.jwt);
           navigate('/user');
         }

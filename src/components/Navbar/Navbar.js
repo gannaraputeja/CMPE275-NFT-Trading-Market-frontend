@@ -115,7 +115,6 @@ export default function MiniDrawer({ setToken, userObj }) {
     if (userObj !== null) {
       setUserProfilePicture(userObj);
       localStorage.setItem('profilePicture', userObj?.profileObj?.imageUrl);
-      localStorage.setItem('userObj', userObj);
       localStorage.setItem('userName', userObj.profileObj.name);
     } else {
       setUserProfilePicture('');
