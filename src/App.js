@@ -79,7 +79,7 @@ function App() {
       <div>
         <Routes>
           <Route path="/account/activation" element={<EmailVerification />} />
-          <Route path="/account/verify" element={<VerificationLink />} />
+          <Route path="/account/verify/:token" element={<VerificationLink />} />
           <Route path="/" element={<Login clientId={CLIENT_ID} onSuccess={onSuccess} onFailure={onFailure} />} />
           <Route path="/user" element={<Navbar setToken={setToken} userObj={userObj} logoutUser={logoutUser} />}>
             <Route element={<ProtectedRoute />}>
