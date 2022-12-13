@@ -1,6 +1,7 @@
 /* eslint-disable react/require-default-props */
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable react/jsx-filename-extension */
+/* eslint linebreak-style: ["error", "windows"] */
 import {
   Box, Button, Container, Grid, Tab, Tabs, Typography,
 } from '@mui/material';
@@ -10,7 +11,7 @@ import React, {
 import TextField from '@mui/material/TextField';
 import PropTypes from 'prop-types';
 import EnhancedTable from './DataTableDisplay';
-import { availableCurrency, currencyTransaction} from '../../api/WalletRequest';
+import { availableCurrency, currencyTransaction } from '../../api/WalletRequest';
 
 function TabPanel(props) {
   const {
@@ -51,13 +52,13 @@ function UserWallet() {
   const [BTCCurrencyAmount, setBTCCurrencyAmount] = useState(0);
   const [ETHCurrencyAmount, setETHCurrencyAmount] = useState(0);
 
-  useEffect( () => {
+  useEffect(() => {
     const getCurrencies = async () => {
       const res = await availableCurrency('25defd27-55d6-4cd5-85c8-a9fd4fda7976');
       console.log(res.data);
-      setBTCCurrencyAmount(res.data.find(currency => currency['type'] === 'BTC')['amount']);
-      setETHCurrencyAmount(res.data.find(currency => currency['type'] === 'ETH')['amount']);
-    }
+      setBTCCurrencyAmount(res.data.find((currency) => currency.type === 'BTC').amount);
+      setETHCurrencyAmount(res.data.find((currency) => currency.type === 'ETH').amount);
+    };
     getCurrencies();
   }, [BTCCurrencyAmount, ETHCurrencyAmount]);
 
@@ -65,14 +66,14 @@ function UserWallet() {
     setValue(newValue);
   };
 
-  const [amount, setAmount] = useState("");
+  const [amount, setAmount] = useState('');
 
-  const handleBTCDepositButton = async() =>{
-    const data ={
-      "amount": amount,
-      "type": "DEPOSIT",
-      "currencyType": "BTC",
-      "userId": "7831c64c-bfcc-4bf9-a2bf-fadae8b77ce4",
+  const handleBTCDepositButton = async () => {
+    const data = {
+      amount,
+      type: 'DEPOSIT',
+      currencyType: 'BTC',
+      userId: '7831c64c-bfcc-4bf9-a2bf-fadae8b77ce4',
     };
 
     const res = await currencyTransaction(data);
@@ -80,12 +81,12 @@ function UserWallet() {
     alert(`${amount} BTC deposited successfully`);
   };
 
-  const handleBTCWithdrawButton = async() =>{
-    const data ={
-      "amount": amount,
-      "type": "WITHDRAW",
-      "currencyType": "BTC",
-      "userId": "7831c64c-bfcc-4bf9-a2bf-fadae8b77ce4",
+  const handleBTCWithdrawButton = async () => {
+    const data = {
+      amount,
+      type: 'WITHDRAW',
+      currencyType: 'BTC',
+      userId: '7831c64c-bfcc-4bf9-a2bf-fadae8b77ce4',
     };
 
     const res = await currencyTransaction(data);
@@ -93,12 +94,12 @@ function UserWallet() {
     alert(`${amount} BTC withdrawn succesfully`);
   };
 
-  const handleETHDepositButton = async() =>{
-    const data ={
-      "amount": amount,
-      "type": "DEPOSIT",
-      "currencyType": "ETH",
-      "userId": "7831c64c-bfcc-4bf9-a2bf-fadae8b77ce4",
+  const handleETHDepositButton = async () => {
+    const data = {
+      amount,
+      type: 'DEPOSIT',
+      currencyType: 'ETH',
+      userId: '7831c64c-bfcc-4bf9-a2bf-fadae8b77ce4',
     };
 
     const res = await currencyTransaction(data);
@@ -106,12 +107,12 @@ function UserWallet() {
     alert(`${amount} ETH deposited successfully`);
   };
 
-  const handleETHWithdrawButton = async() =>{
-    const data ={
-      "amount": amount,
-      "type": "WITHDRAW",
-      "currencyType": "ETH",
-      "userId": "7831c64c-bfcc-4bf9-a2bf-fadae8b77ce4",
+  const handleETHWithdrawButton = async () => {
+    const data = {
+      amount,
+      type: 'WITHDRAW',
+      currencyType: 'ETH',
+      userId: '7831c64c-bfcc-4bf9-a2bf-fadae8b77ce4',
     };
 
     const res = await currencyTransaction(data);
@@ -135,37 +136,67 @@ function UserWallet() {
             </Box>
             <TabPanel value={value} index={0}>
               <Typography variant="h6">
-                Balance - { BTCCurrencyAmount } BTC
+                Balance -
+                {' '}
+                { BTCCurrencyAmount }
+                {' '}
+                BTC
               </Typography>
-              <TextField id="outlined-basic" value = {amount} label="Enter amount" variant="outlined" size="small" onChange={(e)=>{
-                setAmount(e.target.value)
-              }}/>
+              <TextField
+                id="outlined-basic"
+                value={amount}
+                label="Enter amount"
+                variant="outlined"
+                size="small"
+                onChange={(e) => {
+                  setAmount(e.target.value);
+                }}
+              />
               <Grid container display="flex" justifyContent="space-between">
                 <Grid item style={{ padding: '5px' }}>
-                  <Button variant="contained" onClick={ () => handleBTCWithdrawButton()} >Withdraw</Button>
+                  <Button variant="contained" onClick={() => handleBTCWithdrawButton()}>Withdraw</Button>
                 </Grid>
                 <Grid item style={{ padding: '5px' }}>
-                  <Button variant="contained" onClick={ () => handleBTCDepositButton()} >Deposit</Button>
+                  <Button variant="contained" onClick={() => handleBTCDepositButton()}>Deposit</Button>
                 </Grid>
               </Grid>
-              <h3> your entered value is: {amount}</h3>
+              <h3>
+                {' '}
+                your entered value is:
+                {amount}
+              </h3>
             </TabPanel>
             <TabPanel value={value} index={1}>
               <Typography variant="h6">
-                Balance - { ETHCurrencyAmount } ETH
+                Balance -
+                {' '}
+                { ETHCurrencyAmount }
+                {' '}
+                ETH
               </Typography>
-              <TextField id="outlined-basic" value = {amount}  label="Enter amount" variant="outlined" size="small" onChange={(e)=>{
-                setAmount(e.target.value)
-              }}/>
+              <TextField
+                id="outlined-basic"
+                value={amount}
+                label="Enter amount"
+                variant="outlined"
+                size="small"
+                onChange={(e) => {
+                  setAmount(e.target.value);
+                }}
+              />
               <Grid container display="flex" justifyContent="space-between">
                 <Grid item style={{ padding: '5px' }}>
-                  <Button variant="contained" onClick={ () => handleETHWithdrawButton() }>Withdraw</Button>
+                  <Button variant="contained" onClick={() => handleETHWithdrawButton()}>Withdraw</Button>
                 </Grid>
                 <Grid item style={{ padding: '5px' }}>
-                  <Button variant="contained" onClick={ () => handleETHDepositButton() }>Deposit</Button>
+                  <Button variant="contained" onClick={() => handleETHDepositButton()}>Deposit</Button>
                 </Grid>
               </Grid>
-              <h3> your entered value is: {amount}</h3>
+              <h3>
+                {' '}
+                your entered value is:
+                {amount}
+              </h3>
             </TabPanel>
           </Box>
         </Grid>
