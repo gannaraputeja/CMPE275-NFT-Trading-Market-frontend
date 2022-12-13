@@ -146,7 +146,7 @@ function UserWallet() {
             </Box>
             <TabPanel value={value} index={0}>
               <Typography variant="h6">
-                Balance -
+                Balance:
                 {' '}
                 { BTCCurrencyAmount }
                 {' '}
@@ -158,6 +158,7 @@ function UserWallet() {
                 label="Enter amount"
                 variant="outlined"
                 size="small"
+                margin="normal"
                 onChange={(e) => {
                   setAmount(e.target.value);
                 }}
@@ -173,7 +174,7 @@ function UserWallet() {
             </TabPanel>
             <TabPanel value={value} index={1}>
               <Typography variant="h6">
-                Balance -
+                Balance:
                 {' '}
                 { ETHCurrencyAmount }
                 {' '}
@@ -184,6 +185,7 @@ function UserWallet() {
                 value={amount}
                 label="Enter amount"
                 variant="outlined"
+                margin="normal"
                 size="small"
                 onChange={(e) => {
                   setAmount(e.target.value);
