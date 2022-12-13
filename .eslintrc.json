@@ -23,7 +23,8 @@
         "import/resolver": {
             "node": {
                 "extensions": [".js", ".jsx", ".ts", ".tsx", ".native.js"]
-            }
+            },
+        "object-property-newline": ["error", { "allowAllPropertiesOnSameLine": false }]
     }
 }
 }
