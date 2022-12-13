@@ -91,7 +91,7 @@ export default function OwnNft({ data }) {
           { data.name }
         </DialogTitle>
         <DialogContent>
-          <DialogContentText>
+          <DialogContentText height={120} width={120}>
             <ImageListItem>
               <img
                 alt="nftimage"
@@ -102,7 +102,28 @@ export default function OwnNft({ data }) {
               />
             </ImageListItem>
           </DialogContentText>
+          <DialogContentText>
+            <span style={{ fontWeight: 'bold' }}>Token ID: </span>
+            { data.tokenId }
+          </DialogContentText>
+          <DialogContentText>
+            <span style={{ fontWeight: 'bold' }}>Smart Contract Address: </span>
+            { data.smartContractAddress }
+          </DialogContentText>
+          <DialogContentText>
+            <span style={{ fontWeight: 'bold' }}>Type: </span>
+            { data.type }
+          </DialogContentText>
+          <DialogContentText>
+            <span style={{ fontWeight: 'bold' }}>Creator: </span>
+            { `${data.creator.firstname} ${data.creator.lastname}` }
+          </DialogContentText>
+          <DialogContentText>
+            <span style={{ fontWeight: 'bold' }}>Last Recorded Time: </span>
+            { data.lastRecordedTime }
+          </DialogContentText>
           <DialogContentText id="alert-dialog-description">
+            <span style={{ fontWeight: 'bold' }}>Description: </span>
             { data.description }
           </DialogContentText>
         </DialogContent>
@@ -153,5 +174,26 @@ export default function OwnNft({ data }) {
 }
 
 OwnNft.propTypes = {
-  data: PropTypes.node.isRequired,
+  data: PropTypes.shape({
+    tokenId: PropTypes.string.isRequired,
+    smartContractAddress: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    type: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+    imageURL: PropTypes.string.isRequired,
+    assetURL: PropTypes.string.isRequired,
+    lastRecordedTime: PropTypes.string.isRequired,
+    creatorId: PropTypes.string.isRequired,
+    ownerId: PropTypes.string.isRequired,
+    creator: PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      firstname: PropTypes.string.isRequired,
+      lastname: PropTypes.string.isRequired,
+    }).isRequired,
+    owner: PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      firstname: PropTypes.string.isRequired,
+      lastname: PropTypes.string.isRequired,
+    }).isRequired,
+  }).isRequired,
 };
