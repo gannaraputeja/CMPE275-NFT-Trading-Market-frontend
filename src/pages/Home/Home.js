@@ -5,7 +5,7 @@ import {
 } from '@mui/material';
 import React from 'react';
 import NftCard from '../../components/NFT/NftCard';
-import { getAllNewListedNFTs } from '../../api/NFTRequest';
+import { getAllNewListedNFTs } from '../../api/ListingRequest';
 
 function Home() {
   const [nftType, setNftType] = React.useState('');

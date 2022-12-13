@@ -5,6 +5,6 @@ import BACKEND_URL from './config';
 
 const API = axios.create({ baseURL: BACKEND_URL });
 
-export const getPersonalNFTs = (userId) => API.get(`/api/v1/wallet/getAllNfts/${userId}`);
+export const getAllNewListedNFTs = () => API.get('/api/v1/listing/getAllNewListedNfts');
 
-export const createNFT = (data) => API.post('/api/v1/wallet/createNft', data);
+export const createListing = (data) => API.post('/api/v1/listing/createListing', data);
