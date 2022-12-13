@@ -34,6 +34,7 @@ function App() {
     localStorage.getItem('access-token') ? localStorage.getItem('access-token') : null
   );
   const [userObj, setUserObj] = useState(null);
+  const [googleUserObj, setGoogleUserObj] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -50,11 +51,14 @@ function App() {
     // console.log('success:', res);
     googleLogIn(res.tokenObj.id_token).then((response) => {
       // console.log(response);
+      localStorage.setItem('auth', 'google');
       const isVerified = response.data.enabled;
       if (isVerified) {
-        setUserObj(res);
+        setGoogleUserObj(res);
+        setUserObj(response.data);
         localStorage.setItem('access-token', res.tokenObj.access_token);
         localStorage.setItem('userObj', JSON.stringify(response.data));
+        localStorage.setItem('googleUserObj', JSON.stringify(res));
         setToken(res.tokenObj.access_token);
         navigate('/user');
       }
@@ -63,7 +67,7 @@ function App() {
         navigate('/account/activation');
       }
     }).catch((err) => {
-
+      navigate('/account/activation');
     });
   };
   const onFailure = (err) => {
@@ -88,7 +92,7 @@ function App() {
           <Route path="/account/activation" element={<EmailVerification />} />
           <Route path="/account/verify/:token" element={<VerificationLink />} />
           <Route path="/" element={<Login clientId={CLIENT_ID} onSuccess={onSuccess} onFailure={onFailure} />} />
-          <Route path="/user" element={<Navbar setToken={setToken} userObj={userObj} logoutUser={logoutUser} />}>
+          <Route path="/user" element={<Navbar />}>
             <Route element={<ProtectedRoute />}>
               <Route index element={<Home />} />
               <Route path="collection" element={<NftCollection />} />
