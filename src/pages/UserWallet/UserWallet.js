@@ -51,10 +51,14 @@ function UserWallet() {
   const [value, setValue] = useState(0);
   const [BTCCurrencyAmount, setBTCCurrencyAmount] = useState(0);
   const [ETHCurrencyAmount, setETHCurrencyAmount] = useState(0);
+  const [amount, setAmount] = useState('');
+  const [user] = useState(
+    localStorage.getItem('userObj') ? JSON.parse(localStorage.getItem('userObj')) : { },
+  );
 
   useEffect(() => {
     const getCurrencies = async () => {
-      const res = await availableCurrency('25defd27-55d6-4cd5-85c8-a9fd4fda7976');
+      const res = await availableCurrency(user.id);
       console.log(res.data);
       setBTCCurrencyAmount(res.data.find((currency) => currency.type === 'BTC').amount);
       setETHCurrencyAmount(res.data.find((currency) => currency.type === 'ETH').amount);
@@ -66,14 +70,12 @@ function UserWallet() {
     setValue(newValue);
   };
 
-  const [amount, setAmount] = useState('');
-
   const handleBTCDepositButton = async () => {
     const data = {
       amount,
       type: 'DEPOSIT',
       currencyType: 'BTC',
-      userId: '7831c64c-bfcc-4bf9-a2bf-fadae8b77ce4',
+      userId: user.id,
     };
 
     const res = await currencyTransaction(data);
@@ -86,12 +88,17 @@ function UserWallet() {
       amount,
       type: 'WITHDRAW',
       currencyType: 'BTC',
-      userId: '7831c64c-bfcc-4bf9-a2bf-fadae8b77ce4',
+      userId: user.id,
     };
+
+    if (amount > BTCCurrencyAmount) {
+      alert('Not enough BTC money to withdraw');
+      return;
+    }
 
     const res = await currencyTransaction(data);
     console.log(res);
-    alert(`${amount} BTC withdrawn succesfully`);
+    alert(`${amount} BTC withdrawn successfully`);
   };
 
   const handleETHDepositButton = async () => {
@@ -99,7 +106,7 @@ function UserWallet() {
       amount,
       type: 'DEPOSIT',
       currencyType: 'ETH',
-      userId: '7831c64c-bfcc-4bf9-a2bf-fadae8b77ce4',
+      userId: user.id,
     };
 
     const res = await currencyTransaction(data);
@@ -112,12 +119,17 @@ function UserWallet() {
       amount,
       type: 'WITHDRAW',
       currencyType: 'ETH',
-      userId: '7831c64c-bfcc-4bf9-a2bf-fadae8b77ce4',
+      userId: user.id,
     };
+
+    if (amount > ETHCurrencyAmount) {
+      alert('Not enough ETH money to withdraw');
+      return;
+    }
 
     const res = await currencyTransaction(data);
     console.log(res);
-    alert(`${amount} ETH withdrawn succesfully`);
+    alert(`${amount} ETH withdrawn successfully`);
   };
 
   return (
@@ -136,7 +148,7 @@ function UserWallet() {
             </Box>
             <TabPanel value={value} index={0}>
               <Typography variant="h6">
-                Balance -
+                Balance:
                 {' '}
                 { BTCCurrencyAmount }
                 {' '}
@@ -148,6 +160,7 @@ function UserWallet() {
                 label="Enter amount"
                 variant="outlined"
                 size="small"
+                margin="normal"
                 onChange={(e) => {
                   setAmount(e.target.value);
                 }}
@@ -160,15 +173,10 @@ function UserWallet() {
                   <Button variant="contained" onClick={() => handleBTCDepositButton()}>Deposit</Button>
                 </Grid>
               </Grid>
-              <h3>
-                {' '}
-                your entered value is:
-                {amount}
-              </h3>
             </TabPanel>
             <TabPanel value={value} index={1}>
               <Typography variant="h6">
-                Balance -
+                Balance:
                 {' '}
                 { ETHCurrencyAmount }
                 {' '}
@@ -179,6 +187,7 @@ function UserWallet() {
                 value={amount}
                 label="Enter amount"
                 variant="outlined"
+                margin="normal"
                 size="small"
                 onChange={(e) => {
                   setAmount(e.target.value);
@@ -192,11 +201,6 @@ function UserWallet() {
                   <Button variant="contained" onClick={() => handleETHDepositButton()}>Deposit</Button>
                 </Grid>
               </Grid>
-              <h3>
-                {' '}
-                your entered value is:
-                {amount}
-              </h3>
             </TabPanel>
           </Box>
         </Grid>
