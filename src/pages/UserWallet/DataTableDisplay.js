@@ -24,7 +24,7 @@ import Tooltip from '@mui/material/Tooltip';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
-import { nftDisplay } from '../../api/WalletRequest';
+import { getAllNfts } from '../../api/WalletRequest';
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -214,10 +214,14 @@ export default function EnhancedTable() {
     localStorage.getItem('userObj') ? JSON.parse(localStorage.getItem('userObj')) : { },
   );
 
-  useEffect(async () => {
-    const res = await nftDisplay(user.id);
-    console.log(res.data);
+  const getData = async () => {
+    const res = await getAllNfts(user.id);
+    // console.log(res.data);
     setRows(res.data);
+  };
+
+  useEffect(() => {
+    getData();
   }, []);
 
   const handleRequestSort = (event, property) => {

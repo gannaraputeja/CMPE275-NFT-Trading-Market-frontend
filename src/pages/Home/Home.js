@@ -7,27 +7,27 @@ import React from 'react';
 import NftCard from '../../components/NFT/NftCard';
 import { getAllNewListedNFTs } from '../../api/NFTRequest';
 
-const nfts = [{ id: '1', type: 'priced' }, { id: '2', type: 'priced' },
-  { id: '3', type: 'auctioned' }, { id: '4', type: 'auctioned' }, { id: '5', type: 'priced' }, { id: '6', type: 'priced' },
-  { id: '7', type: 'auctioned' }, , { id: '8', type: 'priced' }, { id: '9', type: 'auctioned' }, { id: '10', type: 'priced' }, { id: '11', type: 'priced' }];
-
 function Home() {
   const [nftType, setNftType] = React.useState('');
+  const nfts = [{ id: '1', type: 'priced' }, { id: '2', type: 'priced' },
+    { id: '3', type: 'auctioned' }, { id: '4', type: 'auctioned' }, { id: '5', type: 'priced' }, { id: '6', type: 'priced' },
+    { id: '7', type: 'auctioned' }, , { id: '8', type: 'priced' }, { id: '9', type: 'auctioned' }, { id: '10', type: 'priced' }, { id: '11', type: 'priced' }];
 
   const handleChange = (event) => {
     console.log(event.target.value);
     setNftType(event.target.value);
   };
 
+  const getNFTs = async () => {
+    try {
+      const res = await getAllNewListedNFTs();
+      console.log(res.data);
+    } catch (err) {
+      console.log('Failed to getAllNewListedNFTs.', err);
+    }
+  };
+
   React.useEffect(() => {
-    const getNFTs = async () => {
-      try {
-        const res = await getAllNewListedNFTs();
-        console.log(res.data);
-      } catch (err) {
-        console.log('Failed to getAllNewListedNFTs.', err);
-      }
-    };
     getNFTs();
   }, []);
 

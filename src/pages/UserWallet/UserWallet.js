@@ -2,6 +2,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable react/jsx-filename-extension */
 /* eslint linebreak-style: ["error", "windows"] */
+/* eslint-disable no-unused-vars */
 import {
   Box, Button, Container, Grid, Tab, Tabs, Typography,
 } from '@mui/material';
@@ -11,7 +12,7 @@ import React, {
 import TextField from '@mui/material/TextField';
 import PropTypes from 'prop-types';
 import EnhancedTable from './DataTableDisplay';
-import { availableCurrency, currencyTransaction } from '../../api/WalletRequest';
+import { getAllCurrencies, currencyTransaction } from '../../api/WalletRequest';
 
 function TabPanel(props) {
   const {
@@ -56,13 +57,18 @@ function UserWallet() {
     localStorage.getItem('userObj') ? JSON.parse(localStorage.getItem('userObj')) : { },
   );
 
-  useEffect(() => {
-    const getCurrencies = async () => {
-      const res = await availableCurrency(user.id);
-      console.log(res.data);
+  const getCurrencies = async () => {
+    try {
+      const res = await getAllCurrencies(user.id);
+      // console.log(res.data);
       setBTCCurrencyAmount(res.data.find((currency) => currency.type === 'BTC').amount);
       setETHCurrencyAmount(res.data.find((currency) => currency.type === 'ETH').amount);
-    };
+    } catch (err) {
+      console.log('Failed to get available currencies.', err);
+    }
+  };
+
+  useEffect(() => {
     getCurrencies();
   }, [BTCCurrencyAmount, ETHCurrencyAmount]);
 
@@ -78,9 +84,13 @@ function UserWallet() {
       userId: user.id,
     };
 
-    const res = await currencyTransaction(data);
-    console.log(res);
-    alert(`${amount} BTC deposited successfully`);
+    try {
+      const res = await currencyTransaction(data);
+      // console.log(res);
+      alert(`${amount} BTC deposited successfully`);
+    } catch (err) {
+      console.log('Failed to deposit amount.', err);
+    }
   };
 
   const handleBTCWithdrawButton = async () => {
@@ -95,10 +105,13 @@ function UserWallet() {
       alert('Not enough BTC money to withdraw');
       return;
     }
-
-    const res = await currencyTransaction(data);
-    console.log(res);
-    alert(`${amount} BTC withdrawn successfully`);
+    try {
+      const res = await currencyTransaction(data);
+      // console.log(res);
+      alert(`${amount} BTC withdrawn successfully`);
+    } catch (err) {
+      console.log('Failed to withdraw amount.', err);
+    }
   };
 
   const handleETHDepositButton = async () => {
@@ -108,10 +121,13 @@ function UserWallet() {
       currencyType: 'ETH',
       userId: user.id,
     };
-
-    const res = await currencyTransaction(data);
-    console.log(res);
-    alert(`${amount} ETH deposited successfully`);
+    try {
+      const res = await currencyTransaction(data);
+      // console.log(res);
+      alert(`${amount} ETH deposited successfully`);
+    } catch (err) {
+      console.log('Failed to deposit amount.', err);
+    }
   };
 
   const handleETHWithdrawButton = async () => {
@@ -126,10 +142,13 @@ function UserWallet() {
       alert('Not enough ETH money to withdraw');
       return;
     }
-
-    const res = await currencyTransaction(data);
-    console.log(res);
-    alert(`${amount} ETH withdrawn successfully`);
+    try {
+      const res = await currencyTransaction(data);
+      console.log(res);
+      alert(`${amount} ETH withdrawn successfully`);
+    } catch (err) {
+      console.log('Failed to withdraw amount.', err);
+    }
   };
 
   return (
