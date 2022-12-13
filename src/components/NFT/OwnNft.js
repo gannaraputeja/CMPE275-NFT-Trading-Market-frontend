@@ -11,12 +11,14 @@ import {
   Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, ImageListItem,
 } from '@mui/material';
 import PropTypes from 'prop-types';
+import { useNavigate } from 'react-router-dom';
 import NftSellForm from './NFTSellForm';
 
 export default function OwnNft({ data }) {
   const [open, setOpen] = React.useState(false);
   const [saleForm, setSaleForm] = React.useState(false);
   const defaultImageURL = 'https://nft-trading-market-object-storage.sfo3.digitaloceanspaces.com/Images/NFT_marketplace.ico';
+  const navigate = useNavigate();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -32,6 +34,10 @@ export default function OwnNft({ data }) {
 
   const handleOpenSaleForm = () => {
     setSaleForm(true);
+  };
+
+  const navigateToListings = () => {
+    navigate('../nftsale');
   };
 
   return (
@@ -76,7 +82,9 @@ export default function OwnNft({ data }) {
           </Typography> */}
         </CardContent>
         <CardActions>
-          <Button size="small" color="error" variant="contained" onClick={handleOpenSaleForm}>SELL</Button>
+          {data.listing === null
+            ? <Button size="small" color="error" variant="contained" onClick={handleOpenSaleForm} disabled={data.listing !== null}>SELL</Button>
+            : <Button size="small" color="error" variant="contained" onClick={navigateToListings}>View Offers</Button>}
           <Button size="small" color="inherit" variant="text" onClick={handleClickOpen}>Details</Button>
         </CardActions>
       </Card>
@@ -134,7 +142,7 @@ export default function OwnNft({ data }) {
         </DialogActions>
       </Dialog>
 
-      <NftSellForm open={saleForm} handleClose={handleCloseSaleForm} />
+      <NftSellForm open={saleForm} handleClose={handleCloseSaleForm} tokenId={data.tokenId} />
 
       {/* <Dialog
         open={saleForm}
@@ -195,5 +203,8 @@ OwnNft.propTypes = {
       firstname: PropTypes.string.isRequired,
       lastname: PropTypes.string.isRequired,
     }).isRequired,
+    listing: PropTypes.shape({
+      id: PropTypes.string.isRequired,
+    }),
   }).isRequired,
 };

@@ -175,6 +175,7 @@ function UserWallet() {
               </Typography>
               <TextField
                 id="outlined-basic"
+                type="number"
                 value={amount}
                 label="Enter amount"
                 variant="outlined"
