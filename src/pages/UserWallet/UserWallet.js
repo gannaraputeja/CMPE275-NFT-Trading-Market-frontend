@@ -54,7 +54,7 @@ function UserWallet() {
 
   useEffect(() => {
     const getCurrencies = async () => {
-      const res = await availableCurrency('25defd27-55d6-4cd5-85c8-a9fd4fda7976');
+      const res = await availableCurrency('af1bb057-47cf-437b-aa26-ef9c9683e09e');
       console.log(res.data);
       setBTCCurrencyAmount(res.data.find((currency) => currency.type === 'BTC').amount);
       setETHCurrencyAmount(res.data.find((currency) => currency.type === 'ETH').amount);
@@ -73,7 +73,7 @@ function UserWallet() {
       amount,
       type: 'DEPOSIT',
       currencyType: 'BTC',
-      userId: '7831c64c-bfcc-4bf9-a2bf-fadae8b77ce4',
+      userId: 'af1bb057-47cf-437b-aa26-ef9c9683e09e',
     };
 
     const res = await currencyTransaction(data);
@@ -86,12 +86,12 @@ function UserWallet() {
       amount,
       type: 'WITHDRAW',
       currencyType: 'BTC',
-      userId: '7831c64c-bfcc-4bf9-a2bf-fadae8b77ce4',
+      userId: 'af1bb057-47cf-437b-aa26-ef9c9683e09e',
     };
 
     const res = await currencyTransaction(data);
     console.log(res);
-    alert(`${amount} BTC withdrawn succesfully`);
+    alert(`${amount} BTC withdrawn successfully`);
   };
 
   const handleETHDepositButton = async () => {
@@ -99,7 +99,7 @@ function UserWallet() {
       amount,
       type: 'DEPOSIT',
       currencyType: 'ETH',
-      userId: '7831c64c-bfcc-4bf9-a2bf-fadae8b77ce4',
+      userId: 'af1bb057-47cf-437b-aa26-ef9c9683e09e',
     };
 
     const res = await currencyTransaction(data);
@@ -112,12 +112,12 @@ function UserWallet() {
       amount,
       type: 'WITHDRAW',
       currencyType: 'ETH',
-      userId: '7831c64c-bfcc-4bf9-a2bf-fadae8b77ce4',
+      userId: 'af1bb057-47cf-437b-aa26-ef9c9683e09e',
     };
 
     const res = await currencyTransaction(data);
     console.log(res);
-    alert(`${amount} ETH withdrawn succesfully`);
+    alert(`${amount} ETH withdrawn successfully`);
   };
 
   return (
@@ -160,11 +160,6 @@ function UserWallet() {
                   <Button variant="contained" onClick={() => handleBTCDepositButton()}>Deposit</Button>
                 </Grid>
               </Grid>
-              <h3>
-                {' '}
-                your entered value is:
-                {amount}
-              </h3>
             </TabPanel>
             <TabPanel value={value} index={1}>
               <Typography variant="h6">
@@ -192,11 +187,6 @@ function UserWallet() {
                   <Button variant="contained" onClick={() => handleETHDepositButton()}>Deposit</Button>
                 </Grid>
               </Grid>
-              <h3>
-                {' '}
-                your entered value is:
-                {amount}
-              </h3>
             </TabPanel>
           </Box>
         </Grid>
