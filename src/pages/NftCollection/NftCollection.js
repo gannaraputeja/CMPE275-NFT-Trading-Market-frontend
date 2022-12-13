@@ -69,7 +69,7 @@ function NftCollection() {
               You have no NFTs.
             </Alert>
           )
-          : nfts.map((nft) => <OwnNft data={nft} />)}
+          : nfts.map((nft) => <OwnNft data={nft} key={nft.tokenId} />)}
       </Grid>
       <NFTForm open={openNewNftForm} handleClose={handleCloseNFTForm} setCreated={setCreated} />
     </>
