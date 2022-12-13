@@ -89,6 +89,11 @@ function UserWallet() {
       userId: 'af1bb057-47cf-437b-aa26-ef9c9683e09e',
     };
 
+    if (amount > BTCCurrencyAmount) {
+      alert('Not enough BTC money to withdraw');
+      return;
+    }
+
     const res = await currencyTransaction(data);
     console.log(res);
     alert(`${amount} BTC withdrawn successfully`);
@@ -114,6 +119,11 @@ function UserWallet() {
       currencyType: 'ETH',
       userId: 'af1bb057-47cf-437b-aa26-ef9c9683e09e',
     };
+
+    if (amount > ETHCurrencyAmount) {
+      alert('Not enough ETH money to withdraw');
+      return;
+    }
 
     const res = await currencyTransaction(data);
     console.log(res);
