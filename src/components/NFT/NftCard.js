@@ -32,25 +32,31 @@ import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 // import SelectUnstyled from '@mui/base/SelectUnstyled';
 // import OptionUnstyled from '@mui/base/OptionUnstyled';
 
-export default function NftCard({ type = 'priced', id }) {
+export default function NftCard({ data }) {
   const [price, setPrice] = React.useState();
   const [expirationTime, setExpirationTime] = React.useState(dayjs('2022-04-07'));
 
-  const [open, setOpen] = React.useState(false);
+  const [showDetails, setShowDetails] = React.useState(false);
   const [openMakeNewOffer, setOpenMakeNewOffer] = React.useState(false);
 
   const [currencyType, setCurrencyType] = React.useState('BTC');
 
+  const defaultImageUrl = 'https://nft-trading-market-object-storage.sfo3.digitaloceanspaces.com/Images/NFT_marketplace.ico';
+
   const handleClickOpen = () => {
-    setOpen(true);
+    setShowDetails(true);
   };
 
-  const handleClose = () => {
-    setOpen(false);
+  const handleCloseDetails = () => {
+    setShowDetails(false);
+  };
+
+  const handleBuy = () => {
+
   };
 
   const handleOpenMakeNewOffer = (e) => {
-    console.log(id);
+    console.log(data.id);
     setOpenMakeNewOffer(true);
   };
 
@@ -74,7 +80,7 @@ export default function NftCard({ type = 'priced', id }) {
   return (
     <>
       <Card
-        id={id}
+        id={data.id}
         sx={{
           maxWidth: 250, marginInline: '10px', marginY: '10px',
         }}
@@ -83,68 +89,102 @@ export default function NftCard({ type = 'priced', id }) {
           component="img"
           height="140"
           width="140"
-          image="https://nft-trading-market-object-storage.sfo3.digitaloceanspaces.com/Images/NFT_marketplace.ico"
+          image={data.nft.imageURL ? data.nft.imageURL : defaultImageUrl}
           alt="NFT Icon"
         />
         <CardContent>
           <Typography gutterBottom variant="h6" component="div">
-            NFT Icon
-            {' '}
-            <Chip style={{ marginLeft: '5px' }} label={type.toUpperCase()} color={type === 'priced' ? 'info' : 'warning'} />
+            { data.nft.name }
+            <Chip style={{ marginLeft: '5px' }} label={data.sellType.toUpperCase()} color={data.sellType === 'PRICED' ? 'info' : 'warning'} />
           </Typography>
 
           <Typography variant="body2" color="text.secondary" style={{ fontSize: '12px' }} gutterBottom>
-            A non-fungible token is a unique digital identifier that cannot be copied, substituted, or subdivided,
-            that is recorded in a blockchain,
-            and that is used to certify authenticity and ownership
+            { data.nft.description }
           </Typography>
 
           <Typography>
             Price:
             {' '}
             <strong>
-              {Math.random().toFixed(2)}
+              { data.amount }
               {' '}
-              BTC
+              { data.currencyType }
             </strong>
+          </Typography>
+
+          <Typography>
+            Listing Time:
+            {' '}
+            {data.listingTime}
           </Typography>
         </CardContent>
         <CardActions>
-          {type === 'priced' ? <Button size="small" color="success" variant="contained">BUY</Button>
+          {data.sellType === 'PRICED' ? <Button size="small" color="success" variant="contained" onClick={handleBuy}>BUY</Button>
             : <Button size="small" color="secondary" variant="contained" onClick={handleOpenMakeNewOffer}>Make an Offer</Button> }
           <Button size="small" color="inherit" variant="text" onClick={handleClickOpen}>Details</Button>
         </CardActions>
       </Card>
 
       <Dialog
-        open={open}
-        onClose={handleClose}
+        open={showDetails}
+        onClose={handleCloseDetails}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          NFT Details
+          { data.nft.name }
         </DialogTitle>
         <DialogContent>
-          <DialogContentText>
+          <DialogContentText height={120} width={120}>
             <ImageListItem>
               <img
                 alt="nftimage"
-                src="https://nft-trading-market-object-storage.sfo3.digitaloceanspaces.com/Images/NFT_marketplace.ico"
+                src={data.nft.imageURL ? data.nft.imageURL : defaultImageUrl}
                 loading="lazy"
                 height={50}
                 width={50}
               />
             </ImageListItem>
           </DialogContentText>
+          <DialogContentText>
+            <span style={{ fontWeight: 'bold' }}>Token ID: </span>
+            { data.nft.tokenId }
+          </DialogContentText>
+          <DialogContentText>
+            <span style={{ fontWeight: 'bold' }}>Type: </span>
+            { data.nft.type }
+          </DialogContentText>
+          <DialogContentText>
+            <span style={{ fontWeight: 'bold' }}>Price: </span>
+            { `${data.amount} ${data.currencyType}`}
+          </DialogContentText>
+          <DialogContentText>
+            <span style={{ fontWeight: 'bold' }}>Sale Type: </span>
+            { data.sellType }
+          </DialogContentText>
+          <DialogContentText>
+            <span style={{ fontWeight: 'bold' }}>Listing Time: </span>
+            { data.listingTime }
+          </DialogContentText>
+          <DialogContentText>
+            <span style={{ fontWeight: 'bold' }}>Last Recorded Time: </span>
+            { data.nft.lastRecordedTime }
+          </DialogContentText>
+          <DialogContentText>
+            <span style={{ fontWeight: 'bold' }}>Creator: </span>
+            { `${data.nft.creator.firstname} ${data.nft.creator.lastname}` }
+          </DialogContentText>
+          <DialogContentText>
+            <span style={{ fontWeight: 'bold' }}>Owner: </span>
+            { `${data.nft.owner.firstname} ${data.nft.owner.lastname}` }
+          </DialogContentText>
           <DialogContentText id="alert-dialog-description">
-            A non-fungible token is a unique digital identifier that cannot be copied, substituted, or subdivided,
-            that is recorded in a blockchain,
-            and that is used to certify authenticity and ownership
+            <span style={{ fontWeight: 'bold' }}>Description: </span>
+            { data.nft.description }
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} autoFocus>
+          <Button onClick={handleCloseDetails} autoFocus>
             Close
           </Button>
         </DialogActions>
@@ -243,6 +283,36 @@ export default function NftCard({ type = 'priced', id }) {
 }
 
 NftCard.propTypes = {
-  id: PropTypes.string.isRequired,
-  type: PropTypes.string.isRequired,
+  data: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    amount: PropTypes.number,
+    currencyType: PropTypes.string.isRequired,
+    sellType: PropTypes.string.isRequired,
+    listingStatus: PropTypes.string.isRequired,
+    listingTime: PropTypes.string.isRequired,
+    offers: PropTypes.arrayOf(PropTypes.shape({
+      id: PropTypes.string,
+    })).isRequired,
+    nft: PropTypes.shape({
+      tokenId: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      type: PropTypes.string.isRequired,
+      description: PropTypes.string.isRequired,
+      imageURL: PropTypes.string,
+      assetURL: PropTypes.string,
+      lastRecordedTime: PropTypes.string.isRequired,
+      creatorId: PropTypes.string.isRequired,
+      ownerId: PropTypes.string.isRequired,
+      creator: PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        firstname: PropTypes.string.isRequired,
+        lastname: PropTypes.string.isRequired,
+      }).isRequired,
+      owner: PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        firstname: PropTypes.string.isRequired,
+        lastname: PropTypes.string.isRequired,
+      }).isRequired,
+    }).isRequired,
+  }).isRequired,
 };

@@ -1,17 +1,17 @@
 /* eslint-disable no-sparse-arrays */
 /* eslint-disable react/jsx-filename-extension */
+/* eslint-disable no-unused-vars */
 import {
+  Alert,
   FormControl, Grid, InputLabel, MenuItem, Select, Typography,
 } from '@mui/material';
-import React from 'react';
+import React, { useState } from 'react';
 import NftCard from '../../components/NFT/NftCard';
-import { getAllNewListedNFTs } from '../../api/ListingRequest';
+import { getAllNewListings } from '../../api/ListingRequest';
 
 function Home() {
   const [nftType, setNftType] = React.useState('');
-  const nfts = [{ id: '1', type: 'priced' }, { id: '2', type: 'priced' },
-    { id: '3', type: 'auctioned' }, { id: '4', type: 'auctioned' }, { id: '5', type: 'priced' }, { id: '6', type: 'priced' },
-    { id: '7', type: 'auctioned' }, , { id: '8', type: 'priced' }, { id: '9', type: 'auctioned' }, { id: '10', type: 'priced' }, { id: '11', type: 'priced' }];
+  const [listings, setListings] = useState([]);
 
   const handleChange = (event) => {
     console.log(event.target.value);
@@ -20,8 +20,9 @@ function Home() {
 
   const getNFTs = async () => {
     try {
-      const res = await getAllNewListedNFTs();
+      const res = await getAllNewListings();
       console.log(res.data);
+      setListings(res.data);
     } catch (err) {
       console.log('Failed to getAllNewListedNFTs.', err);
     }
@@ -48,17 +49,32 @@ function Home() {
               <MenuItem value="both">
                 <em>Both</em>
               </MenuItem>
-              <MenuItem value="priced">Priced</MenuItem>
-              <MenuItem value="auctioned">Auctioned</MenuItem>
+              <MenuItem value="PRICED">Priced</MenuItem>
+              <MenuItem value="AUCTION">Auction</MenuItem>
             </Select>
           </FormControl>
         </Grid>
       </Grid>
 
       <Grid container style={{ display: 'flex' }}>
-        {
-          nfts.map((nft) => ((nftType === 'both' || nftType === '') ? <NftCard id={nft.id} type={nft.type} /> : ((nftType === nft.type) && <NftCard type={nft.type} />)))
-        }
+        { listings.length === 0
+          ? (
+            <Alert
+              severity="success"
+              sx={{
+                width: 700,
+                height: 60,
+                fontSize: 30,
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginBottom: '50px',
+              }}
+            >
+              There are no listings.
+            </Alert>
+          )
+          : listings.filter((listing) => (nftType === '' || nftType === 'both' ? true : listing.sellType === nftType))
+            .map((listing) => <NftCard data={listing} key={listing.id} />)}
       </Grid>
     </>
   );
