@@ -1,7 +1,6 @@
 /* eslint-disable react/require-default-props */
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable react/jsx-filename-extension */
-/* eslint-disable */
 /* eslint linebreak-style: ["error", "windows"] */
 
 import React, { useEffect, useState } from 'react';
