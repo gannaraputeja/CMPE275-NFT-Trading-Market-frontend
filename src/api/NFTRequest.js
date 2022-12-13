@@ -3,13 +3,10 @@
 import axios from 'axios';
 import BACKEND_URL from './config';
 
-const API = axios.create({
-  baseURL: BACKEND_URL,
-  headers: {
-    'Content-Type': 'application/json'
-  }
-});
+const API = axios.create({ baseURL: BACKEND_URL });
 
-export const getPersonalNFTs = (userId) => API.get(`/api/v1/wallet/getALlNfts/${userId}`);
+export const getPersonalNFTs = (userId) => API.get(`/api/v1/wallet/getAllNfts/${userId}`);
 
 export const createNFT = (data) => API.post('/api/v1/wallet/createNft', data);
+
+export const getAllNewListedNFTs = () => API.get('/api/v1/listing/getAllNewListedNfts');

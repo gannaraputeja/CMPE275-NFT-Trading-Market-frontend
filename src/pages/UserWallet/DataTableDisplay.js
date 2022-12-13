@@ -1,7 +1,6 @@
 /* eslint-disable react/require-default-props */
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable react/jsx-filename-extension */
-/* eslint-disable */
 /* eslint linebreak-style: ["error", "windows"] */
 
 import React, { useEffect, useState } from 'react';
@@ -210,9 +209,9 @@ export default function EnhancedTable() {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [rows, setRows] = useState([]);
-  const defaultURL = "https://firebasestorage.googleapis.com/v0/b/nft-trading-market-7e98b.appspot.com/o/images%2FNFT_marketplace.ico?alt=media&token=efcfd069-673b-4258-ba2f-e37a13819d8e" ;
+  const defaultURL = 'https://firebasestorage.googleapis.com/v0/b/nft-trading-market-7e98b.appspot.com/o/images%2FNFT_marketplace.ico?alt=media&token=efcfd069-673b-4258-ba2f-e37a13819d8e';
   const [user] = useState(
-      localStorage.getItem('userObj') ? JSON.parse(localStorage.getItem('userObj')) : { },
+    localStorage.getItem('userObj') ? JSON.parse(localStorage.getItem('userObj')) : { },
   );
 
   useEffect(async () => {
@@ -312,11 +311,13 @@ export default function EnhancedTable() {
                           }}
                         />
                       </TableCell>
-                      <TableCell align="right"><img alt="#" src={row.imageURL? row.imageURL: defaultURL} height="50px" width="50px" /></TableCell>
+                      <TableCell align="right"><img alt="#" src={row.imageURL ? row.imageURL : defaultURL} height="50px" width="50px" /></TableCell>
                       <TableCell align="right">{row.name}</TableCell>
                       <TableCell align="right">{row.type}</TableCell>
                       <TableCell align="right">{row.description}</TableCell>
-                      <TableCell align="right"> {row.assetURL? <a href = {row.assetURL}>View</a> : 'N/A'}</TableCell>
+                      <TableCell align="right">
+                        {row.assetURL ? <a href={row.assetURL}>View</a> : 'N/A'}
+                      </TableCell>
                     </TableRow>
                   );
                 })}

@@ -5,6 +5,7 @@ import {
 } from '@mui/material';
 import React from 'react';
 import NftCard from '../../components/NFT/NftCard';
+import { getAllNewListedNFTs } from '../../api/NFTRequest';
 
 const nfts = [{ id: '1', type: 'priced' }, { id: '2', type: 'priced' },
   { id: '3', type: 'auctioned' }, { id: '4', type: 'auctioned' }, { id: '5', type: 'priced' }, { id: '6', type: 'priced' },
@@ -19,7 +20,15 @@ function Home() {
   };
 
   React.useEffect(() => {
-
+    const getNFTs = async () => {
+      try {
+        const res = await getAllNewListedNFTs();
+        console.log(res.data);
+      } catch (err) {
+        console.log('Failed to getAllNewListedNFTs.', err);
+      }
+    };
+    getNFTs();
   }, []);
 
   return (
