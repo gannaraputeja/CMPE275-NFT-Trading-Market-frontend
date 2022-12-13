@@ -211,9 +211,12 @@ export default function EnhancedTable() {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [rows, setRows] = useState([]);
   const defaultURL = "https://firebasestorage.googleapis.com/v0/b/nft-trading-market-7e98b.appspot.com/o/images%2FNFT_marketplace.ico?alt=media&token=efcfd069-673b-4258-ba2f-e37a13819d8e" ;
+  const [user] = useState(
+      localStorage.getItem('userObj') ? JSON.parse(localStorage.getItem('userObj')) : { },
+  );
 
   useEffect(async () => {
-    const res = await nftDisplay('7831c64c-bfcc-4bf9-a2bf-fadae8b77ce4');
+    const res = await nftDisplay(user.id);
     console.log(res.data);
     setRows(res.data);
   }, []);

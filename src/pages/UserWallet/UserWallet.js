@@ -51,10 +51,14 @@ function UserWallet() {
   const [value, setValue] = useState(0);
   const [BTCCurrencyAmount, setBTCCurrencyAmount] = useState(0);
   const [ETHCurrencyAmount, setETHCurrencyAmount] = useState(0);
+  const [amount, setAmount] = useState('');
+  const [user] = useState(
+    localStorage.getItem('userObj') ? JSON.parse(localStorage.getItem('userObj')) : { },
+  );
 
   useEffect(() => {
     const getCurrencies = async () => {
-      const res = await availableCurrency('af1bb057-47cf-437b-aa26-ef9c9683e09e');
+      const res = await availableCurrency(user.id);
       console.log(res.data);
       setBTCCurrencyAmount(res.data.find((currency) => currency.type === 'BTC').amount);
       setETHCurrencyAmount(res.data.find((currency) => currency.type === 'ETH').amount);
@@ -66,14 +70,12 @@ function UserWallet() {
     setValue(newValue);
   };
 
-  const [amount, setAmount] = useState('');
-
   const handleBTCDepositButton = async () => {
     const data = {
       amount,
       type: 'DEPOSIT',
       currencyType: 'BTC',
-      userId: 'af1bb057-47cf-437b-aa26-ef9c9683e09e',
+      userId: user.id,
     };
 
     const res = await currencyTransaction(data);
@@ -86,7 +88,7 @@ function UserWallet() {
       amount,
       type: 'WITHDRAW',
       currencyType: 'BTC',
-      userId: 'af1bb057-47cf-437b-aa26-ef9c9683e09e',
+      userId: user.id,
     };
 
     if (amount > BTCCurrencyAmount) {
@@ -104,7 +106,7 @@ function UserWallet() {
       amount,
       type: 'DEPOSIT',
       currencyType: 'ETH',
-      userId: 'af1bb057-47cf-437b-aa26-ef9c9683e09e',
+      userId: user.id,
     };
 
     const res = await currencyTransaction(data);
@@ -117,7 +119,7 @@ function UserWallet() {
       amount,
       type: 'WITHDRAW',
       currencyType: 'ETH',
-      userId: 'af1bb057-47cf-437b-aa26-ef9c9683e09e',
+      userId: user.id,
     };
 
     if (amount > ETHCurrencyAmount) {
