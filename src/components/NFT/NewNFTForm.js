@@ -98,7 +98,9 @@ export default function NewNFTForm({ open, handleClose, setCreated }) {
   const handleCreateNewNft = async () => {
     // console.log(nftObject);
     try {
-      await createNFT(nftObject);
+      const res = await createNFT(nftObject);
+      alert('Successfully created NFT');
+      console.log(res);
       setCreated(true);
     } catch (err) {
       console.log('Failed to create NFT.', err);

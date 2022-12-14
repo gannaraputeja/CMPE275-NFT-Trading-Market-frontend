@@ -36,8 +36,6 @@ function NftCollection() {
 
   React.useEffect(() => {
     getNFTs();
-    setCreated(false);
-    setListed(false);
   }, [created, listed]);
 
   return (
