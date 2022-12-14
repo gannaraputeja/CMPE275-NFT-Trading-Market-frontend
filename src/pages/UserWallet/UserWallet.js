@@ -52,7 +52,7 @@ function UserWallet() {
   const [value, setValue] = useState(0);
   const [BTCCurrencyAmount, setBTCCurrencyAmount] = useState(0);
   const [ETHCurrencyAmount, setETHCurrencyAmount] = useState(0);
-  const [amount, setAmount] = useState('');
+  const [amount, setAmount] = useState(0);
   const [user] = useState(
     localStorage.getItem('userObj') ? JSON.parse(localStorage.getItem('userObj')) : { },
   );
@@ -87,6 +87,8 @@ function UserWallet() {
     try {
       const res = await currencyTransaction(data);
       // console.log(res);
+      setAmount(0);
+      getCurrencies();
       alert(`${amount} BTC deposited successfully`);
     } catch (err) {
       console.log('Failed to deposit amount.', err);
@@ -108,6 +110,8 @@ function UserWallet() {
     try {
       const res = await currencyTransaction(data);
       // console.log(res);
+      setAmount(0);
+      getCurrencies();
       alert(`${amount} BTC withdrawn successfully`);
     } catch (err) {
       console.log('Failed to withdraw amount.', err);
@@ -124,6 +128,8 @@ function UserWallet() {
     try {
       const res = await currencyTransaction(data);
       // console.log(res);
+      setAmount(0);
+      getCurrencies();
       alert(`${amount} ETH deposited successfully`);
     } catch (err) {
       console.log('Failed to deposit amount.', err);
@@ -144,7 +150,9 @@ function UserWallet() {
     }
     try {
       const res = await currencyTransaction(data);
-      console.log(res);
+      // console.log(res);
+      setAmount(0);
+      getCurrencies();
       alert(`${amount} ETH withdrawn successfully`);
     } catch (err) {
       console.log('Failed to withdraw amount.', err);

@@ -62,7 +62,7 @@ export default function NftCard({ data }) {
   const handleBuy = async (listing) => {
     const buyNftObj = {
       listingId: listing.id,
-      nftTokenId: listing.nft.id,
+      nftTokenId: listing.nft.tokenId,
       userId: user.id,
       currencyType: listing.currencyType,
     };
@@ -72,7 +72,7 @@ export default function NftCard({ data }) {
       console.log(res.data);
     } catch (err) {
       console.log('Failed to buy NFT.', err);
-      alert('Failed to buy NFT.');
+      alert(err.response.data.message);
     }
   };
 
