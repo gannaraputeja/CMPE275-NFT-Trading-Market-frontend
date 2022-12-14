@@ -1,7 +1,7 @@
 /* eslint-disable react/require-default-props */
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable react/jsx-filename-extension */
-/* eslint linebreak-style: ["error", "unix"] */
+/* eslint linebreak-style: ["error", "windows"] */
 
 import * as React from 'react';
 import PropTypes from 'prop-types';
@@ -21,6 +21,7 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import {useEffect, useState} from 'react';
 import Button from '@mui/material/Button';
 import {getAllListings, cancelListing} from '../../api/WalletRequest';
+import { acceptOffer } from '../../api/WalletRequest';
 
 function Row(props) {
   const { row, setListingCancelled } = props;
@@ -36,6 +37,13 @@ function Row(props) {
     } else {
       console.log('listing cannot be cancelled when there are already offers');
     }
+  };
+
+  const handleAcceptButton = async (offerRow) => {
+    const res = await acceptOffer(offerRow.id);
+    console.log(res.data);
+    setListingCancelled((prev) => !prev);
+    alert(`Offer with ${offerRow.id} is accepted for the listing`);
   };
 
   return (
@@ -72,6 +80,7 @@ function Row(props) {
                     <TableCell align="left">Offer Initiated</TableCell>
                     <TableCell align="left">ExpirationTime</TableCell>
                     <TableCell align="left">Status</TableCell>
+                    <TableCell align="left">OfferAction</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -83,6 +92,7 @@ function Row(props) {
                       </TableCell>
                       <TableCell align="left">{offerRow.expirationTime}</TableCell>
                       <TableCell align="left">{offerRow.status}</TableCell>
+                      <TableCell align="left"><Button variant="contained" disabled={offerRow.status !== 'NEW'} onClick={() => handleAcceptButton(offerRow)}>{offerRow.status === 'NEW' ? 'ACCEPT' : offerRow.status}</Button></TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
