@@ -72,8 +72,8 @@ function Home() {
   return (
     <>
       <Typography variant="h5" />
-      <Grid container display="flex" justifyContent="space-evenly">
-        <Grid item>
+      <Grid container display="flex" justifyContent="flex-start" spacing={2}>
+        <Grid item xs={2}>
           <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
             <InputLabel id="nft-type-select-small">NFT Type</InputLabel>
             <Select
@@ -91,7 +91,7 @@ function Home() {
             </Select>
           </FormControl>
         </Grid>
-        <Grid item>
+        {/* <Grid item xs={2}>
           <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
             <InputLabel id="sort-by-select-small">Sort By</InputLabel>
             <Select
@@ -105,8 +105,8 @@ function Home() {
               <MenuItem value="listingTime">Listing Time</MenuItem>
             </Select>
           </FormControl>
-        </Grid>
-        <Grid item>
+        </Grid> */}
+        <Grid item xs={4}>
           <Typography> Price Range </Typography>
           <Box sx={{ width: 300 }}>
             <Slider
@@ -118,14 +118,14 @@ function Home() {
             />
           </Box>
         </Grid>
-        <Grid item>
+        <Grid item xs={2}>
           <Button variant="contained" size="small" style={{ maxHeight: '35px' }} onClick={applyFilter}>
             <FilterAlt style={{ marginRight: '5px' }} />
             {' '}
             Filter
           </Button>
         </Grid>
-        <Grid item style={{marginLeft: '10px'}}>
+        <Grid item xs={2}>
           <Button variant="contained" size="small" style={{ maxHeight: '35px' }} onClick={clearFilter}>
             <FilterAltOff style={{ marginRight: '5px' }} />
             {' '}
