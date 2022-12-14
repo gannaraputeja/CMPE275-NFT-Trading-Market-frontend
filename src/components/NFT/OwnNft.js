@@ -14,7 +14,7 @@ import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import NftSellForm from './NFTSellForm';
 
-export default function OwnNft({ data }) {
+export default function OwnNft({ data, setListed }) {
   const [open, setOpen] = React.useState(false);
   const [saleForm, setSaleForm] = React.useState(false);
   const defaultImageURL = 'https://nft-trading-market-object-storage.sfo3.digitaloceanspaces.com/Images/NFT_marketplace.ico';
@@ -142,7 +142,7 @@ export default function OwnNft({ data }) {
         </DialogActions>
       </Dialog>
 
-      <NftSellForm open={saleForm} handleClose={handleCloseSaleForm} tokenId={data.tokenId} />
+      <NftSellForm open={saleForm} handleClose={handleCloseSaleForm} tokenId={data.tokenId} setListed={setListed} />
 
       {/* <Dialog
         open={saleForm}
@@ -207,4 +207,5 @@ OwnNft.propTypes = {
       id: PropTypes.string.isRequired,
     }),
   }).isRequired,
+  setListed: PropTypes.func.isRequired,
 };

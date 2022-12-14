@@ -10,6 +10,9 @@ import NftCard from '../../components/NFT/NftCard';
 import { getAllNewListings } from '../../api/ListingRequest';
 
 function Home() {
+  const [user] = useState(
+    localStorage.getItem('userObj') ? JSON.parse(localStorage.getItem('userObj')) : { },
+  );
   const [nftType, setNftType] = React.useState('');
   const [listings, setListings] = useState([]);
 
@@ -74,6 +77,7 @@ function Home() {
             </Alert>
           )
           : listings.filter((listing) => (nftType === '' || nftType === 'both' ? true : listing.sellType === nftType))
+            .filter((listing) => listing.nft.ownerId !== user.id)
             .map((listing) => <NftCard data={listing} key={listing.id} />)}
       </Grid>
     </>

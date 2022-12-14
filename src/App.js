@@ -67,7 +67,8 @@ function App() {
         navigate('/account/activation');
       }
     }).catch((err) => {
-      navigate('/account/activation');
+      alert('Failed to login.');
+      // navigate('/account/activation');
     });
   };
   const onFailure = (err) => {

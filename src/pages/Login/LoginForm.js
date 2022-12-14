@@ -59,6 +59,7 @@ function LoginForm({
         // console.log(jwtDecode(res.data.jwt));
       })
       .catch((err) => {
+        alert('Failed to login.');
         console.log(err.response.data.message);
         setIsError(true);
         setErrMessage(err.response.data.message);

@@ -3,6 +3,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable max-len */
 /* eslint-disable react/jsx-filename-extension */
+/* eslint-disable no-nested-ternary */
 import * as React from 'react';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -29,10 +30,16 @@ import dayjs from 'dayjs';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 // import SelectUnstyled from '@mui/base/SelectUnstyled';
 // import OptionUnstyled from '@mui/base/OptionUnstyled';
 
 export default function NftCard({ data }) {
+  const [user] = useState(
+    localStorage.getItem('userObj') ? JSON.parse(localStorage.getItem('userObj')) : { },
+  );
+  const navigate = useNavigate();
   const [price, setPrice] = React.useState();
   const [expirationTime, setExpirationTime] = React.useState(dayjs('2022-04-07'));
 
@@ -77,6 +84,42 @@ export default function NftCard({ data }) {
     setCurrencyType(e.target.value);
   };
 
+  const displayPriceText = (obj) => {
+    let text = '';
+    if (obj.sellType === 'PRICED') {
+      text = 'Price:';
+    } else if (obj.offers.length === 0) {
+      text = 'Min ask price:';
+    } else {
+      text = 'Highest offer price:';
+    }
+    return text;
+  };
+
+  const displayAmount = (obj) => {
+    let amount = 0;
+    if (data.sellType === 'PRICED') {
+      amount = obj.amount;
+    } else if (obj.offers.length === 0) {
+      amount = obj.amount;
+    } else {
+      amount = data.offers.map((offer) => offer.amount)
+        .reduce((x, y) => Math.max(x, y), -Infinity);
+    }
+    return amount;
+  };
+
+  const hasMadeOffers = (obj) => {
+    if (obj.offers && obj.offers.length > 0) {
+      return obj.offers.map((offer) => offer.userId).includes(user.id);
+    }
+    return false;
+  };
+
+  const navigateToListings = () => {
+    navigate('/nftsale');
+  };
+
   return (
     <>
       <Card
@@ -103,24 +146,26 @@ export default function NftCard({ data }) {
           </Typography>
 
           <Typography>
-            Price:
+            { displayPriceText(data) }
             {' '}
             <strong>
-              { data.amount }
+              { displayAmount(data) }
               {' '}
               { data.currencyType }
             </strong>
           </Typography>
 
-          <Typography>
+          {/* <Typography>
             Listing Time:
             {' '}
             {data.listingTime}
-          </Typography>
+          </Typography> */}
         </CardContent>
         <CardActions>
-          {data.sellType === 'PRICED' ? <Button size="small" color="success" variant="contained" onClick={handleBuy}>BUY</Button>
-            : <Button size="small" color="secondary" variant="contained" onClick={handleOpenMakeNewOffer}>Make an Offer</Button> }
+          { data.sellType === 'PRICED' ? <Button size="small" color="success" variant="contained" onClick={handleBuy}>BUY</Button>
+            : (hasMadeOffers(data)
+              ? <Button size="small" color="secondary" variant="contained" onClick={navigateToListings}>View Offers</Button>
+              : <Button size="small" color="secondary" variant="contained" onClick={handleOpenMakeNewOffer}>Make an Offer</Button>) }
           <Button size="small" color="inherit" variant="text" onClick={handleClickOpen}>Details</Button>
         </CardActions>
       </Card>
@@ -292,6 +337,8 @@ NftCard.propTypes = {
     listingTime: PropTypes.string.isRequired,
     offers: PropTypes.arrayOf(PropTypes.shape({
       id: PropTypes.string,
+      amount: PropTypes.number,
+      userId: PropTypes.string,
     })).isRequired,
     nft: PropTypes.shape({
       tokenId: PropTypes.string.isRequired,
