@@ -19,12 +19,24 @@ import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import {useEffect, useState} from 'react';
-import {getAllListings} from '../../api/WalletRequest';
+import Button from '@mui/material/Button';
+import {getAllListings, cancelListing} from '../../api/WalletRequest';
 
 function Row(props) {
-  const { row } = props;
+  const { row, setListingCancelled } = props;
   const defaultImageURL = 'https://firebasestorage.googleapis.com/v0/b/nft-trading-market-7e98b.appspot.com/o/images%2FNFT_marketplace.ico?alt=media&token=efcfd069-673b-4258-ba2f-e37a13819d8e';
   const [open, setOpen] = React.useState(false);
+
+  const handleCancelButton = async (data) => {
+    if (data.offers.length === 0) {
+      const res = await cancelListing(data.id);
+      console.log(res);
+      alert(`listing ${data.id} successfully cancelled`);
+      setListingCancelled(true);
+    } else {
+      console.log('listing cannot be cancelled when there are already offers');
+    }
+  };
 
   return (
     <>
@@ -44,6 +56,7 @@ function Row(props) {
         <TableCell align="left">{row.sellType}</TableCell>
         <TableCell align="left">{row.listingStatus}</TableCell>
         <TableCell align="left">{row.listingTime}</TableCell>
+        <TableCell align="left"><Button variant="contained" disabled={row.offers.length > 0 || row.listingStatus !== 'NEW'} onClick={() => handleCancelButton(row)}>Cancel</Button></TableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -56,7 +69,7 @@ function Row(props) {
                 <TableHead>
                   <TableRow>
                     <TableCell align="left">Amount</TableCell>
-                    <TableCell align="left">createdOn</TableCell>
+                    <TableCell align="left">Offer Initiated</TableCell>
                     <TableCell align="left">ExpirationTime</TableCell>
                     <TableCell align="left">Status</TableCell>
                   </TableRow>
@@ -110,6 +123,7 @@ Row.propTypes = {
     ).isRequired,
     name: PropTypes.string.isRequired,
   }).isRequired,
+  setListingCancelled: PropTypes.func.isRequired,
 };
 
 export default function CollapsibleTable() {
@@ -117,6 +131,7 @@ export default function CollapsibleTable() {
   const [user] = useState(
     localStorage.getItem('userObj') ? JSON.parse(localStorage.getItem('userObj')) : { },
   );
+  const [listingCancelled, setListingCancelled] = useState(false);
 
   const getData = async () => {
     const res = await getAllListings(user.id);
@@ -125,7 +140,7 @@ export default function CollapsibleTable() {
 
   useEffect(() => {
     getData();
-  }, []);
+  }, [listingCancelled]);
 
   return (
     <TableContainer component={Paper}>
@@ -137,11 +152,12 @@ export default function CollapsibleTable() {
             <TableCell align="left">Sale Type</TableCell>
             <TableCell align="left">Listing Status</TableCell>
             <TableCell align="left">Listing Time</TableCell>
+            <TableCell align="left">Action</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {rows.map((row) => (
-            <Row key={row.id} row={row} />
+            <Row key={row.id} row={row} setListingCancelled={setListingCancelled} />
           ))}
         </TableBody>
       </Table>
