@@ -96,19 +96,6 @@ export default function NftCard({ data }) {
     return text;
   };
 
-  const displayAmount = (obj) => {
-    let amount = 0;
-    if (data.sellType === 'PRICED') {
-      amount = obj.amount;
-    } else if (obj.offers.length === 0) {
-      amount = obj.amount;
-    } else {
-      amount = data.offers.map((offer) => offer.amount)
-        .reduce((x, y) => Math.max(x, y), -Infinity);
-    }
-    return amount;
-  };
-
   const hasMadeOffers = (obj) => {
     if (obj.offers && obj.offers.length > 0) {
       return obj.offers.map((offer) => offer.userId).includes(user.id);
@@ -149,7 +136,7 @@ export default function NftCard({ data }) {
             { displayPriceText(data) }
             {' '}
             <strong>
-              { displayAmount(data) }
+              { data.price }
               {' '}
               { data.currencyType }
             </strong>
@@ -331,6 +318,7 @@ NftCard.propTypes = {
   data: PropTypes.shape({
     id: PropTypes.string.isRequired,
     amount: PropTypes.number,
+    price: PropTypes.number,
     currencyType: PropTypes.string.isRequired,
     sellType: PropTypes.string.isRequired,
     listingStatus: PropTypes.string.isRequired,
