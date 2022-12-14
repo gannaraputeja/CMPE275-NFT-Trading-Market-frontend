@@ -32,6 +32,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { buyNFT } from '../../api/NFTRequest';
 // import SelectUnstyled from '@mui/base/SelectUnstyled';
 // import OptionUnstyled from '@mui/base/OptionUnstyled';
 
@@ -58,8 +59,21 @@ export default function NftCard({ data }) {
     setShowDetails(false);
   };
 
-  const handleBuy = () => {
-
+  const handleBuy = async (listing) => {
+    const buyNftObj = {
+      listingId: listing.id,
+      nftTokenId: listing.nft.id,
+      userId: user.id,
+      currencyType: listing.currencyType,
+    };
+    try {
+      console.log(buyNftObj);
+      const res = await buyNFT(buyNftObj);
+      console.log(res.data);
+    } catch (err) {
+      console.log('Failed to buy NFT.', err);
+      alert('Failed to buy NFT.');
+    }
   };
 
   const handleOpenMakeNewOffer = (e) => {
@@ -149,7 +163,7 @@ export default function NftCard({ data }) {
           </Typography> */}
         </CardContent>
         <CardActions>
-          { data.sellType === 'PRICED' ? <Button size="small" color="success" variant="contained" onClick={handleBuy}>BUY</Button>
+          { data.sellType === 'PRICED' ? <Button size="small" color="success" variant="contained" onClick={() => handleBuy(data)}>BUY</Button>
             : (hasMadeOffers(data)
               ? <Button size="small" color="secondary" variant="contained" onClick={navigateToListings}>View Offers</Button>
               : <Button size="small" color="secondary" variant="contained" onClick={handleOpenMakeNewOffer}>Make an Offer</Button>) }
