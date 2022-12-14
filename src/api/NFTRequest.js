@@ -10,3 +10,5 @@ export const getPersonalNFTs = (userId) => API.get(`/api/v1/wallet/getAllNfts/${
 export const createNFT = (data) => API.post('/api/v1/wallet/createNft', data);
 
 export const buyNFT = (data) => API.post('/api/v1/wallet/buyNft', data);
+
+export const makeOffer = (data) => API.post('/api/v1/listing/makeOffer', data);
