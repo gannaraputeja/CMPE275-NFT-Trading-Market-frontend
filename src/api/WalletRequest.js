@@ -10,3 +10,5 @@ export const getAllNfts = (userId) => API.get(`/api/v1/wallet/getAllNfts/${userI
 export const getAllCurrencies = (userId) => API.get(`/api/v1/wallet/getAllCurrencyAmounts/${userId}`);
 
 export const currencyTransaction = (data) => API.post('/api/v1/currencyTransaction/createDepositOrWithdrawTransaction', data);
+
+export const getAllListings = (userId) => API.get(`/api/v1/listing/getAllListings/${userId}`);

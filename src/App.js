@@ -50,7 +50,7 @@ function App() {
   const onSuccess = (res) => {
     // console.log('success:', res);
     googleLogIn(res.tokenObj.id_token).then((response) => {
-      // console.log(response);
+      console.log(response);
       localStorage.setItem('auth', 'google');
       const isVerified = response.data.enabled;
       if (isVerified) {
