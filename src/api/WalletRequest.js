@@ -5,6 +5,13 @@ import BACKEND_URL from './config';
 
 const API = axios.create({ baseURL: BACKEND_URL });
 
+API.interceptors.request.use((req) => {
+  if (localStorage.getItem('userObj')) {
+    req.headers.Authorization = `Bearer ${JSON.parse(localStorage.getItem('userObj')).jwt}`;
+  }
+  return req;
+});
+
 export const getAllNfts = (userId) => API.get(`/api/v1/wallet/getAllNfts/${userId}`);
 
 export const getAllCurrencies = (userId) => API.get(`/api/v1/wallet/getAllCurrencyAmounts/${userId}`);
