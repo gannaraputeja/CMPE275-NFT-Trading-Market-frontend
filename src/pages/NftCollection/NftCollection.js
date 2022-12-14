@@ -28,7 +28,7 @@ function NftCollection() {
     try {
       const res = await getPersonalNFTs(user.id);
       setNFTs(res.data);
-      // console.log(res.data);
+      console.log(res.data);
     } catch (err) {
       console.log('Failed to retrieve NFTs.', err);
     }
