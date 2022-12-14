@@ -147,6 +147,7 @@ export default function CollapsibleTable() {
 
   useEffect(() => {
     getData();
+    setListingCancelled(false);
   }, [listingCancelled]);
 
   return (
