@@ -143,8 +143,15 @@ export default function NftCard({ data, setMadeTransaction }) {
     return false;
   };
 
-  const navigateToListings = () => {
-    navigate('/nftsale');
+  const hasMadeHighestOffer = (obj) => {
+    if (obj.offers.length === 0) {
+      return false;
+    }
+    return obj.offers.reduce((x, y) => (x.amount < y.amount ? y : x)).userId === user.id;
+  };
+
+  const handleCancelOffer = () => {
+
   };
 
   return (
@@ -253,15 +260,27 @@ export default function NftCard({ data, setMadeTransaction }) {
             <span style={{ fontWeight: 'bold' }}>Description: </span>
             { data.nft.description }
           </DialogContentText>
-          <DialogContentText>
-            <span style={{ fontWeight: 'bold' }}>Offers: </span>
-            { data.offers.length }
-          </DialogContentText>
+          {hasMadeOffers(data)
+              && (
+              <>
+                <DialogContentText>
+                  <span style={{fontWeight: 'bold'}}>Offer Price: </span>
+                  {data.offers.find((off) => off.userId === user.id).amount}
+                </DialogContentText>
+                <DialogContentText>
+                  <span style={{fontWeight: 'bold'}}>Offer Created Date: </span>
+                  {data.offers.find((off) => off.userId === user.id).createdOn}
+                </DialogContentText>
+                <DialogContentText>
+                  <span style={{fontWeight: 'bold'}}>Offer Expiration Date: </span>
+                  {data.offers.find((off) => off.userId === user.id).expirationTime}
+                </DialogContentText>
+              </>
+              )}
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseDetails} autoFocus>
-            Close
-          </Button>
+          { hasMadeOffers(data) && !hasMadeHighestOffer(data) && <Button onClick={() => handleCancelOffer()} color="error" variant="contained"> Cancel Offer </Button>}
+          <Button onClick={handleCloseDetails} autoFocus> Close </Button>
         </DialogActions>
       </Dialog>
 
@@ -312,6 +331,7 @@ export default function NftCard({ data, setMadeTransaction }) {
                   ),
                 }} */
                 value={price}
+                type="number"
                 onChange={(e) => setPrice(e.target.value)}
                 variant="outlined"
               />
@@ -366,6 +386,8 @@ NftCard.propTypes = {
       id: PropTypes.string,
       amount: PropTypes.number,
       userId: PropTypes.string,
+      expirationTime: PropTypes.string,
+      createdOn: PropTypes.string,
     })).isRequired,
     nft: PropTypes.shape({
       tokenId: PropTypes.string.isRequired,
