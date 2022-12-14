@@ -82,8 +82,8 @@ export default function OwnNft({ data, setListed }) {
           </Typography> */}
         </CardContent>
         <CardActions>
-          {data.listing === null
-            ? <Button size="small" color="error" variant="contained" onClick={handleOpenSaleForm} disabled={data.listing !== null}>SELL</Button>
+          {data.listings.length === 0
+            ? <Button size="small" color="error" variant="contained" onClick={handleOpenSaleForm} disabled={data.listings.length !== 0}>SELL</Button>
             : <Button size="small" color="error" variant="contained" onClick={navigateToListings}>View Offers</Button>}
           <Button size="small" color="inherit" variant="text" onClick={handleClickOpen}>Details</Button>
         </CardActions>
@@ -203,9 +203,11 @@ OwnNft.propTypes = {
       firstname: PropTypes.string.isRequired,
       lastname: PropTypes.string.isRequired,
     }).isRequired,
-    listing: PropTypes.shape({
-      id: PropTypes.string.isRequired,
-    }),
+    listings: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.string.isRequired,
+      }),
+    ),
   }).isRequired,
   setListed: PropTypes.func.isRequired,
 };

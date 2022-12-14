@@ -32,16 +32,17 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import {buyNFT, makeOffer} from '../../api/NFTRequest';
 // import SelectUnstyled from '@mui/base/SelectUnstyled';
 // import OptionUnstyled from '@mui/base/OptionUnstyled';
 
-export default function NftCard({ data }) {
+export default function NftCard({ data, setMadeTransaction }) {
   const [user] = useState(
     localStorage.getItem('userObj') ? JSON.parse(localStorage.getItem('userObj')) : { },
   );
   const navigate = useNavigate();
-  const [price, setPrice] = React.useState();
-  const [expirationTime, setExpirationTime] = React.useState(dayjs('2022-04-07'));
+  const [price, setPrice] = React.useState(0);
+  const [expirationTime, setExpirationTime] = React.useState(dayjs('2022-12-15'));
 
   const [showDetails, setShowDetails] = React.useState(false);
   const [openMakeNewOffer, setOpenMakeNewOffer] = React.useState(false);
@@ -58,26 +59,65 @@ export default function NftCard({ data }) {
     setShowDetails(false);
   };
 
-  const handleBuy = () => {
-
+  const handleBuy = async (listing) => {
+    const buyNftObj = {
+      listingId: listing.id,
+      nftTokenId: listing.nft.tokenId,
+      userId: user.id,
+      currencyType: listing.currencyType,
+    };
+    try {
+      console.log(buyNftObj);
+      const res = await buyNFT(buyNftObj);
+      setMadeTransaction(true);
+      console.log(res.data);
+    } catch (err) {
+      console.log('Failed to buy NFT.', err);
+      alert(err.response.data.message);
+    }
   };
 
   const handleOpenMakeNewOffer = (e) => {
-    console.log(data.id);
+    // console.log(data.id);
     setOpenMakeNewOffer(true);
   };
 
   const handleCloseMakeNewOffer = () => {
-    setPrice();
-    setExpirationTime();
+    setPrice(0);
+    setExpirationTime(dayjs('2022-12-15'));
     setOpenMakeNewOffer(false);
   };
 
-  const handleSubmitOffer = () => {
-    console.log(price, expirationTime);
-    setOpenMakeNewOffer(false);
-    setPrice();
-    setExpirationTime();
+  const handleSubmitOffer = async (listing) => {
+    if (listing.offers.length === 0 && price < listing.price) {
+      alert('Make offer price has to be at least minimum ask price.');
+    } else if (listing.offers.length > 0 && price <= listing.price) {
+      alert('Make offer price has to be higher than current highest price.');
+    } else {
+      const expiry = dayjs().add(expirationTime.hour(), 'h')
+        .add(expirationTime.minute(), 'm').add(expirationTime.second(), 's');
+      const offerObj = {
+        listingId: listing.id,
+        nftTokenId: listing.nft.tokenId,
+        userId: user.id,
+        amount: price,
+        expirationTime: expiry.format('YYYY-MM-DD HH:mm:ss'),
+      };
+      try {
+        console.log(offerObj);
+        const res = await makeOffer(offerObj);
+        console.log(res.data);
+        setMadeTransaction(true);
+        alert('Successfully made an offer.');
+      } catch (err) {
+        console.log('Failed to make offer.', err);
+        alert(err.response.data.message);
+      } finally {
+        setOpenMakeNewOffer(false);
+        setPrice(0);
+        setExpirationTime(dayjs('2022-12-15'));
+      }
+    }
   };
 
   const handleCurrencyChange = (e) => {
@@ -103,8 +143,15 @@ export default function NftCard({ data }) {
     return false;
   };
 
-  const navigateToListings = () => {
-    navigate('/nftsale');
+  const hasMadeHighestOffer = (obj) => {
+    if (obj.offers.length === 0) {
+      return false;
+    }
+    return obj.offers.reduce((x, y) => (x.amount < y.amount ? y : x)).userId === user.id;
+  };
+
+  const handleCancelOffer = () => {
+
   };
 
   return (
@@ -149,10 +196,9 @@ export default function NftCard({ data }) {
           </Typography> */}
         </CardContent>
         <CardActions>
-          { data.sellType === 'PRICED' ? <Button size="small" color="success" variant="contained" onClick={handleBuy}>BUY</Button>
-            : (hasMadeOffers(data)
-              ? <Button size="small" color="secondary" variant="contained" onClick={navigateToListings}>View Offers</Button>
-              : <Button size="small" color="secondary" variant="contained" onClick={handleOpenMakeNewOffer}>Make an Offer</Button>) }
+          { data.sellType === 'PRICED' && <Button size="small" color="success" variant="contained" onClick={() => handleBuy(data)}>BUY</Button> }
+          { data.sellType === 'AUCTION' && <Button size="small" color="secondary" variant="contained" onClick={handleOpenMakeNewOffer}>Make an Offer</Button> }
+          {/* { hasMadeOffers(data) && <Button size="small" color="secondary" variant="contained" onClick={navigateToListings}>View Offers</Button> } */}
           <Button size="small" color="inherit" variant="text" onClick={handleClickOpen}>Details</Button>
         </CardActions>
       </Card>
@@ -214,11 +260,27 @@ export default function NftCard({ data }) {
             <span style={{ fontWeight: 'bold' }}>Description: </span>
             { data.nft.description }
           </DialogContentText>
+          {hasMadeOffers(data)
+              && (
+              <>
+                <DialogContentText>
+                  <span style={{fontWeight: 'bold'}}>Offer Price: </span>
+                  {data.offers.find((off) => off.userId === user.id).amount}
+                </DialogContentText>
+                <DialogContentText>
+                  <span style={{fontWeight: 'bold'}}>Offer Created Date: </span>
+                  {data.offers.find((off) => off.userId === user.id).createdOn}
+                </DialogContentText>
+                <DialogContentText>
+                  <span style={{fontWeight: 'bold'}}>Offer Expiration Date: </span>
+                  {data.offers.find((off) => off.userId === user.id).expirationTime}
+                </DialogContentText>
+              </>
+              )}
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseDetails} autoFocus>
-            Close
-          </Button>
+          { hasMadeOffers(data) && !hasMadeHighestOffer(data) && <Button onClick={() => handleCancelOffer()} color="error" variant="contained"> Cancel Offer </Button>}
+          <Button onClick={handleCloseDetails} autoFocus> Close </Button>
         </DialogActions>
       </Dialog>
 
@@ -245,7 +307,7 @@ export default function NftCard({ data }) {
                 label="Offer Price"
                 id="standard-start-adornment"
                 sx={{ width: '230PX' }}
-                InputProps={{
+                /* InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
                       <Select
@@ -267,8 +329,9 @@ export default function NftCard({ data }) {
 
                     </InputAdornment>
                   ),
-                }}
+                }} */
                 value={price}
+                type="number"
                 onChange={(e) => setPrice(e.target.value)}
                 variant="outlined"
               />
@@ -297,13 +360,9 @@ export default function NftCard({ data }) {
           <Grid container display="flex" justifyContent="space-evenly">
             <Grid item>
               <Button onClick={handleCloseMakeNewOffer} color="error" variant="contained">CANCEL</Button>
-
             </Grid>
             <Grid item>
-              <Button onClick={handleSubmitOffer} autoFocus color="success" variant="contained">
-
-                SUBMIT
-              </Button>
+              <Button onClick={() => handleSubmitOffer(data)} autoFocus color="success" variant="contained">SUBMIT</Button>
             </Grid>
 
           </Grid>
@@ -327,6 +386,8 @@ NftCard.propTypes = {
       id: PropTypes.string,
       amount: PropTypes.number,
       userId: PropTypes.string,
+      expirationTime: PropTypes.string,
+      createdOn: PropTypes.string,
     })).isRequired,
     nft: PropTypes.shape({
       tokenId: PropTypes.string.isRequired,
@@ -350,4 +411,5 @@ NftCard.propTypes = {
       }).isRequired,
     }).isRequired,
   }).isRequired,
+  setMadeTransaction: PropTypes.func.isRequired,
 };

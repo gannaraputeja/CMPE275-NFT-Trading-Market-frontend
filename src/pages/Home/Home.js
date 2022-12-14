@@ -23,6 +23,7 @@ function Home() {
   const [defaultPriceRange, setDefaultPriceRange] = useState([5, 30]);
   const [priceRange, setPriceRange] = useState([5, 30]);
   const [sortBy, setSortBy] = useState('listingTime');
+  const [madeTransaction, setMadeTransaction] = useState(false);
 
   const getListings = async () => {
     try {
@@ -67,7 +68,7 @@ function Home() {
 
   React.useEffect(() => {
     getListings();
-  }, []);
+  }, [madeTransaction]);
 
   return (
     <>
@@ -152,7 +153,7 @@ function Home() {
               There are no listings.
             </Alert>
           )
-          : data.map((listing) => <NftCard data={listing} key={listing.id} />)}
+          : data.map((listing) => <NftCard data={listing} key={listing.id} setMadeTransaction={setMadeTransaction} />)}
       </Grid>
     </>
   );

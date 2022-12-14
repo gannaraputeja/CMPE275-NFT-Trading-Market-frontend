@@ -50,56 +50,63 @@ function Row(props) {
     <>
       <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
         <TableCell>
-          <IconButton
-            aria-label="expand row"
-            size="small"
-            onClick={() => setOpen(!open)}
-          >
-            {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-          </IconButton>
+          { row.sellType === 'AUCTION'
+              && (
+              <IconButton
+                aria-label="expand row"
+                size="small"
+                onClick={() => setOpen(!open)}
+              >
+                {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+              </IconButton>
+              )}
         </TableCell>
         <TableCell component="th" scope="row">
           <img src={row.nft.imageURL ? row.nft.imageURL : defaultImageURL} alt="" height="50px" width="50px" />
         </TableCell>
+        <TableCell align="left">{row.nft.name}</TableCell>
         <TableCell align="left">{row.sellType}</TableCell>
         <TableCell align="left">{row.listingStatus}</TableCell>
         <TableCell align="left">{row.listingTime}</TableCell>
         <TableCell align="left"><Button variant="contained" disabled={row.offers.length > 0 || row.listingStatus !== 'NEW'} onClick={() => handleCancelButton(row)}>Cancel</Button></TableCell>
       </TableRow>
       <TableRow>
-        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-          <Collapse in={open} timeout="auto" unmountOnExit>
-            <Box sx={{ margin: 1 }}>
-              <Typography variant="h6" gutterBottom component="div">
-                Auction Offers
-              </Typography>
-              <Table size="small" aria-label="offers">
-                <TableHead>
-                  <TableRow>
-                    <TableCell align="left">Amount</TableCell>
-                    <TableCell align="left">Offer Initiated</TableCell>
-                    <TableCell align="left">ExpirationTime</TableCell>
-                    <TableCell align="left">Status</TableCell>
-                    <TableCell align="left">OfferAction</TableCell>
+        {row.sellType === 'AUCTION'
+            && (
+            <TableCell style={{paddingBottom: 0, paddingTop: 0}} colSpan={6}>
+              <Collapse in={open} timeout="auto" unmountOnExit>
+                <Box sx={{margin: 1}}>
+                  <Typography variant="h6" gutterBottom component="div">
+                    Auction Offers
+                  </Typography>
+                  <Table size="small" aria-label="offers">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell align="left">Amount</TableCell>
+                        <TableCell align="left">Offer Initiated</TableCell>
+                        <TableCell align="left">ExpirationTime</TableCell>
+                        <TableCell align="left">Status</TableCell>
+                        <TableCell align="left">OfferAction</TableCell>
                   </TableRow>
-                </TableHead>
-                <TableBody>
-                  {row.offers.map((offerRow) => (
-                    <TableRow key={offerRow.createdOn}>
-                      <TableCell align="left">{offerRow.amount}</TableCell>
-                      <TableCell component="th" scope="row">
-                        {offerRow.createdOn}
-                      </TableCell>
-                      <TableCell align="left">{offerRow.expirationTime}</TableCell>
-                      <TableCell align="left">{offerRow.status}</TableCell>
-                      <TableCell align="left"><Button variant="contained" disabled={offerRow.status !== 'NEW'} onClick={() => handleAcceptButton(offerRow)}>{offerRow.status === 'NEW' ? 'ACCEPT' : offerRow.status}</Button></TableCell>
+                    </TableHead>
+                    <TableBody>
+                      {row.offers.map((offerRow) => (
+                        <TableRow key={offerRow.createdOn}>
+                          <TableCell align="left">{offerRow.amount}</TableCell>
+                          <TableCell component="th" scope="row">
+                            {offerRow.createdOn}
+                          </TableCell>
+                          <TableCell align="left">{offerRow.expirationTime}</TableCell>
+                          <TableCell align="left">{offerRow.status}</TableCell>
+                          <TableCell align="left"><Button variant="contained" disabled={offerRow.status !== 'NEW'} onClick={() => handleAcceptButton(offerRow)}>{offerRow.status === 'NEW' ? 'ACCEPT' : offerRow.status}</Button></TableCell>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </Box>
-          </Collapse>
-        </TableCell>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </Box>
+              </Collapse>
+            </TableCell>
+            )}
       </TableRow>
     </>
   );
@@ -150,6 +157,7 @@ export default function CollapsibleTable() {
 
   useEffect(() => {
     getData();
+    setListingCancelled(false);
   }, [listingCancelled]);
 
   return (
@@ -159,6 +167,7 @@ export default function CollapsibleTable() {
           <TableRow>
             <TableCell />
             <TableCell align="left">NFT Image</TableCell>
+            <TableCell align="left">NFT Name</TableCell>
             <TableCell align="left">Sale Type</TableCell>
             <TableCell align="left">Listing Status</TableCell>
             <TableCell align="left">Listing Time</TableCell>
