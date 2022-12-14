@@ -17,6 +17,7 @@ function NftCollection() {
   );
   const [openNewNftForm, setOpenNewNftForm] = React.useState(false);
   const [created, setCreated] = useState(false);
+  const [listed, setListed] = useState(false);
   const [nfts, setNFTs] = useState([]);
 
   const handleCloseNFTForm = () => {
@@ -36,7 +37,8 @@ function NftCollection() {
   React.useEffect(() => {
     getNFTs();
     setCreated(false);
-  }, [created]);
+    setListed(false);
+  }, [created, listed]);
 
   return (
     <>
@@ -69,7 +71,7 @@ function NftCollection() {
               You have no NFTs.
             </Alert>
           )
-          : nfts.map((nft) => <OwnNft data={nft} key={nft.tokenId} />)}
+          : nfts.map((nft) => <OwnNft data={nft} key={nft.tokenId} setListed={setListed} />)}
       </Grid>
       <NFTForm open={openNewNftForm} handleClose={handleCloseNFTForm} setCreated={setCreated} />
     </>

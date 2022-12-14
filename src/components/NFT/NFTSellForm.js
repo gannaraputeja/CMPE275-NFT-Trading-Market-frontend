@@ -18,7 +18,9 @@ import PropTypes from 'prop-types';
 import TextField from '@mui/material/TextField';
 import { createListing } from '../../api/ListingRequest';
 
-export default function NFTForm({ open, handleClose, tokenId }) {
+export default function NFTForm({
+  open, handleClose, tokenId, setListed,
+}) {
   const [user, setUser] = useState(
     localStorage.getItem('userObj') ? JSON.parse(localStorage.getItem('userObj')) : { },
   );
@@ -63,6 +65,7 @@ export default function NFTForm({ open, handleClose, tokenId }) {
     try {
       const res = await createListing(listingObj);
       alert('Successfully listed for sale');
+      setListed(true);
     } catch (err) {
       console.log('Failed to create listing.', err);
       alert('Failed to list for sale.');
@@ -154,4 +157,5 @@ NFTForm.propTypes = {
   open: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
   tokenId: PropTypes.string.isRequired,
+  setListed: PropTypes.func.isRequired,
 };
