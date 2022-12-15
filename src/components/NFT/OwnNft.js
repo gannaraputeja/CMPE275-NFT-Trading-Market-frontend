@@ -36,6 +36,8 @@ export default function OwnNft({ data, setListed }) {
     setSaleForm(true);
   };
 
+  const getNewListings = (nft) => nft.listings.filter((l) => l.listingStatus === 'NEW');
+
   const navigateToListings = () => {
     navigate('../nftsale');
   };
@@ -82,9 +84,13 @@ export default function OwnNft({ data, setListed }) {
           </Typography> */}
         </CardContent>
         <CardActions>
-          {data.listings.length === 0
-            ? <Button size="small" color="error" variant="contained" onClick={handleOpenSaleForm} disabled={data.listings.length !== 0}>SELL</Button>
-            : <Button size="small" color="error" variant="contained" onClick={navigateToListings}>View Offers</Button>}
+          {getNewListings(data).length === 0
+            ? <Button size="small" color="error" variant="contained" onClick={handleOpenSaleForm} disabled={getNewListings(data).length !== 0}>SELL</Button>
+            : (
+              <Button size="small" color="error" variant="contained" onClick={navigateToListings}>
+                {getNewListings(data)[0].sellType === 'PRICED' ? 'View Listing' : 'View Offers'}
+              </Button>
+            )}
           <Button size="small" color="inherit" variant="text" onClick={handleClickOpen}>Details</Button>
         </CardActions>
       </Card>

@@ -34,7 +34,7 @@ function Row(props) {
     if (data.offers.length === 0) {
       const res = await cancelListing(data.id);
       console.log(res);
-      alert(`listing ${data.id} successfully cancelled`);
+      alert('listing successfully cancelled');
       setListingCancelled(true);
     } else {
       console.log('listing cannot be cancelled when there are already offers');
