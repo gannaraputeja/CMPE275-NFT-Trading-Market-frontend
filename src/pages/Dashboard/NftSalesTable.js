@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
 /* eslint-disable react/jsx-filename-extension */
 import * as React from 'react';
 import Table from '@mui/material/Table';
@@ -20,7 +22,7 @@ const rows = [
   createData('Auctioned', 50),
 ];
 
-export default function NftSalesTable() {
+export default function NftSalesTable({ dashboardData }) {
   return (
     <TableContainer component={Paper} sx={{ margin: 5 }}>
       <Table sx={{ minWidth: 200 }} aria-label="simple table">
@@ -31,17 +33,41 @@ export default function NftSalesTable() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <TableRow
-              key={row.name}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-            >
-              <TableCell component="th" scope="row">
-                {row.name}
-              </TableCell>
-              <TableCell align="center">{row.calories}</TableCell>
-            </TableRow>
-          ))}
+          <TableRow
+            key="Active NFTs for Sale"
+            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+          >
+            <TableCell component="th" scope="row">
+              Active NFTs for Sale
+            </TableCell>
+            <TableCell align="center">
+              {dashboardData.totalActiveNFTSForSale}
+            </TableCell>
+          </TableRow>
+
+          <TableRow
+            key="Priced"
+            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+          >
+            <TableCell component="th" scope="row">
+              Priced
+            </TableCell>
+            <TableCell align="center">
+              {dashboardData.pricedActiveNFTSForSale}
+            </TableCell>
+          </TableRow>
+
+          <TableRow
+            key="Auctioned"
+            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+          >
+            <TableCell component="th" scope="row">
+              Auctioned
+            </TableCell>
+            <TableCell align="center">
+              {dashboardData.auctionedActiveNFTSForSale}
+            </TableCell>
+          </TableRow>
         </TableBody>
       </Table>
     </TableContainer>
