@@ -92,6 +92,7 @@ export default function NewNFTForm({ open, handleClose, setCreated }) {
   };
 
   const handleCancel = () => {
+    resetForm();
     handleClose();
   };
 
@@ -226,7 +227,14 @@ export default function NewNFTForm({ open, handleClose, setCreated }) {
 
         <DialogActions>
           <Button onClick={handleCancel} color="error" variant="contained">CANCEL</Button>
-          <Button onClick={handleCreateNewNft} autoFocus color="success" variant="contained">
+          <Button
+            onClick={handleCreateNewNft}
+            autoFocus
+            color="success"
+            variant="contained"
+            disabled={nftObject.name.length === 0 || nftObject.type.length === 0
+              || nftObject.description.length === 0}
+          >
             SUBMIT
           </Button>
         </DialogActions>
