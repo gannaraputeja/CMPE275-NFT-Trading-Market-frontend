@@ -1,7 +1,8 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable react/jsx-filename-extension */
 /* eslint-disable max-len */
 import {
-  Alert, Button, Grid, Typography,
+  Alert, Box, Button, Grid, Skeleton, Typography,
 } from '@mui/material';
 import React, { useState } from 'react';
 import { AddCircle } from '@mui/icons-material';
@@ -19,6 +20,7 @@ function NftCollection() {
   const [created, setCreated] = useState(false);
   const [listed, setListed] = useState(false);
   const [nfts, setNFTs] = useState([]);
+  const [isFetch, setIsFetch] = useState(false);
 
   const handleCloseNFTForm = () => {
     setOpenNewNftForm(false);
@@ -28,9 +30,11 @@ function NftCollection() {
     try {
       const res = await getPersonalNFTs(user.id);
       setNFTs(res.data);
+      setIsFetch(true);
       // console.log(res.data);
     } catch (err) {
       console.log('Failed to retrieve NFTs.', err);
+      setIsFetch(false);
     }
   };
 
@@ -55,23 +59,31 @@ function NftCollection() {
         </Grid>
       </Grid>
       <Grid container spacing={2} style={{ display: 'flex', padding: '10px' }}>
-        { nfts.length === 0
-          ? (
-            <Alert
-              severity="success"
-              sx={{
-                width: 700,
-                height: 60,
-                fontSize: 30,
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginBottom: '50px',
-              }}
-            >
-              You have no NFTs.
-            </Alert>
-          )
-          : nfts.map((nft) => <OwnNft data={nft} key={nft.tokenId} setListed={setListed} />)}
+        { isFetch ? (
+          nfts.length === 0
+            ? (
+              <Alert
+                severity="success"
+                sx={{
+                  width: 700,
+                  height: 60,
+                  fontSize: 30,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginBottom: '50px',
+                }}
+              >
+                You have no NFTs.
+              </Alert>
+            )
+            : nfts.map((nft) => <OwnNft data={nft} key={nft.tokenId} setListed={setListed} />)
+        ) : (
+          <Box sx={{ width: 300 }}>
+            <Skeleton />
+            <Skeleton animation="wave" />
+            <Skeleton animation={false} />
+          </Box>
+        )}
       </Grid>
       <NFTForm open={openNewNftForm} handleClose={handleCloseNFTForm} setCreated={setCreated} />
     </>

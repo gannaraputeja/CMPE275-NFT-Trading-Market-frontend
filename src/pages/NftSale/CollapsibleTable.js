@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-no-useless-fragment */
+/* eslint-disable react/prop-types */
 /* eslint-disable react/require-default-props */
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable react/jsx-filename-extension */
@@ -20,6 +22,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import {useEffect, useState} from 'react';
 import Button from '@mui/material/Button';
+import { Skeleton } from '@mui/material';
 import {getAllListings, cancelListing} from '../../api/WalletRequest';
 
 function Row(props) {
@@ -139,10 +142,12 @@ export default function CollapsibleTable() {
     localStorage.getItem('userObj') ? JSON.parse(localStorage.getItem('userObj')) : { },
   );
   const [listingCancelled, setListingCancelled] = useState(false);
+  const [isFetch, setIsFetch] = React.useState(false);
 
   const getData = async () => {
     const res = await getAllListings(user.id);
     setRows(res.data);
+    setIsFetch(true);
   };
 
   useEffect(() => {
@@ -151,25 +156,37 @@ export default function CollapsibleTable() {
   }, [listingCancelled]);
 
   return (
-    <TableContainer component={Paper}>
-      <Table aria-label="collapsible table">
-        <TableHead>
-          <TableRow>
-            <TableCell />
-            <TableCell align="left">NFT Image</TableCell>
-            <TableCell align="left">NFT Name</TableCell>
-            <TableCell align="left">Sale Type</TableCell>
-            <TableCell align="left">Listing Status</TableCell>
-            <TableCell align="left">Listing Time</TableCell>
-            <TableCell align="left">Action</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <Row key={row.id} row={row} setListingCancelled={setListingCancelled} />
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <>
+      {
+      isFetch ? (
+        <TableContainer component={Paper}>
+          <Table aria-label="collapsible table">
+            <TableHead>
+              <TableRow>
+                <TableCell />
+                <TableCell align="left">NFT Image</TableCell>
+                <TableCell align="left">NFT Name</TableCell>
+                <TableCell align="left">Sale Type</TableCell>
+                <TableCell align="left">Listing Status</TableCell>
+                <TableCell align="left">Listing Time</TableCell>
+                <TableCell align="left">Action</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {rows.map((row) => (
+                <Row key={row.id} row={row} setListingCancelled={setListingCancelled} />
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      ) : (
+        <Box sx={{ width: 800 }}>
+          <Skeleton animation="wave" />
+          <Skeleton animation="wave" />
+          <Skeleton animation={false} />
+        </Box>
+      )
+    }
+    </>
   );
 }
