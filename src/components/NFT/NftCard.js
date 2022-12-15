@@ -100,7 +100,7 @@ export default function NftCard({ data, setMadeTransaction }) {
       const offerObj = {
         listingId: listing.id,
         nftTokenId: listing.nft.tokenId,
-        userId: user.id,
+        user: {id: user.id},
         amount: price,
         expirationTime: expiry.format('YYYY-MM-DD HH:mm:ss'),
       };
@@ -139,7 +139,7 @@ export default function NftCard({ data, setMadeTransaction }) {
 
   const hasMadeOffers = (obj) => {
     if (obj.offers && obj.offers.length > 0) {
-      return obj.offers.map((offer) => offer.userId).includes(user.id);
+      return obj.offers.map((offer) => offer.user.id).includes(user.id);
     }
     return false;
   };
@@ -148,7 +148,7 @@ export default function NftCard({ data, setMadeTransaction }) {
     if (obj.offers.length === 0) {
       return false;
     }
-    return obj.offers.reduce((x, y) => (x.amount < y.amount ? y : x)).userId === user.id;
+    return obj.offers.reduce((x, y) => (x.amount < y.amount ? y : x)).user.id === user.id;
   };
 
   const handleCancelOffer = () => {
@@ -281,21 +281,21 @@ export default function NftCard({ data, setMadeTransaction }) {
               <>
                 <DialogContentText>
                   <span style={{fontWeight: 'bold'}}>Offer Price: </span>
-                  {data.offers.find((off) => off.userId === user.id).amount}
+                  {data.offers.find((off) => off.user.id === user.id).amount}
                 </DialogContentText>
                 <DialogContentText>
                   <span style={{fontWeight: 'bold'}}>Offer Created Date: </span>
-                  {data.offers.find((off) => off.userId === user.id).createdOn}
+                  {data.offers.find((off) => off.user.id === user.id).createdOn}
                 </DialogContentText>
                 <DialogContentText>
                   <span style={{fontWeight: 'bold'}}>Offer Expiration Date: </span>
-                  {data.offers.find((off) => off.userId === user.id).expirationTime}
+                  {data.offers.find((off) => off.user.id === user.id).expirationTime}
                 </DialogContentText>
               </>
               )}
         </DialogContent>
         <DialogActions>
-          { hasMadeOffers(data) && !hasMadeHighestOffer(data) && <Button onClick={() => handleCancelOffer()} color="error" variant="contained"> Cancel Offer </Button>}
+          { hasMadeOffers(data) && <Button onClick={() => handleCancelOffer()} disabled={hasMadeHighestOffer(data)} color="error" variant="contained"> Cancel Offer </Button>}
           <Button onClick={handleCloseDetails} autoFocus> Close </Button>
         </DialogActions>
       </Dialog>
@@ -401,7 +401,12 @@ NftCard.propTypes = {
     offers: PropTypes.arrayOf(PropTypes.shape({
       id: PropTypes.string,
       amount: PropTypes.number,
-      userId: PropTypes.string,
+      // userId: PropTypes.string,
+      user: PropTypes.shape({
+        id: PropTypes.string,
+        firstname: PropTypes.string,
+        lastname: PropTypes.string,
+      }),
       expirationTime: PropTypes.string,
       createdOn: PropTypes.string,
     })).isRequired,
