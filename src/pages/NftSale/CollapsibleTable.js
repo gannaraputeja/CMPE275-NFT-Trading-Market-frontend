@@ -90,6 +90,7 @@ function Row(props) {
                     <TableHead>
                       <TableRow>
                         <TableCell align="left">Amount</TableCell>
+                        <TableCell align="left">Offer Initiated By</TableCell>
                         <TableCell align="left">Offer Initiated</TableCell>
                         <TableCell align="left">ExpirationTime</TableCell>
                         <TableCell align="left">Status</TableCell>
@@ -105,6 +106,11 @@ function Row(props) {
                               &nbsp;
                               {row.currencyType}
                             </div>
+                          </TableCell>
+                          <TableCell align="left">
+                            {offerRow.user.firstname}
+                            {' '}
+                            {offerRow.user.lastname}
                           </TableCell>
                           <TableCell component="th" scope="row">
                             {offerRow.createdOn}
@@ -166,6 +172,7 @@ export default function CollapsibleTable() {
 
   const getData = async () => {
     const res = await getAllListings(user.id);
+    // console.log(res.data);
     setRows(res.data);
     setIsFetch(true);
   };
