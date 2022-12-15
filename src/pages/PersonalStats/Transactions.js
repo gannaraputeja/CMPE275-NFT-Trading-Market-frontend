@@ -48,9 +48,9 @@ const columns = [
   // },
   {
     field: 'availableAmount',
-    headerName: 'availableAmount',
+    headerName: 'available Balance',
     type: 'number',
-    width: 80,
+    width: 200,
   },
   {
     field: 'user.firstname',
