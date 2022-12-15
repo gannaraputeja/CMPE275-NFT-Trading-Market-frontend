@@ -5,6 +5,7 @@ import React from 'react';
 import PeriodFilter from '../Dashboard/PeriodFilter';
 import CurrencyFilter from '../Dashboard/CurrencyFilter';
 import Transactions from './Transactions';
+import { getPersonalTransactions } from '../../api/PersonalTransactions';
 
 const transactions = [
   {
@@ -109,7 +110,23 @@ function SystemTransactionStats() {
   const [period, setPeriod] = React.useState('');
   const [currency, setCurrency] = React.useState('');
   const [transactionsData, setTransactionsData] = React.useState([]);
+  const [changedState, setChangedState] = React.useState(0);
+  const [user] = React.useState(
+    localStorage.getItem('userObj') ? JSON.parse(localStorage.getItem('userObj')) : { },
+  );
 
+  const getPersonalTransactionStats = async () => {
+    const newPeriod = period == null ? 1 : period;
+    try {
+      const res = await getPersonalTransactions(user.id, newPeriod, currency);
+      console.log('Data : ', res.data);
+      setTransactionsData(res.data);
+      return res.data;
+    } catch (err) {
+      console.log('Failed to getPersonalTransactionStats.', err);
+      return err;
+    }
+  };
   const handlePeriodState = (value) => {
     setPeriod(value);
   };
@@ -120,9 +137,11 @@ function SystemTransactionStats() {
 
   const handleSubmit = () => {
     console.log(period, currency);
-    const filterData = [...transactions];
-    setTransactionsData(filterData.filter((row) => row.transactionDate >= (Date.now() - period)
-    && row.currency === currency));
+    // const filterData = [...transactions];
+    setChangedState((prev) => prev + 1);
+    console.log('prev in handle submit : ', changedState);
+    // setTransactionsData(filterData.filter((row) => row.transactionDate >= (Date.now() - period)
+    // && row.currency === currency));
   };
 
   const handleReset = () => {
@@ -132,9 +151,11 @@ function SystemTransactionStats() {
   };
 
   React.useEffect(() => {
+    console.log('prev in use effect: ', changedState);
     // backend call to fetch all the results.
-    setTransactionsData(transactions);
-  }, []);
+    getPersonalTransactionStats();
+  }, [changedState]);
+
   return (
     <Container>
       <Box sx={{ display: 'flex', gridTemplateRows: 'repeat(2, 1fr)', justifyContent: 'center' }}>

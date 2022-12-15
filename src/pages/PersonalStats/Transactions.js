@@ -8,58 +8,58 @@ import { DataGrid } from '@mui/x-data-grid';
 import { Avatar, Chip } from '@mui/material';
 
 const columns = [
+  // {
+  //   field: 'avatar',
+  //   headerName: 'Image',
+  //   width: 100,
+  //   renderCell: (params) => (
+  //     <div style={{ padding: 5, justifyContent: 'center' }}>
+  //       <img alt="#" src={params.value} height="50px" width="50px" />
+  //     </div>
+  //   ),
+  // },
   {
-    field: 'avatar',
-    headerName: 'Image',
-    width: 100,
-    renderCell: (params) => (
-      <div style={{ padding: 5, justifyContent: 'center' }}>
-        <img alt="#" src={params.value} height="50px" width="50px" />
-      </div>
-    ),
-  },
-  { field: 'nftName', headerName: 'NFT Name', width: 100 },
-  {
-    field: 'nftType',
-    headerName: 'NFT Type',
+    field: 'actionType',
+    headerName: 'Action',
     width: 150,
-    editable: true,
+    // editable: true,
   },
   {
-    field: 'buyer',
-    headerName: 'Buyer',
+    field: 'currencyType',
+    headerName: 'Currency',
+    width: 80,
+    // editable: true,
+  },
+  {
+    field: 'amount',
+    headerName: 'Amount',
     width: 80,
     editable: true,
   },
+  // {
+  //   field: 'listingType',
+  //   headerName: 'Listing Type',
+  //   description: 'This column has a value getter and is not sortable.',
+  //   width: 120,
+  //   renderCell: (params) => (
+  //     <Chip label={params.value === 'priced' ? 'Priced' : 'Auctioned'}
+  //  color={params.value === 'priced' ? 'info' : 'success'} />
+  //   ),
+  // },
   {
-    field: 'seller',
-    headerName: 'Seller',
-    width: 80,
-    editable: true,
-  },
-  {
-    field: 'listingType',
-    headerName: 'Listing Type',
-    description: 'This column has a value getter and is not sortable.',
-    width: 120,
-    renderCell: (params) => (
-      <Chip label={params.value === 'priced' ? 'Priced' : 'Auctioned'} color={params.value === 'priced' ? 'info' : 'success'} />
-    ),
-  },
-  {
-    field: 'price',
-    headerName: 'Price',
+    field: 'availableAmount',
+    headerName: 'availableAmount',
     type: 'number',
     width: 80,
   },
   {
-    field: 'currency',
-    headerName: 'Currency',
+    field: 'user.username',
+    headerName: 'user',
     type: 'string',
     width: 80,
   },
   {
-    field: 'transactionDate',
+    field: 'createdOn',
     headerName: 'Transaction Date',
     type: 'Date',
     width: 200,

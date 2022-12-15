@@ -22,8 +22,8 @@ function PeriodFilter({ currency, handleCurrencyState }) {
       >
         <option aria-label="None" value="" />
         <optgroup label="Supported Currencies">
-          <option value={1}>BTC</option>
-          <option value={2}>ETH</option>
+          <option value="BTC">BTC</option>
+          <option value="ETH">ETH</option>
         </optgroup>
         <optgroup label="All Currencies">
           <option value={3}>USDT</option>
