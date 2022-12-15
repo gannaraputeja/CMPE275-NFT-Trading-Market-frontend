@@ -12,4 +12,4 @@ API.interceptors.request.use((req) => {
   return req;
 });
 
-export const getSystemTransactionStats = () => API.get('/api/v1/systemtransaction/stats');
+export const getSystemTransactionStats = (period, currencyType) => API.get('/api/v1/systemtransaction/stats', {params: {period, currencyType}});

@@ -20,7 +20,8 @@ function SystemTransactionStats() {
 
   const getSystemTransactions = async () => {
     try {
-      const res = await getSystemTransactionStats();
+      const newPeriod = period == null ? 1 : period;
+      const res = await getSystemTransactionStats(newPeriod, currency);
       setSystemTransactionsData(res.data);
       return res.data;
     } catch (err) {
