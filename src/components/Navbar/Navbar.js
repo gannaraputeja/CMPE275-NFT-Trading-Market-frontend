@@ -187,6 +187,10 @@ export default function MiniDrawer() {
     navigate('/user/dashboard');
   };
 
+  const openUserProfile = () => {
+    navigate('/user/profile');
+  };
+
   const onLogoutSuccess = () => {
     localStorage.removeItem('access-token');
     localStorage.removeItem('userObj');
@@ -283,7 +287,7 @@ export default function MiniDrawer() {
                 <MenuItem
                   key="profile"
                   style={{ display: 'block', justifyContent: 'center' }}
-                  onClick={handleCloseUserMenu}
+                  onClick={openUserProfile}
                 >
                   <Typography textAlign="center">Profile</Typography>
                 </MenuItem>

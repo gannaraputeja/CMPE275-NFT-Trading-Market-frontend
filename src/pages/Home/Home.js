@@ -1,15 +1,19 @@
+/* eslint-disable no-nested-ternary */
+/* eslint-disable react/jsx-no-undef */
 /* eslint-disable no-sparse-arrays */
 /* eslint-disable react/jsx-filename-extension */
 /* eslint-disable no-unused-vars */
 /* eslint-disable max-len */
 import {
-  Alert, Button,
+  Alert, Backdrop, Button,
+  CircularProgress,
   FormControl, Grid, InputLabel, MenuItem, Select, Typography,
 } from '@mui/material';
 import React, { useState } from 'react';
 import Slider from '@mui/material/Slider';
 import Box from '@mui/material/Box';
 import {FilterAlt, FilterAltOff, Sort} from '@mui/icons-material';
+import Skeleton from '@mui/material/Skeleton';
 import NftCard from '../../components/NFT/NftCard';
 import { getAllNewListingsWithNewOffers } from '../../api/ListingRequest';
 
@@ -24,6 +28,7 @@ function Home() {
   const [priceRange, setPriceRange] = useState([5, 30]);
   const [sortBy, setSortBy] = useState('listingTime');
   const [madeTransaction, setMadeTransaction] = useState(false);
+  const [isFetch, setIsFetch] = useState(false);
 
   const getListings = async () => {
     try {
@@ -34,8 +39,10 @@ function Home() {
       const prices = res.data.map((listing) => listing.price);
       setDefaultPriceRange([Math.min(...prices) - 5, Math.max(...prices) + 5]);
       setPriceRange([Math.min(...prices) - 5, Math.max(...prices) + 5]);
+      setIsFetch(true);
     } catch (err) {
       console.log('Failed to getAllNewListingsWithNewOffers.', err);
+      setIsFetch(false);
     }
   };
 
@@ -46,8 +53,34 @@ function Home() {
   const applyFilter = () => {
     const filteredData = listings.filter((listing) => (nftType === 'BOTH' ? true : listing.sellType === nftType))
       .filter((listing) => priceRange[0] < listing.price && priceRange[1] > listing.price);
-    setData(filteredData);
-    // setData(filteredData.sort((x, y) => (x.name > y.name ? 1 : 0)));
+    // setData(filteredData);
+    if (sortBy === 'name') {
+      setData(filteredData.sort((a, b) => {
+        const fa = a.nft.name.toLowerCase();
+        const fb = b.nft.name.toLowerCase();
+
+        if (fa < fb) {
+          return -1;
+        }
+        if (fa > fb) {
+          return 1;
+        }
+        return 0;
+      }));
+    }
+
+    if (sortBy === 'listingTime') {
+      setData(filteredData.sort((a, b) => new Date(a.listingTime).getTime() - new Date(b.listingTime).getTime()));
+    }
+
+    if (sortBy === 'priceLowToHigh') {
+      setData(filteredData.sort((a, b) => a.price - b.price));
+    }
+
+    if (sortBy === 'priceHighToLow') {
+      setData(filteredData.sort((a, b) => b.price - a.price));
+    }
+    // setData([]);
   };
 
   const clearFilter = () => {
@@ -68,6 +101,7 @@ function Home() {
 
   React.useEffect(() => {
     getListings();
+    console.log(listings);
   }, [madeTransaction]);
 
   return (
@@ -92,7 +126,7 @@ function Home() {
             </Select>
           </FormControl>
         </Grid>
-        {/* <Grid item xs={2}>
+        <Grid item xs={2}>
           <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
             <InputLabel id="sort-by-select-small">Sort By</InputLabel>
             <Select
@@ -102,11 +136,13 @@ function Home() {
               label="Sort By"
               onChange={handleChangeSortBy}
             >
-              <MenuItem value="name">Name</MenuItem>
               <MenuItem value="listingTime">Listing Time</MenuItem>
+              <MenuItem value="name">Name</MenuItem>
+              <MenuItem value="priceLowToHigh">Price (Low to High)</MenuItem>
+              <MenuItem value="priceHighToLow">Price (High to Low)</MenuItem>
             </Select>
           </FormControl>
-        </Grid> */}
+        </Grid>
         <Grid item xs={4}>
           <Typography> Price Range </Typography>
           <Box sx={{ width: 300 }}>
@@ -116,6 +152,9 @@ function Home() {
               onChange={handlePriceRangeChange}
               valueLabelDisplay="auto"
               getAriaValueText={() => priceRange}
+              step={0.01}
+              min={0.00}
+              max={10.00}
             />
           </Box>
         </Grid>
@@ -137,23 +176,22 @@ function Home() {
       </Grid>
 
       <Grid container style={{ display: 'flex' }}>
-        { data.length === 0
-          ? (
-            <Alert
-              severity="success"
-              sx={{
-                width: 700,
-                height: 60,
-                fontSize: 30,
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginBottom: '50px',
-              }}
-            >
-              There are no listings.
-            </Alert>
-          )
-          : data.map((listing) => <NftCard data={listing} key={listing.id} setMadeTransaction={setMadeTransaction} />)}
+        { isFetch ? (
+          data.length === 0
+            ? (
+              <Typography variant="h6">
+                There are no listings
+              </Typography>
+            )
+            : data.map((listing) => <NftCard data={listing} key={listing.id} setMadeTransaction={setMadeTransaction} />)
+        ) : (
+
+          <Box sx={{ width: 300 }}>
+            <Skeleton />
+            <Skeleton animation="wave" />
+            <Skeleton animation={false} />
+          </Box>
+        )}
       </Grid>
     </>
   );

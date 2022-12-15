@@ -26,6 +26,7 @@ import VerificationLink from './pages/EmailVerification/VerificationLink';
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 import NotFound from './components/NotFound/NotFound';
 import { googleLogIn } from './api/AuthRequest';
+import Profile from './pages/Profile/Profile';
 
 const Context = createContext(null);
 
@@ -102,6 +103,7 @@ function App() {
               <Route path="dashboard" element={<SystemDashboard />} />
               <Route path="cart" element={<Cart />} />
               <Route path="wallet" element={<UserWallet />} />
+              <Route path="profile" element={<Profile />} />
             </Route>
           </Route>
           <Route path="*" element={<NotFound />} />

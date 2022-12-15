@@ -1,9 +1,7 @@
-/* eslint-disable react/no-unknown-property */
 /* eslint-disable react/jsx-props-no-spreading */
-/* eslint-disable no-unused-vars */
 /* eslint-disable max-len */
 /* eslint-disable react/jsx-filename-extension */
-/* eslint-disable no-nested-ternary */
+/* eslint-disable no-unused-vars */
 import * as React from 'react';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -12,6 +10,7 @@ import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import {
+  Box,
   Chip, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle,
   FormControl,
   Grid,
@@ -175,10 +174,24 @@ export default function NftCard({ data, setMadeTransaction }) {
             <Chip style={{ marginLeft: '5px' }} label={data.sellType.toUpperCase()} color={data.sellType === 'PRICED' ? 'info' : 'warning'} />
           </Typography>
 
-          <Typography variant="body2" color="text.secondary" style={{ fontSize: '12px' }} gutterBottom>
-            { data.nft.description }
-          </Typography>
+          <Box
+            component="div"
+            overflow="hidden"
+            whiteSpace="pre-line"
+            textOverflow="ellipsis"
+            height={70}
+          >
 
+            <Typography
+              variant="body2"
+              color="text.secondary"
+              style={{ fontSize: '12px' }}
+              gutterBottom
+            >
+
+              { data.nft.description }
+            </Typography>
+          </Box>
           <Typography>
             { displayPriceText(data) }
             {' '}
@@ -198,7 +211,8 @@ export default function NftCard({ data, setMadeTransaction }) {
         <CardActions>
           { data.sellType === 'PRICED' && <Button size="small" color="success" variant="contained" onClick={() => handleBuy(data)}>BUY</Button> }
           { data.sellType === 'AUCTION' && <Button size="small" color="secondary" variant="contained" onClick={handleOpenMakeNewOffer}>Make an Offer</Button> }
-          {/* { hasMadeOffers(data) && <Button size="small" color="secondary" variant="contained" onClick={navigateToListings}>View Offers</Button> } */}
+          {/* { hasMadeOffers(data) &&
+            <Button size="small" color="secondary" variant="contained" onClick={navigateToListings}>View Offers</Button> } */}
           <Button size="small" color="inherit" variant="text" onClick={handleClickOpen}>Details</Button>
         </CardActions>
       </Card>
