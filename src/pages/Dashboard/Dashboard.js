@@ -29,7 +29,7 @@ function Dashboard() {
     <Container>
       <Box sx={{ display: 'flex', gridTemplateRows: 'repeat(2, 1fr)', justifyContent: 'center' }}>
         <NftSalesTable dashboardData={dashboardData} />
-        <NftListingsTable />
+        <NftListingsTable dashboardData={dashboardData} />
       </Box>
     </Container>
   );
