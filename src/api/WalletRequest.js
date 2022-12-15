@@ -21,3 +21,5 @@ export const currencyTransaction = (data) => API.post('/api/v1/currencyTransacti
 export const getAllListings = (userId) => API.get(`/api/v1/listing/getAllListings/${userId}`);
 
 export const cancelListing = (listingId) => API.put(`/api/v1/listing/cancelListing/${listingId}`);
+
+export const acceptOffer = (offerId) => API.post(`/api/v1/listing/acceptOffer/${offerId}`);
