@@ -102,7 +102,7 @@ function Home() {
   React.useEffect(() => {
     getListings();
     console.log(listings);
-  }, [madeTransaction, data]);
+  }, [madeTransaction]);
 
   return (
     <>
