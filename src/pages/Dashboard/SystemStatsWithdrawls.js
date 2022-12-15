@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable react/jsx-filename-extension */
 import * as React from 'react';
 import Table from '@mui/material/Table';
@@ -8,18 +9,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
-function createData(name, count) {
-  return {
-    name, count,
-  };
-}
-
-const rows = [
-  createData('Total Withdrawls', 100),
-  createData('Total Currency Amount', 50),
-];
-
-export default function SystemStats() {
+export default function SystemStats({ systemTransactionsData }) {
   return (
     <TableContainer component={Paper} sx={{ margin: 5 }}>
       <Table sx={{ minWidth: 'auto' }} aria-label="simple table">
@@ -30,17 +20,27 @@ export default function SystemStats() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <TableRow
-              key={row.name}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-            >
-              <TableCell component="th" scope="row">
-                {row.name}
-              </TableCell>
-              <TableCell align="center">{row.count}</TableCell>
-            </TableRow>
-          ))}
+
+          <TableRow
+            key="Total Withdrawls"
+            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+          >
+            <TableCell component="th" scope="row">
+              Total Withdrawls
+            </TableCell>
+            <TableCell align="center">{systemTransactionsData.totalWithDrawals}</TableCell>
+          </TableRow>
+
+          <TableRow
+            key="Total Currency Amount"
+            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+          >
+            <TableCell component="th" scope="row">
+              Total Currency Amount
+            </TableCell>
+            <TableCell align="center">{systemTransactionsData.totalWithDrawalCurrencyAmount}</TableCell>
+          </TableRow>
+
         </TableBody>
       </Table>
     </TableContainer>

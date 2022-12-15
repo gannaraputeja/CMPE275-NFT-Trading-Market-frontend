@@ -1,3 +1,5 @@
+/* eslint-disable import/no-unresolved */
+/* eslint-disable max-len */
 /* eslint-disable react/jsx-filename-extension */
 import { Box, Button, Container } from '@mui/material';
 import React from 'react';
@@ -8,10 +10,23 @@ import SystemStatsWithdrawls from './SystemStatsWithdrawls';
 import SystemStatsInitialSysBalance from './SystemStatsInitialSysBalance';
 import SystemStatsNFTSales from './SystemStatsNFTSales';
 
+import { getSystemTransactionStats } from '../../api/SystemTransactionStats ';
+
 function SystemTransactionStats() {
   const [period, setPeriod] = React.useState('');
   const [currency, setCurrency] = React.useState('');
+  const [systemTransactionsData, setSystemTransactionsData] = React.useState([]);
+  const [changedState, setChangedState] = React.useState(0);
 
+  const getSystemTransactions = async () => {
+    try {
+      const res = await getSystemTransactionStats();
+      setSystemTransactionsData(res.data);
+      return res.data;
+    } catch (err) {
+      return err;
+    }
+  };
   const handlePeriodState = (value) => {
     setPeriod(value);
   };
@@ -21,16 +36,18 @@ function SystemTransactionStats() {
   };
 
   const handleSubmit = () => {
-    console.log(period, currency);
+    setChangedState((prev) => prev + 1);
   };
 
   const handleReset = () => {
     setPeriod('');
     setCurrency('');
+    setChangedState((prev) => prev + 1);
   };
   React.useEffect(() => {
-    // backend call to fetch all the results.
-  }, []);
+    getSystemTransactions();
+  }, [changedState]);
+
   return (
     <Container>
       <Box sx={{ display: 'flex', gridTemplateRows: 'repeat(2, 1fr)', justifyContent: 'center' }}>
@@ -67,10 +84,10 @@ function SystemTransactionStats() {
       </Box>
       <Container>
         <Box sx={{ display: 'flex', gridTemplateRows: 'auto', justifyContent: 'center' }}>
-          <SystemStatsDeposit />
-          <SystemStatsWithdrawls />
-          <SystemStatsInitialSysBalance />
-          <SystemStatsNFTSales />
+          <SystemStatsDeposit systemTransactionsData={systemTransactionsData} />
+          <SystemStatsWithdrawls systemTransactionsData={systemTransactionsData} />
+          <SystemStatsInitialSysBalance systemTransactionsData={systemTransactionsData} />
+          <SystemStatsNFTSales systemTransactionsData={systemTransactionsData} />
         </Box>
       </Container>
     </Container>

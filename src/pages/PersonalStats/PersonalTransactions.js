@@ -7,105 +7,6 @@ import CurrencyFilter from '../Dashboard/CurrencyFilter';
 import Transactions from './Transactions';
 import { getPersonalTransactions } from '../../api/PersonalTransactions';
 
-const transactions = [
-  {
-    id: 1,
-    avatar: 'https://firebasestorage.googleapis.com/v0/b/nft-trading-market-7e98b.appspot.com/o/images%2FNFT_marketplace.ico?alt=media&token=efcfd069-673b-4258-ba2f-e37a13819d8e',
-    nftName: 'Photos',
-    nftType: 'Art',
-    buyer: 'nkf_90',
-    seller: 'srth098',
-    listingType: 'priced',
-    price: 100,
-    currency: 'BTC',
-    transactionDate: '12-06-2022 12:08:10PST',
-  },
-  {
-    id: 2,
-    avatar: 'https://firebasestorage.googleapis.com/v0/b/nft-trading-market-7e98b.appspot.com/o/images%2FNFT_marketplace.ico?alt=media&token=efcfd069-673b-4258-ba2f-e37a13819d8e',
-    nftName: 'Photos',
-    nftType: 'Art',
-    buyer: 'nkf_90',
-    seller: 'srth098',
-    listingType: 'priced',
-    price: 100,
-    currency: 'BTC',
-    transactionDate: '12-06-2022 12:08:10PST',
-  },
-  {
-    id: 3,
-    avatar: 'https://firebasestorage.googleapis.com/v0/b/nft-trading-market-7e98b.appspot.com/o/images%2FNFT_marketplace.ico?alt=media&token=efcfd069-673b-4258-ba2f-e37a13819d8e',
-    nftName: 'Photos',
-    nftType: 'Art',
-    buyer: 'nkf_90',
-    seller: 'srth098',
-    listingType: 'auctioned',
-    price: 100,
-    currency: 'BTC',
-    transactionDate: '12-06-2022 12:08:10PST',
-  },
-  {
-    id: 4,
-    avatar: 'https://firebasestorage.googleapis.com/v0/b/nft-trading-market-7e98b.appspot.com/o/images%2FNFT_marketplace.ico?alt=media&token=efcfd069-673b-4258-ba2f-e37a13819d8e',
-    nftName: 'Photos',
-    nftType: 'Art',
-    buyer: 'nkf_90',
-    seller: 'srth098',
-    listingType: 'auctioned',
-    price: 100,
-    currency: 'BTC',
-    transactionDate: '12-06-2022 12:08:10PST',
-  },
-  {
-    id: 5,
-    avatar: 'https://firebasestorage.googleapis.com/v0/b/nft-trading-market-7e98b.appspot.com/o/images%2FNFT_marketplace.ico?alt=media&token=efcfd069-673b-4258-ba2f-e37a13819d8e',
-    nftName: 'Photos',
-    nftType: 'Art',
-    buyer: 'nkf_90',
-    seller: 'srth098',
-    listingType: 'priced',
-    price: 100,
-    currency: 'BTC',
-    transactionDate: '12-06-2022 12:08:10PST',
-  },
-  {
-    id: 6,
-    avatar: 'https://firebasestorage.googleapis.com/v0/b/nft-trading-market-7e98b.appspot.com/o/images%2FNFT_marketplace.ico?alt=media&token=efcfd069-673b-4258-ba2f-e37a13819d8e',
-    nftName: 'Photos',
-    nftType: 'Art',
-    buyer: 'nkf_90',
-    seller: 'srth098',
-    listingType: 'priced',
-    price: 100,
-    currency: 'BTC',
-    transactionDate: '12-06-2022 12:08:10PST',
-  },
-  {
-    id: 7,
-    avatar: 'https://firebasestorage.googleapis.com/v0/b/nft-trading-market-7e98b.appspot.com/o/images%2FNFT_marketplace.ico?alt=media&token=efcfd069-673b-4258-ba2f-e37a13819d8e',
-    nftName: 'Photos',
-    nftType: 'Art',
-    buyer: 'nkf_90',
-    seller: 'srth098',
-    listingType: 'auctioned',
-    price: 100,
-    currency: 'BTC',
-    transactionDate: '12-06-2022 12:08:10PST',
-  },
-  {
-    id: 8,
-    avatar: 'https://firebasestorage.googleapis.com/v0/b/nft-trading-market-7e98b.appspot.com/o/images%2FNFT_marketplace.ico?alt=media&token=efcfd069-673b-4258-ba2f-e37a13819d8e',
-    nftName: 'Photos',
-    nftType: 'Art',
-    buyer: 'nkf_90',
-    seller: 'srth098',
-    listingType: 'priced',
-    price: 100,
-    currency: 'BTC',
-    transactionDate: '12-06-2022 12:08:10PST',
-  },
-];
-
 function SystemTransactionStats() {
   const [period, setPeriod] = React.useState('');
   const [currency, setCurrency] = React.useState('');
@@ -127,6 +28,7 @@ function SystemTransactionStats() {
       return err;
     }
   };
+
   const handlePeriodState = (value) => {
     setPeriod(value);
   };
@@ -136,18 +38,13 @@ function SystemTransactionStats() {
   };
 
   const handleSubmit = () => {
-    console.log(period, currency);
-    // const filterData = [...transactions];
     setChangedState((prev) => prev + 1);
-    console.log('prev in handle submit : ', changedState);
-    // setTransactionsData(filterData.filter((row) => row.transactionDate >= (Date.now() - period)
-    // && row.currency === currency));
   };
 
   const handleReset = () => {
     setPeriod('');
     setCurrency('');
-    setTransactionsData(transactions);
+    // setTransactionsData(transactions);
   };
 
   React.useEffect(() => {

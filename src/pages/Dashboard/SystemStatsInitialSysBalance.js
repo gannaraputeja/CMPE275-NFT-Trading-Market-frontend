@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable react/jsx-filename-extension */
 import * as React from 'react';
 import Table from '@mui/material/Table';
@@ -8,18 +9,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
-function createData(name, count) {
-  return {
-    name, count,
-  };
-}
-
-const rows = [
-  createData('Initial System Balance', 100),
-  createData('Current System Balance', 50),
-];
-
-export default function SystemStatsWithdrawls() {
+export default function SystemStatsWithdrawls({ systemTransactionsData }) {
   return (
     <TableContainer component={Paper} sx={{ margin: 5 }}>
       <Table sx={{ minWidth: 'auto' }} aria-label="simple table">
@@ -30,17 +20,26 @@ export default function SystemStatsWithdrawls() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <TableRow
-              key={row.name}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-            >
-              <TableCell component="th" scope="row">
-                {row.name}
-              </TableCell>
-              <TableCell align="center">{row.count}</TableCell>
-            </TableRow>
-          ))}
+          <TableRow
+            key="Initial System Balance"
+            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+          >
+            <TableCell component="th" scope="row">
+              Initial System Balance
+            </TableCell>
+            <TableCell align="center">{systemTransactionsData.initialSystemBalance}</TableCell>
+          </TableRow>
+
+          <TableRow
+            key="Current System Balance"
+            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+          >
+            <TableCell component="th" scope="row">
+              Current System Balance
+            </TableCell>
+            <TableCell align="center">{systemTransactionsData.PapercurrentSystemBalance}</TableCell>
+          </TableRow>
+
         </TableBody>
       </Table>
     </TableContainer>
