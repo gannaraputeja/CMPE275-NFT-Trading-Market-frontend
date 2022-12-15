@@ -1,10 +1,13 @@
+/* eslint-disable camelcase */
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/jsx-filename-extension */
 import {
-  Box, Button, Container, Grid, Paper, TextField, Typography,
+  Box, Button, Container, Grid, Input, Paper, TextField, Typography,
 } from '@mui/material';
 import React from 'react';
 import { styled } from '@mui/material/styles';
+import jwt_decode from 'jwt-decode';
+import { updatePassword, updateNickName } from '../../api/userProfile';
 
 // const Item = styled(Paper)(({ theme }) => ({
 //   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -15,15 +18,20 @@ import { styled } from '@mui/material/styles';
 // }));
 
 function Profile() {
-  const [profileImg, setProfileImg] = React.useState('');
-  const [userName, setUserName] = React.useState('');
-  const [nickName, setNickname] = React.useState('');
+  const [profileImg, setProfileImg] = React.useState(() => localStorage.getItem('profilePicture'));
+  const [userName, setUserName] = React.useState(() => localStorage.getItem('userName'));
+  const [nickName, setNickname] = React.useState(() => localStorage.getItem('nickName'));
+  const [password, setPassword] = React.useState();
   const [updateNicknameBtn, setUpdateNicknameBtn] = React.useState(true);
+  const [updatePwdBtn, setUpdatePwdBtn] = React.useState(true);
 
   React.useEffect(() => {
     setProfileImg(localStorage.getItem('profilePicture'));
     setUserName(localStorage.getItem('userName'));
     setNickname(localStorage.getItem('nickName'));
+    // console.log(localStorage.getItem('nickName'));
+    // console.log(localStorage.getItem('userName').length === 0
+    // ? '' : localStorage.getItem('userName').toLocaleLowerCase());
   }, []);
 
   const updateNickname = (e) => {
@@ -31,11 +39,44 @@ function Profile() {
     setNickname(e.target.value);
   };
 
-  const submitNickname = () => {
-    console.log(nickName);
-    setUpdateNicknameBtn(true);
+  const updatePwd = (e) => {
+    setUpdatePwdBtn(false);
+    setPassword(e.target.value);
   };
 
+  const submitNickname = async () => {
+    console.log(nickName);
+    setUpdateNicknameBtn(true);
+    const data = {
+      id: localStorage.getItem('id'),
+      nickname: nickName,
+    };
+    try {
+      const res = await updateNickName(data);
+      alert('Nick Name updated');
+    } catch (err) {
+      alert('Nick Name could not be updated');
+      return err;
+    }
+    return data;
+  };
+
+  const submitNewPwd = async () => {
+    console.log(password);
+    setUpdatePwdBtn(true);
+    const data = {
+      id: localStorage.getItem('id'),
+      password,
+    };
+    try {
+      const res = await updatePassword(data);
+      alert('Password updated');
+    } catch (err) {
+      alert('Password could not be updated');
+      return err;
+    }
+    return data;
+  };
   return (
     <Container>
       <Box sx={{ flexGrow: 1 }}>
@@ -58,7 +99,9 @@ function Profile() {
                 label="User Name"
                 defaultValue={userName}
                 variant="filled"
-                disabled
+                InputProps={{
+                  readOnly: true,
+                }}
               />
             </Grid>
             <Grid sx={{display: 'block', padding: '5px'}}>
@@ -70,6 +113,15 @@ function Profile() {
                 disabled={updateNicknameBtn}
                 onChange={updateNickname}
               />
+
+              {/* <TextField
+                disabled={updateNicknameBtn}
+                id="filled-disabled"
+                label="Disabled"
+                variant="filled"
+                defaultValue={nickName}
+                onChange={updateNickname}
+              /> */}
 
               <Button
                 sx={{marginLeft: '5px', marginY: 'auto'}}
@@ -96,11 +148,33 @@ function Profile() {
             <Grid sx={{display: 'block', padding: '5px'}}>
               <TextField
                 id="filled-basic"
-                label="*********"
+                label="Password"
                 variant="filled"
-                disabled
                 type="password"
+                disabled={updatePwdBtn}
+                defaultValue={password}
+                onChange={updatePwd}
               />
+              <Button
+                sx={{marginLeft: '5px', marginY: 'auto'}}
+                type="button"
+                variant="contained"
+                size="small"
+                onClick={updatePwd}
+                disabled={!updatePwdBtn}
+              >
+                EDIT
+              </Button>
+              <Button
+                sx={{marginLeft: '5px', marginY: 'auto'}}
+                type="button"
+                variant="contained"
+                size="small"
+                onClick={submitNewPwd}
+                disabled={updatePwdBtn}
+              >
+                UPDATE
+              </Button>
             </Grid>
           </Grid>
         </Grid>

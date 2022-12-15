@@ -60,6 +60,8 @@ function App() {
         localStorage.setItem('access-token', res.tokenObj.access_token);
         localStorage.setItem('userObj', JSON.stringify(response.data));
         localStorage.setItem('googleUserObj', JSON.stringify(res));
+        localStorage.setItem('nickName', response.data.nickname);
+        localStorage.setItem('id', response.data.id);
         setToken(res.tokenObj.access_token);
         navigate('/user');
       }
