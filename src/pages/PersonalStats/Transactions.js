@@ -53,9 +53,10 @@ const columns = [
     width: 80,
   },
   {
-    field: 'user.username',
+    field: 'user.firstname',
     headerName: 'user',
     type: 'string',
+    renderCell: (params) => params.row.user.firstname,
     width: 80,
   },
   {
@@ -63,6 +64,13 @@ const columns = [
     headerName: 'Transaction Date',
     type: 'Date',
     width: 200,
+  },
+  {
+    field: 'nft.name',
+    headerName: 'nft',
+    type: 'string',
+    renderCell: (params) => (params.row.nft && params.row.nft.name) || '----',
+    width: 80,
   },
 ];
 
@@ -74,7 +82,7 @@ export default function DataGridDemo({ transactionsData }) {
         columns={columns}
         pageSize={5}
         rowsPerPageOptions={[5]}
-        checkboxSelection
+        // checkboxSelection
         disableSelectionOnClick
         disableColumnFilter
         disableColumnSelector
