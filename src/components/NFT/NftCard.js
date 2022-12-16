@@ -72,6 +72,7 @@ export default function NftCard({ data, setMadeTransaction }) {
       const res = await buyNFT(buyNftObj);
       setMadeTransaction(true);
       console.log(res.data);
+      alert('Sucessfully made a purchase');
     } catch (err) {
       console.log('Failed to buy NFT.', err);
       alert(err.response.data.message);
