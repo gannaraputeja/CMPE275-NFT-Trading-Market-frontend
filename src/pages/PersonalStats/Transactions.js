@@ -70,7 +70,7 @@ const columns = [
     headerName: 'nft',
     type: 'string',
     renderCell: (params) => (params.row.nft && params.row.nft.name) || '----',
-    width: 80,
+    width: 150,
   },
 ];
 
