@@ -103,7 +103,7 @@ function App() {
               <Route path="nftsale" element={<NftSale />} />
               <Route path="personalstats" element={<PersonalStats />} />
               <Route path="dashboard" element={<SystemDashboard />} />
-              <Route path="cart" element={<Cart />} />
+              {/* <Route path="cart" element={<Cart />} /> */}
               <Route path="wallet" element={<UserWallet />} />
               <Route path="profile" element={<Profile />} />
             </Route>

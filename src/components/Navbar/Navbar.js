@@ -247,9 +247,11 @@ export default function MiniDrawer() {
                 <AccountBalanceWallet fontSize="medium" />
               </IconButton>
 
-              <IconButton color="inherit" onClick={openCart} style={{ marginRight: '30px' }}>
+              {/* <IconButton color="inherit" onClick={openCart}
+              style={{ marginRight: '30px' }} hidden>
                 <ShoppingCart fontSize="medium" />
-              </IconButton>
+              </IconButton> */}
+
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                   <Avatar
