@@ -74,7 +74,7 @@ const columns = [
   },
   {
     field: 'To/From User',
-    headerName: 'previous owner',
+    headerName: 'To/From User',
     type: 'string',
     renderCell: (params) => (params.row.previousUser && params.row.previousUser.firstname) || '----',
     width: 150,
