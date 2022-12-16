@@ -72,6 +72,13 @@ const columns = [
     renderCell: (params) => (params.row.nft && params.row.nft.name) || '----',
     width: 150,
   },
+  {
+    field: 'previous owner',
+    headerName: 'previous owner',
+    type: 'string',
+    renderCell: (params) => (params.row.previousUser && params.row.previousUser.firstname) || '----',
+    width: 150,
+  },
 ];
 
 export default function DataGridDemo({ transactionsData }) {
