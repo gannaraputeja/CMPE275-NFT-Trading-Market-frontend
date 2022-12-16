@@ -48,13 +48,13 @@ const columns = [
   // },
   {
     field: 'availableAmount',
-    headerName: 'available Balance',
+    headerName: 'Available Balance',
     type: 'number',
     width: 200,
   },
   {
     field: 'user.firstname',
-    headerName: 'user',
+    headerName: 'User',
     type: 'string',
     renderCell: (params) => params.row.user.firstname,
     width: 80,
@@ -67,13 +67,13 @@ const columns = [
   },
   {
     field: 'nft.name',
-    headerName: 'nft',
+    headerName: 'NFT',
     type: 'string',
     renderCell: (params) => (params.row.nft && params.row.nft.name) || '----',
     width: 150,
   },
   {
-    field: 'previous owner',
+    field: 'To/From User',
     headerName: 'previous owner',
     type: 'string',
     renderCell: (params) => (params.row.previousUser && params.row.previousUser.firstname) || '----',
