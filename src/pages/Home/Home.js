@@ -25,7 +25,7 @@ function Home() {
   const [listings, setListings] = useState([]);
   const [data, setData] = useState([]);
   const [defaultPriceRange, setDefaultPriceRange] = useState([5, 30]);
-  const [priceRange, setPriceRange] = useState([5, 30]);
+  const [priceRange, setPriceRange] = useState([5, 3000]);
   const [sortBy, setSortBy] = useState('listingTime');
   const [madeTransaction, setMadeTransaction] = useState(false);
   const [isFetch, setIsFetch] = useState(false);
@@ -154,7 +154,7 @@ function Home() {
               getAriaValueText={() => priceRange}
               step={0.01}
               min={0.00}
-              max={10.00}
+              max={3000.00}
             />
           </Box>
         </Grid>
