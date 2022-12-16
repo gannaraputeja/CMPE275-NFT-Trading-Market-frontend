@@ -37,7 +37,7 @@ export default function SystemStatsWithdrawls({ systemTransactionsData }) {
             <TableCell component="th" scope="row">
               Current System Balance
             </TableCell>
-            <TableCell align="center">{systemTransactionsData.PapercurrentSystemBalance}</TableCell>
+            <TableCell align="center">{systemTransactionsData.currentSystemBalance}</TableCell>
           </TableRow>
 
         </TableBody>
