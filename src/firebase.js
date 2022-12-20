@@ -6,12 +6,12 @@ import { getStorage } from 'firebase/storage';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: 'AIzaSyABrPRnRZwP1xdaTlhxDSgX8d97vf63jFk',
+  apiKey: 'XXXXXXXXXXXXXX',
   authDomain: 'nft-trading-market-7e98b.firebaseapp.com',
   projectId: 'nft-trading-market-7e98b',
   storageBucket: 'nft-trading-market-7e98b.appspot.com',
-  messagingSenderId: '2694610353',
-  appId: '1:2694610353:web:2cf0f6914751d2bd3f1190',
+  messagingSenderId: 'XXXXXXXXXXXXXX',
+  appId: 'XXXXXXXXXXXXXX',
 };
 
 // Initialize Firebase
